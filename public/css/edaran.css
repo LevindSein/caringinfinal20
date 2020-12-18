@@ -1,0 +1,154 @@
+@media print {
+  @page {
+    height: 28cm;
+    width: 36cm;
+    size: landscape;
+    border: 1px solid black;
+    font-size: 20pt;
+  }
+  body {
+    -webkit-print-color-adjust: exact !important;
+    /* background : url(watermark-koppas.png) !important; */
+    font-size: 20pt;
+  }
+}
+
+body {
+  position: relative;
+  /* background : url(watermark-koppas.png) !important; */
+}
+
+.pemberitahuan {
+  height: auto;
+  width: auto;
+  margin: 5px;
+  margin-bottom: 5px;
+}
+
+.pelunasan {
+  height: auto;
+  width: auto;
+  margin: 5px;
+  margin-bottom: 5px;
+}
+
+.pembayaran {
+  height: auto;
+  width: auto;
+  margin: 5px;
+  margin-bottom: 5px;
+}
+
+.row {
+  display: flex; /* equal height of the children */
+}
+
+.col {
+  flex: 1; /* additionally, equal width */
+  padding: 1em;
+  border: solid;
+}
+
+.t1 {border-collapse: collapse; border-spacing: 0;}
+.t1 td {border-color: transparent; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size:13px;
+  overflow: hidden; padding: 2px 12px; word-break: normal;}
+.t1 th { border-color: transparent; border-style: solid; border-width: 1px; font-family: Arial, sans-serif; font-size:13px;
+  font-weight: normal; overflow: hidden; padding: 2px 12px; word-break: normal;}
+.t1 .t1-9vvc {background-color:transparent; border-color:transparent; color: transparent; font-size:15px;
+  text-align: center; vertical-align: bottom}
+.t1 .t1-l6li {border-color:transparent; font-size:10px; text-align: left; vertical-align: top}
+.t1 .t1-gn3o {border-right: none; border-color:transparent; color: #000000; font-size:10px; text-align: center; vertical-align: middle}
+.t1 .t1-gn39 {border-left: none; border-color:transparent; color: #000000; font-size:10px; text-align: center;vertical-align: middle}
+.t1 .t1-bbev {border-left: none; border-color:transparent; color: transparent; font-size:15px; font-weight: bold;
+  text-align: center;vertical-align: middle}
+.t1 .t1-6re5 {border-color:transparent; color: transparent; font-size:10px; font-weight: bold; text-align: left;
+  vertical-align: top}
+.t1 .t1-6re9 {border-right: none; border-bottom: none; border-top: none; border-color:transparent; color: transparent;
+  font-size:13px; font-weight: bold; text-align: left; vertical-align: top}
+.t1 .t1-ttem {border-top: none; border-right: none; border-bottom: none; border-color:transparent; color: #000000;
+  font-size:10px; text-align: left; vertical-align: top}
+.t1 .t1-tte8 {border-right:none; border-top: none; border-color:transparent; color: transparent; font-size:13px;
+  text-align: left; vertical-align: top}
+.t1 .t1-tte9 {border:none; border-color:transparent; color: #000000; font-size:10px; text-align: left;
+  vertical-align: top}
+.t1 .t1-277t {background-color:transparent; border-color:transparent; color: transparent; font-size:13px; font-weight: bold;
+  text-align: center; vertical-align: middle}
+.t1 .t1-3ijx {border-left: none; border-bottom: none; border-top: none; border-color:transparent; color: #000000;
+  font-size:10px; text-align: right; vertical-align: top}
+.t1 .t1-3ij9 {background-color:transparent; border-left: none; border-bottom: none; border-color:transparent; color: #000000;
+  font-size:10px; text-align: right; vertical-align: top}
+.t1 .t1-3yo2 {background-color:transparent; border-color:transparent; color: #000000; font-size:10px; font-weight: bold; text-align: right;
+  vertical-align: top}
+.t1 .t1-3yo9 {border-right: none; background-color:transparent; border-color:transparent; color: transparent; font-size:13px;
+  font-weight: bold; text-align: center; vertical-align: top}
+.t1 .t1-nfau {border-color:transparent; color: #000000; font-size:12px; text-align: left; vertical-align: top}
+.t1 .t1-nf4u {padding-top:6px; border-color:transparent; color: transparent; font-size:12px; text-align: left; vertical-align: top}
+.t1 .t1-zhtw {border-color:transparent; color: #000000; font-size:10px; text-align: center; vertical-align: top}
+
+
+.t2  {border-collapse:collapse;border-spacing:0;}
+.t2 td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:13px;
+  overflow:hidden;padding:2px 12px;word-break:normal;}
+.t2 th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:13px;
+  font-weight:normal;overflow:hidden;padding:2px 12px;word-break:normal;}
+.t2 .t2-ng21{background-color:transparent;border-color:transparent;color:transparent;font-size:13px;font-weight:bold;text-align:center;
+  vertical-align:top}
+.t2 .t2-qc0u{background-color:transparent;border-color:transparent; color: transparent; font-size:15px;text-align:center;vertical-align:top}
+.t2 .t2-gn3o{border-right: none; border-color:transparent;color:#000000;font-size:10px;text-align:center;vertical-align:middle}
+.t2 .t2-gn39{border-left: none; border-color:transparent;color:#000000;font-size:10px;text-align:center;vertical-align:middle}
+.t2 .t2-bbev{border-left: none; border-color:transparent;color:transparent;font-size:15px;font-weight:bold;text-align:center;vertical-align:middle}
+.t2 .t2-6re5{border-color:transparent;color:#000000;font-size:10px;font-weight:bold;text-align:left;vertical-align:top}
+.t2 .t2-6re9{border-top: none; border-right: none; border-bottom: none; border-color:transparent;color:transparent;font-size:13px;font-weight:bold;text-align:left;vertical-align:top}
+.t2 .t2-ttem{border-top: none; border-right: none; border-bottom: none; border-color:transparent;color:#000000;font-size:10px;text-align:left;vertical-align:top}
+.t2 .t2-tte8{border:none; border-color:transparent;color:#000000;font-size:10px;text-align:left;vertical-align:top}
+.t2 .t2-tte9{border-top: none; border-right: none; border-bottom: none; border-color:transparent;color:transparent;font-size:13px;text-align:left;vertical-align:top}
+.t2 .t2-3ijx{border-left: none; border-bottom: none; border-top: none; border-color:transparent;color:#000000;font-size:10px;text-align:right;vertical-align:top}
+.t2 .t2-3ij9{border-left: none; background-color:transparent; border-bottom: none; border-color:transparent;color:#000000;font-size:10px;text-align:right;vertical-align:top}
+.t2 .t2-3yo2{background-color:transparent;border-color:transparent;color:#000000;font-size:10px;font-weight:bold;text-align:right;
+  vertical-align:top}
+.t2 .t2-3yo9{border-right: none; background-color:transparent;border-color:transparent;color:transparent;font-size:13px;font-weight:bold;text-align:center;
+  vertical-align:top}
+.t2 .t2-nfau{border-color:transparent;color:transparent;font-size:11px;text-align:left;vertical-align:top}
+
+
+.t3  {border-collapse:collapse;border-spacing:0;}
+.t3 td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:13px;
+  overflow:hidden;padding:2px 12px;word-break:normal;}
+.t3 th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:13px;
+  font-weight:normal;overflow:hidden;padding:2px 12px;word-break:normal;}
+.t3 .t3-ng21{background-color:transparent;border-color:transparent;color:transparent;font-size:15px;font-weight:bold;text-align:center;
+  vertical-align:top}
+.t3 .t3-gn3o{border-right: none; border-color:transparent;color:#000000;font-size:10px;text-align:center;vertical-align:middle}
+.t3 .t3-gn39{border-left:none; border-color:transparent;color:#000000;font-size:10px;text-align:center;vertical-align:middle}
+.t3 .t3-bbev{border-color:transparent;color:#000000;font-size:10px;font-weight:bold;text-align:center;vertical-align:middle}
+.t3 .t3-bbe9{border-left: none; border-right: none; border-color:transparent;color:transparent;font-size:15px;font-weight:bold;text-align:center;vertical-align:middle}
+.t3 .t3-6re1{border:none; border-color:transparent;color:transparent;font-size:13px;font-weight:bold;text-align:left;vertical-align:top}
+.t3 .t3-6re5{border-color:transparent;color:#000000;font-size:10px;font-weight:bold;text-align:left;vertical-align:top}
+.t3 .t3-6re9{border-top:none; border-right: none; border-bottom: none; border-color:transparent;color:transparent;font-size:13px;font-weight:bold;text-align:left;vertical-align:top}
+.t3 .t3-6re0{border-top:none; border-right: none; border-bottom: none; border-color:transparent;color:#000000;font-size:10px;font-weight:bold;text-align:left;vertical-align:top}
+.t3 .t3-ttem{border-color:transparent; border-color:transparent;font-size:10px;text-align:left;vertical-align:top}
+.t3 .t3-tte0{border-left:none; border-top: none; border-bottom: none; border-color:transparent; border-color:transparent;font-size:10px;text-align:left;vertical-align:top}
+.t3 .t3-tte1{border-right:none; border-top: none; border-bottom: none; border-color:transparent; border-color:transparent;font-size:10px;text-align:left;vertical-align:top}
+.t3 .t3-tte2{border:none; border-color:transparent; border-color:transparent;font-size:10px;text-align:left;vertical-align:top}
+.t3 .t3-tte8{border-top:none; border-left:none; border-color:transparent;color:#000000;font-size:10px;text-align:left;vertical-align:top}
+.t3 .t3-tte9{border:none; border-color:transparent;color:#000000;font-size:10px;text-align:left;vertical-align:top}
+.t3 .t3-ewa4{border-color:transparent;color:#000000;font-size:10px;text-align:center;vertical-align:top}
+.t3 .t3-277t{background-color:transparent;border-color:transparent;color:transparent;font-size:11px;font-weight:bold;text-align:center;
+  vertical-align:middle}
+.t3 .t3-3ijx{border: none; border-color:transparent;color:#000000;font-size:10px;text-align:right;vertical-align:top}
+.t3 .t3-3ij1{border-left: none; border-top: none;  border-bottom: none; border-color:transparent;color:#000000;font-size:10px;text-align:right;vertical-align:top}
+.t3 .t3-3ij9{background-color:transparent;border-left: none; border-color:transparent;color:#000000;font-size:10px;text-align:right;vertical-align:top}
+.t3 .t3-3yo2{background-color:transparent;border-color:transparent;color:#000000;font-size:10px;font-weight:bold;text-align:right;
+  vertical-align:top}
+.t3 .t3-3yo9{border-right: none; background-color:transparent;border-color:transparent;color:transparent;font-size:13px;font-weight:bold;text-align:center;
+  vertical-align:top}
+.t3 .t3-zzln{border-right: none; border-color:transparent;color:transparent;font-size:11px;font-weight:bold;text-align:left;vertical-align:middle}
+.t3 .t3-zhtw{border-left: none; border-color:transparent;color:transparent;font-size:11px;text-align:center;vertical-align:top}
+.t3 .t3-ng30{border-color: transparent; border-left: none; border-right: none; border-top: none; color:transparent;font-size:10px;font-weight:bold;text-align:center;
+  vertical-align:top}
+.t3 .t3-ng40{border-color: transparent; border-top: none; border-left: none; color:transparent;font-size:10px;font-weight:bold;text-align:center;
+  vertical-align:top}
+.t3 .t3-ng50{border-color: transparent; border-top: none; border-bottom: none ; border-left: none; color:transparent;font-size:10px;font-weight:bold;text-align:center;
+  vertical-align:top}
+.t3 .t3-ng60{border-color: transparent; border:none; color:transparent;font-size:10px;font-weight:bold;text-align:center;
+    vertical-align:top}
