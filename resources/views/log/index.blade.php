@@ -1,10 +1,4 @@
-<?php
-$role = Session::get('role');
-date_default_timezone_set('Asia/Jakarta');
-$sekarang = date("d-m-Y H:i:s",time());
-?>
-
-@extends( $role == 'master' ? 'layout.master' : 'layout.admin')
+@extends('layout.master')
 @section('head')
 <!-- Tambah Content Pada Head -->
 @endsection
@@ -27,7 +21,7 @@ $sekarang = date("d-m-Y H:i:s",time());
                     style="font-size:0.75rem;">
                     <thead>
                         <tr>
-                            <th>No.</th>
+                            <th style="max-width:10px;">No.</th>
                             <th>Username</th>
                             <th>Nama</th>
                             <th>KTP</th>

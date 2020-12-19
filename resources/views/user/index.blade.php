@@ -137,6 +137,7 @@
                         <label for="ktp">Nomor KTP <span style="color:red;">*</span></label>
                         <input
                             required
+                            autocomplete="off"
                             type="tel"
                             min="0"
                             name="ktp"
@@ -149,6 +150,7 @@
                         <label for="nomor">Nama  <span style="color:red;">*</span></label>
                         <input
                             required
+                            autocomplete="off"
                             name="nama"
                             class="form-control"
                             style="text-transform: capitalize;"
@@ -234,7 +236,15 @@
                     <div class="form-group col-lg-12">
                         <label for="email">Email</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" maxlength="20" name="email" id="email" placeholder="youremail" aria-describedby="inputGroupPrepend">
+                            <input
+                                autocomplete="off" 
+                                type="text" 
+                                class="form-control" 
+                                maxlength="20" 
+                                name="email" 
+                                id="email" 
+                                placeholder="youremail" 
+                                aria-describedby="inputGroupPrepend">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroupPrepend">@gmail.com</span>
                             </div>
@@ -246,7 +256,16 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroupPrepend">+62</span>
                             </div>
-                            <input required type="tel" class="form-control" maxlength="12" name="hp" id="hp" placeholder="8783847xxx" aria-describedby="inputGroupPrepend">
+                            <input 
+                                required 
+                                autocomplete="off"
+                                type="tel" 
+                                class="form-control" 
+                                maxlength="12" 
+                                name="hp" 
+                                id="hp" 
+                                placeholder="8783847xxx" 
+                                aria-describedby="inputGroupPrepend">
                         </div>
                     </div>
                 </div>

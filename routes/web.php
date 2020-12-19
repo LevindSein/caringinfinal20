@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedagangController;
+use App\Http\Controllers\BlokController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 
@@ -41,13 +42,21 @@ Route::get('logout',function(){
 });
 
 Route::middleware('ceklogin:dashboard')->group(function () {
-    Route::get('dashboard',[DashboardController::class, 'index']);
+    Route::get('dashboard',[DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::middleware('ceklogin:pedagang')->group(function (){
     Route::post('pedagang/update', [PedagangController::class, 'update']);
     Route::get('pedagang/destroy/{id}', [PedagangController::class, 'destroy']);
     Route::resource('pedagang', PedagangController::class);
+});
+
+Route::middleware('ceklogin:blok')->group(function(){
+    Route::get('utilities/blok', [BlokController::class, 'index']);
+    Route::post('utilities/blok/store', [BlokController::class, 'store']);
+    Route::get('utilities/blok/edit/{id}', [BlokController::class, 'edit']);
+    Route::post('utilities/blok/update', [BlokController::class, 'update']);
+    Route::get('utilities/blok/destroy/{id}', [BlokController::class, 'destroy']);
 });
 
 Route::middleware('ceklogin:user')->group(function(){

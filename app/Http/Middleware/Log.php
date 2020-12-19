@@ -17,7 +17,7 @@ class Log
      */
     public function handle(Request $request, Closure $next)
     {
-        if(Session::get('role') === 'master' || 'admin'){
+        if(Session::get('role') === 'master'){
             return $next($request);
         }
         else{
