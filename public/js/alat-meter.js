@@ -196,6 +196,15 @@ $(document).ready(function () {
 		});
     });
 
+    $(document).on('click', '.qr', function(){
+        var id = $(this).attr('id');
+        var fas = $(this).attr('fas');
+        window.open(
+            '/utilities/alatmeter/qr/' + fas + '/' + id,
+            '_blank'
+        );
+	});
+
     var user_id;
     var fas_id;
     $(document).on('click', '.delete', function(){

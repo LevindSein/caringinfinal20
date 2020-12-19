@@ -60,6 +60,7 @@ Route::middleware('ceklogin:alatmeter')->group(function(){
     Route::get('utilities/alatmeter/edit/{fasilitas}/{id}', [AlatController::class, 'edit']);
     Route::post('utilities/alatmeter/update', [AlatController::class, 'update']);
     Route::get('utilities/alatmeter/destroy/{fasilitas}/{id}', [AlatController::class, 'destroy']);
+    Route::get('utilities/alatmeter/qr/{fasilitas}/{id}', [AlatController::class, 'qr']);
 });
 
 Route::middleware('ceklogin:harilibur')->group(function(){

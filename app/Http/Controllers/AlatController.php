@@ -25,7 +25,7 @@ class AlatController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    $button = '<a type="button" title="Print QR" name="edit" id="'.$data->id.'" fas="listrik" class="qr"><i class="fas fa-qrcode" style="color:#fd7e14;"></i></a>';
+                    $button = '<a type="button" title="Print QR" name="qr" id="'.$data->id.'" fas="listrik" class="qr"><i class="fas fa-qrcode" style="color:#fd7e14;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" fas="listrik" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" fas="listrik" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
@@ -255,5 +255,28 @@ class AlatController extends Controller
             $dataset['status'] = 'Data gagal dihapus';
             return response()->json(['result' => $dataset]);
         }
+    }
+
+    public function qr($fasilitas, $id){
+        if($fasilitas == 'listrik'){
+            $fasilitas = 'Listrik';
+            $kode = AlatListrik::find($id);
+            $kontrol = $kode->kode;
+            $kode = 'IDENTITIY-BP3C-'.$kode->kode;
+        }
+
+        if($fasilitas == 'air'){
+            $fasilitas = 'Air Bersih';
+            $kode = AlatAir::find($id);
+            $kontrol = $kode->kode;
+            $kode = 'IDENTITY-BP3C-'.$kode->kode;
+        }
+
+        return view('alatmeter.qr',[
+            'id'=>$id,
+            'kode'=>$kode,
+            'kontrol'=>$kontrol,
+            'fasilitas'=>$fasilitas
+        ]);
     }
 }
