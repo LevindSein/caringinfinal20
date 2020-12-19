@@ -186,7 +186,62 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = array(
+            'ktp'      => 'required',
+            'nama'     => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'hp'       => 'required',
+            'role'     => 'required',
+        );
+
+        $error = Validator::make($request->all(), $rules);
+
+        $dataset = array();
+
+        if($error->fails())
+        {
+            $dataset['status'] = 'error';
+            $dataset['message'] = 'Data Gagal Ditambah';
+            return response()->json(['result' => $dataset]);
+        }
+
+        $data = [
+            'ktp'      => $request->ktp,
+            'nama'     => ucwords($request->nama),
+            'username' => strtolower($request->username),
+            'password' => md5(hash('gost',$request->password)),
+            'anggota'  => strtoupper($request->anggota),
+            'email'    => strtolower($request->email.'@gmail.com'),
+            'role'     => $request->role,
+        ];
+       
+        if($request->email == NULL) {
+            $data['email'] = NULL;
+        }
+        
+        if($request->hp[0] == '0') {
+            $hp = '62'.substr($request->hp,1);
+            $data['hp'] = $hp;
+        }
+        else{
+            $hp = '62'.$request->hp;
+            $data['hp'] = $hp;
+        }
+
+        try{
+            $dataset['status'] = 'success';
+            $dataset['message'] = 'Data Berhasil Ditambah';
+            $dataset['role'] = $request->role;
+            User::create($data);
+
+            return response()->json(['result' => $dataset]);
+        }
+        catch(\Exception $e){
+            $dataset['status'] = 'error';
+            $dataset['message'] = 'Data Gagal Ditambah';
+            return response()->json(['result' => $dataset]);
+        }
     }
 
     /**
@@ -233,7 +288,65 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $rules = array(
+            'ktp'      => 'required',
+            'nama'     => 'required',
+            'username' => 'required',
+            'hp'       => 'required',
+            'role'     => 'required',
+        );
+
+        $error = Validator::make($request->all(), $rules);
+
+        $dataset = array();
+
+        if($error->fails())
+        {
+            $dataset['status'] = 'error';
+            $dataset['message'] = 'Data Gagal Ditambah';
+            return response()->json(['result' => $dataset]);
+        }
+
+        $data = [
+            'ktp'      => $request->ktp,
+            'nama'     => ucwords($request->nama),
+            'username' => strtolower($request->username),
+            'anggota'  => strtoupper($request->anggota),
+            'email'    => strtolower($request->email.'@gmail.com'),
+            'role'     => $request->role,
+        ];
+
+        if($request->password != NULL){
+            $data['password'] = md5(hash('gost',$request->password));
+        }
+       
+        if($request->email == NULL) {
+            $data['email'] = NULL;
+        }
+        
+        if($request->hp[0] == '0') {
+            $hp = '62'.substr($request->hp,1);
+            $data['hp'] = $hp;
+        }
+        else{
+            $hp = '62'.$request->hp;
+            $data['hp'] = $hp;
+        }
+
+        try{
+            $dataset['status'] = 'success';
+            $dataset['message'] = 'Data Berhasil Ditambah';
+            $dataset['role'] = $request->role;
+
+            User::whereId($request->hidden_id)->update($data);
+
+            return response()->json(['result' => $dataset]);
+        }
+        catch(\Exception $e){
+            $dataset['status'] = 'error';
+            $dataset['message'] = 'Data Gagal Ditambah';
+            return response()->json(['result' => $dataset]);
+        }
     }
 
     /**

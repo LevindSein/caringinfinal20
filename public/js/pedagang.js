@@ -331,14 +331,15 @@ $(document).ready(function(){
     
     $('#nama').on('input',function(){
         var nama = $(this).val();
-        var spaces = (nama.split(" ").length - 1);
-        var spaces = 6 + spaces;
-        var username = nama.slice(0, spaces).replace(/\s/g,'');
+        var username = nama.replace(/\s/g,'');
+        var username = username.slice(0, 7);
         var number = Math.floor(1000 + Math.random() * 9000);
         document.getElementById("username").value = username + number;
+
         var anggota = 'BP3C' + Math.floor(100000 + Math.random() * 982718);
         var anggota = anggota.slice(0, 10);
         document.getElementById("anggota").value = anggota;
+
         var pass = shuffle('abcdefghjkmnpqrstuvwxyz123456789');
         var pass = pass.slice(0, 7);
         document.getElementById("password").value = pass;

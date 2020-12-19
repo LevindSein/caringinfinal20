@@ -229,6 +229,75 @@ $(document).ready(function(){
         $('#form_user')[0].reset();
 		$('#myModal').modal('show');
     });
+
+    $('#form_user').on('submit', function(event){
+		event.preventDefault();
+		var action_url = '';
+
+		if($('#action').val() == 'Add')
+		{
+			action_url = "/user";
+        }
+
+        if($('#action').val() == 'Edit')
+		{
+			action_url = "/user/update";
+		}
+
+		$.ajax({
+			url: action_url,
+			method:"POST",
+			data:$(this).serialize(),
+			dataType:"json",
+			success:function(data)
+			{
+				var html = '';
+				if(data.result.status == 'error')
+				{
+                    html = '<div class="alert alert-danger" id="error-alert"> <strong>Maaf ! </strong>' + data.result.message + '</div>';
+				}
+				if(data.result.status == 'success')
+				{
+					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.result.message + '</div>';
+                    $('#form_user')[0].reset();
+                    try{
+                        if(data.result.role == 'admin'){
+                            $('#tab-c-0').trigger('click');
+                        }
+                        if(data.result.role == 'manajer'){
+                            $('#tab-c-1').trigger('click');
+                        }
+                        if(data.result.role == 'keuangan'){
+                            $('#tab-c-2').trigger('click');
+                        }
+                        if(data.result.role == 'kasir'){
+                            $('#tab-c-3').trigger('click');
+                        }
+                    } catch(err){}
+                    finally{
+                        if(data.result.role == 'admin'){
+                            $('#userAdmin').DataTable().ajax.reload();
+                        }
+                        if(data.result.role == 'manajer'){
+                            $('#userManajer').DataTable().ajax.reload();
+                        }
+                        if(data.result.role == 'keuangan'){
+                            $('#userKeuangan').DataTable().ajax.reload();
+                        }
+                        if(data.result.role == 'kasir'){
+                            $('#userKasir').DataTable().ajax.reload();
+                        }
+                    }
+				}
+				$('#form_result').html(html);
+                $("#success-alert,#error-alert,#info-alert,#warning-alert")
+                    .fadeTo(2000, 1000)
+                    .slideUp(2000, function () {
+                        $("#success-alert,#error-alert").slideUp(1000);
+                });
+			}
+		});
+    });
     
     $(document).on('click', '.edit', function(){
 		id = $(this).attr('id');
@@ -273,11 +342,11 @@ $(document).ready(function(){
 
     $('#nama').on('input',function(){
         var nama = $(this).val();
-        var spaces = (nama.split(" ").length - 1);
-        var spaces = 6 + spaces;
-        var username = nama.slice(0, spaces).replace(/\s/g,'');
+        var username = nama.replace(/\s/g,'');
+        var username = username.slice(0, 7);
         var number = Math.floor(1000 + Math.random() * 9000);
         document.getElementById("username").value = username + number;
+
         var pass = shuffle('abcdefghjkmnpqrstuvwxyz123456789');
         var pass = pass.slice(0, 7);
         document.getElementById("password").value = pass;
