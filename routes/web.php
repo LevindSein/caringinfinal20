@@ -2,12 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedagangController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 
 use App\Models\User;
+use App\Models\LoginLog;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,13 +41,54 @@ Route::get('logout',function(){
 });
 
 Route::middleware('ceklogin:dashboard')->group(function () {
-    Route::get('dashboard',[DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard',[DashboardController::class, 'index']);
 });
 
 Route::middleware('ceklogin:pedagang')->group(function (){
-    Route::resource('pedagang', PedagangController::class);    
     Route::post('pedagang/update', [PedagangController::class, 'update']);
     Route::get('pedagang/destroy/{id}', [PedagangController::class, 'destroy']);
+    Route::resource('pedagang', PedagangController::class);
+});
+
+Route::middleware('ceklogin:user')->group(function(){
+    Route::post('user/update', [UserController::class, 'update']);
+    Route::get('user/destroy/{id}', [UserController::class, 'destroy']);
+    Route::post('user/reset/{id}', [UserController::class, 'reset']);
+    Route::get('user/{id}/otoritas', [UserController::class, 'etoritas']);
+    Route::post('user/otoritas', [UserController::class, 'otoritas']);
+    Route::get('user/manajer', [UserController::class, 'manajer']);
+    Route::get('user/keuangan', [UserController::class, 'keuangan']);
+    Route::get('user/kasir', [UserController::class, 'kasir']);
+    Route::get('user/nasabah', [UserController::class, 'nasabah']);
+    Route::resource('user', UserController::class);
+});
+
+Route::middleware('ceklogin:log')->group(function(){
+    Route::get('log',function(Request $request){
+        if($request->ajax())
+        {
+            $data = LoginLog::orderBy('created_at','desc')->get();
+            return DataTables::of($data)
+                    ->addIndexColumn()
+                    ->editColumn('ktp', function ($ktp) {
+                        if ($ktp->ktp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                        else return $ktp->ktp;
+                    })
+                    ->editColumn('hp', function ($hp) {
+                        if ($hp->hp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                        else return $hp->hp;
+                    })
+                    ->editColumn('created_at', function ($user) {
+                        return [
+                           'display' => $user->created_at->format('d-m-Y H:i:s'),
+                           'timestamp' => $user->created_at->timestamp
+                        ];
+                     })
+                    ->rawColumns(['ktp','hp'])
+                    ->make(true);
+        }
+        return view('log.index');
+    })->middleware('log');
 });
 
 Route::get('cari/blok',[SearchController::class, 'cariBlok']);

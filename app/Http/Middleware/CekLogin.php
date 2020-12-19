@@ -29,9 +29,6 @@ class CekLogin
                 Session::put('userId',$user->id);
                 Session::put('username',$user->nama);
                 Session::put('role',$user->role);
-                Session::put('tarif','listrik');
-                Session::put('meteran','listrik');
-                Session::put('user','admin');
                 Session::put('login',$user->username.'-'.$user->role);
 
                 if(LoginLog::count() > 7000){
@@ -77,6 +74,42 @@ class CekLogin
         }
 
         if($page == 'pedagang'){
+            $explode = explode('-',Session::get('login'));
+            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+            $roles = array('master','admin');
+            if($validator != NULL){
+                if(in_array($explode[1],$roles)){
+                    return $next($request);
+                }
+                else{
+                    abort(403);
+                }
+            }
+            else{
+                Session::flush();
+                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+            }
+        }
+
+        if($page == 'user'){
+            $explode = explode('-',Session::get('login'));
+            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+            $roles = array('master');
+            if($validator != NULL){
+                if(in_array($explode[1],$roles)){
+                    return $next($request);
+                }
+                else{
+                    abort(403);
+                }
+            }
+            else{
+                Session::flush();
+                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+            }
+        }
+
+        if($page == 'log'){
             $explode = explode('-',Session::get('login'));
             $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
             $roles = array('master','admin');

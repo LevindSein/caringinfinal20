@@ -12,42 +12,42 @@ use App\Models\TempatUsaha;
 
 class PedagangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function __construct()
     {
         $this->middleware('pedagang');
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         if($request->ajax())
         {
             $data = Pedagang::where('role','nasabah')->orderBy('nama','asc')->get();
             return DataTables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($data){
-                        $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit fa-sm" style="color:#4e73df;"></i></a>';
-                        $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
-                        return $button;
-                    })
-                    ->editColumn('ktp', function ($ktp) {
-                        if ($ktp->ktp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                        else return $ktp->ktp;
-                    })
-                    ->editColumn('email', function ($email) {
-                        if ($email->email == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                        else return $email->email;
-                    })
-                    ->editColumn('hp', function ($hp) {
-                        if ($hp->hp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                        else return $hp->hp;
-                    })
-                    ->rawColumns(['action','ktp','email','hp'])
-                    ->make(true);
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit fa-sm" style="color:#4e73df;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                    return $button;
+                })
+                ->editColumn('ktp', function ($ktp) {
+                    if ($ktp->ktp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else return $ktp->ktp;
+                })
+                ->editColumn('email', function ($email) {
+                    if ($email->email == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else return $email->email;
+                })
+                ->editColumn('hp', function ($hp) {
+                    if ($hp->hp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else return $hp->hp;
+                })
+                ->rawColumns(['action','ktp','email','hp'])
+                ->make(true);
         }
         return view('pedagang.index');
     }

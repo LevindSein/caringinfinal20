@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'ceklogin' => \App\Http\Middleware\CekLogin::class,
         'dashboard' => \App\Http\Middleware\Dashboard::class,
         'pedagang' => \App\Http\Middleware\Pedagang::class,
+        'user' => \App\Http\Middleware\User::class,
+        'log' => \App\Http\Middleware\Log::class,
     ];
 }
