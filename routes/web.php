@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedagangController;
+use App\Http\Controllers\HariLiburController;
 use App\Http\Controllers\BlokController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
@@ -49,6 +50,14 @@ Route::middleware('ceklogin:pedagang')->group(function (){
     Route::post('pedagang/update', [PedagangController::class, 'update']);
     Route::get('pedagang/destroy/{id}', [PedagangController::class, 'destroy']);
     Route::resource('pedagang', PedagangController::class);
+});
+
+Route::middleware('ceklogin:harilibur')->group(function(){
+    Route::get('utilities/harilibur', [HariLiburController::class, 'index']);
+    Route::post('utilities/harilibur/store', [HariLiburController::class, 'store']);
+    Route::get('utilities/harilibur/edit/{id}', [HariLiburController::class, 'edit']);
+    Route::post('utilities/harilibur/update', [HariLiburController::class, 'update']);
+    Route::get('utilities/harilibur/destroy/{id}', [HariLiburController::class, 'destroy']);
 });
 
 Route::middleware('ceklogin:blok')->group(function(){
