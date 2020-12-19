@@ -303,7 +303,7 @@ class UserController extends Controller
         if($error->fails())
         {
             $dataset['status'] = 'error';
-            $dataset['message'] = 'Data Gagal Ditambah';
+            $dataset['message'] = 'Data Gagal Diupdate';
             return response()->json(['result' => $dataset]);
         }
 
@@ -335,7 +335,7 @@ class UserController extends Controller
 
         try{
             $dataset['status'] = 'success';
-            $dataset['message'] = 'Data Berhasil Ditambah';
+            $dataset['message'] = 'Data Berhasil Diupdate';
             $dataset['role'] = $request->role;
 
             User::whereId($request->hidden_id)->update($data);
@@ -344,7 +344,7 @@ class UserController extends Controller
         }
         catch(\Exception $e){
             $dataset['status'] = 'error';
-            $dataset['message'] = 'Data Gagal Ditambah';
+            $dataset['message'] = 'Data Gagal Diupdate';
             return response()->json(['result' => $dataset]);
         }
     }
