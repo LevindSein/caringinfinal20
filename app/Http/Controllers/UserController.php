@@ -30,8 +30,8 @@ class UserController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
                     $button = '<a type="button" title="Otoritas" name="otoritas" id="'.$data->id.'" class="otoritas"><i class="fas fa-hand-point-up" style="color:#36b9cc;"></i></a>';
-                    $button .= '&nbsp;&nbsp;<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key fa-sm" style="color:#fd7e14;"></i></a>';
-                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit fa-sm" style="color:#4e73df;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key" style="color:#fd7e14;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
                 })
@@ -63,8 +63,8 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key fa-sm" style="color:#fd7e14;"></i></a>';
-                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit fa-sm" style="color:#4e73df;"></i></a>';
+                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key" style="color:#fd7e14;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
                 })
@@ -91,8 +91,8 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key fa-sm" style="color:#fd7e14;"></i></a>';
-                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit fa-sm" style="color:#4e73df;"></i></a>';
+                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key" style="color:#fd7e14;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
                 })
@@ -119,8 +119,8 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key fa-sm" style="color:#fd7e14;"></i></a>';
-                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit fa-sm" style="color:#4e73df;"></i></a>';
+                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key" style="color:#fd7e14;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
                 })
@@ -147,7 +147,7 @@ class UserController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
-                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key fa-sm" style="color:#fd7e14;"></i></a>';
+                    $button = '<a type="button" title="Reset" name="reset" id="'.$data->id.'" class="reset"><i class="fas fa-key" style="color:#fd7e14;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
                 })

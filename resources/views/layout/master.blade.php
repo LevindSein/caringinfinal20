@@ -164,7 +164,7 @@
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item {{ (request()->is('utilities/tarif*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/tarif')}}">Tarif</a>
-                            <a class="collapse-item {{ (request()->is('utilities/meteran*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/meteran')}}">Alat Meter</a>
+                            <a class="collapse-item {{ (request()->is('utilities/alatmeter*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/alatmeter')}}">Alat Meter</a>
                             <a class="collapse-item {{ (request()->is('utilities/harilibur*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/harilibur')}}">Hari Libur</a>
                             <a class="collapse-item {{ (request()->is('utilities/blok*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/blok')}}">Blok</a>
                         </div>

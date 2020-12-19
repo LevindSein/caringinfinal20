@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedagangController;
+use App\Http\Controllers\AlatController;
 use App\Http\Controllers\HariLiburController;
 use App\Http\Controllers\BlokController;
 use App\Http\Controllers\UserController;
@@ -50,6 +51,15 @@ Route::middleware('ceklogin:pedagang')->group(function (){
     Route::post('pedagang/update', [PedagangController::class, 'update']);
     Route::get('pedagang/destroy/{id}', [PedagangController::class, 'destroy']);
     Route::resource('pedagang', PedagangController::class);
+});
+
+Route::middleware('ceklogin:alatmeter')->group(function(){
+    Route::get('utilities/alatmeter', [AlatController::class, 'index']);
+    Route::get('utilities/alatmeter/air', [AlatController::class, 'air']);
+    Route::post('utilities/alatmeter/store', [AlatController::class, 'store']);
+    Route::get('utilities/alatmeter/edit/{fasilitas}/{id}', [AlatController::class, 'edit']);
+    Route::post('utilities/alatmeter/update', [AlatController::class, 'update']);
+    Route::get('utilities/alatmeter/destroy/{fasilitas}/{id}', [AlatController::class, 'destroy']);
 });
 
 Route::middleware('ceklogin:harilibur')->group(function(){
