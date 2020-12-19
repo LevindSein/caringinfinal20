@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'ceklogin' => \App\Http\Middleware\CekLogin::class,
         'dashboard' => \App\Http\Middleware\Dashboard::class,
         'pedagang' => \App\Http\Middleware\Pedagang::class,
+        'tarif' => \App\Http\Middleware\Tarif::class,
         'alatmeter' => \App\Http\Middleware\AlatMeter::class,
         'harilibur' => \App\Http\Middleware\HariLibur::class,
         'blok' => \App\Http\Middleware\Blok::class,

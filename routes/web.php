@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedagangController;
+use App\Http\Controllers\TarifController;
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\HariLiburController;
 use App\Http\Controllers\BlokController;
@@ -51,6 +52,18 @@ Route::middleware('ceklogin:pedagang')->group(function (){
     Route::post('pedagang/update', [PedagangController::class, 'update']);
     Route::get('pedagang/destroy/{id}', [PedagangController::class, 'destroy']);
     Route::resource('pedagang', PedagangController::class);
+});
+
+Route::middleware('ceklogin:tarif')->group(function(){
+    Route::get('utilities/tarif', [TarifController::class, 'index']);
+    Route::get('utilities/tarif/keamanan', [TarifController::class, 'keamananipk']);
+    Route::get('utilities/tarif/kebersihan', [TarifController::class, 'kebersihan']);
+    Route::get('utilities/tarif/airkotor', [TarifController::class, 'airkotor']);
+    Route::get('utilities/tarif/lain', [TarifController::class, 'lain']);
+    Route::post('utilities/tarif/store', [TarifController::class, 'store']);
+    Route::get('utilities/tarif/edit/{fasilitas}/{id}', [TarifController::class, 'edit']);
+    Route::post('utilities/tarif/update', [TarifController::class, 'update']);
+    Route::get('utilities/tarif/destroy/{fasilitas}/{id}', [TarifController::class, 'destroy']);
 });
 
 Route::middleware('ceklogin:alatmeter')->group(function(){
