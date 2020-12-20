@@ -56,7 +56,7 @@ Route::middleware('ceklogin:pedagang')->group(function (){
 
 Route::middleware('ceklogin:tarif')->group(function(){
     Route::get('utilities/tarif', [TarifController::class, 'index']);
-    Route::get('utilities/tarif/keamanan', [TarifController::class, 'keamananipk']);
+    Route::get('utilities/tarif/keamananipk', [TarifController::class, 'keamananipk']);
     Route::get('utilities/tarif/kebersihan', [TarifController::class, 'kebersihan']);
     Route::get('utilities/tarif/airkotor', [TarifController::class, 'airkotor']);
     Route::get('utilities/tarif/lain', [TarifController::class, 'lain']);

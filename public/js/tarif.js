@@ -57,6 +57,389 @@ $(document).ready(function(){
         });
     });
 
+    $("#tab-c-2").click(function(){
+        if (!$.fn.dataTable.isDataTable('#tabelKeamananIpk')) {
+            $('#tabelKeamananIpk').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/utilities/tarif/keamananipk',
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'tarif', name: 'tarif', class : 'text-center' },
+                    { data: 'action', name: 'action', class : 'text-center' },
+                ],
+                stateSave: true,
+                scrollX: true,
+                deferRender: true,
+                pageLength: 8,
+                dom: "r<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                buttons: [
+                    {
+                        text: '<i class="fas fa-file-excel fa-lg"></i>',
+                        extend: 'excel',
+                        className: 'btn btn-success bg-gradient-success',
+                        title: 'Data Tarif Keamanan & IPK',
+                        exportOptions: {
+                            columns: [ 0, 1]
+                        },
+                        titleAttr: 'Download Excel'
+                    }
+                ],
+                fixedColumns:   {
+                    "leftColumns": 1,
+                    "rightColumns": 1,
+                },
+                aoColumnDefs: [
+                    { "bSortable": false, "aTargets": [2] }, 
+                    { "bSearchable": false, "aTargets": [2] }
+                ]
+            });
+        }
+    });
+
+    $("#tab-c-3").click(function(){
+        if (!$.fn.dataTable.isDataTable('#tabelKebersihan')) {
+            $('#tabelKebersihan').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/utilities/tarif/kebersihan',
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'tarif', name: 'tarif', class : 'text-center' },
+                    { data: 'action', name: 'action', class : 'text-center' },
+                ],
+                stateSave: true,
+                scrollX: true,
+                deferRender: true,
+                pageLength: 8,
+                dom: "r<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                buttons: [
+                    {
+                        text: '<i class="fas fa-file-excel fa-lg"></i>',
+                        extend: 'excel',
+                        className: 'btn btn-success bg-gradient-success',
+                        title: 'Data Tarif Kebersihan',
+                        exportOptions: {
+                            columns: [ 0, 1]
+                        },
+                        titleAttr: 'Download Excel'
+                    }
+                ],
+                fixedColumns:   {
+                    "leftColumns": 1,
+                    "rightColumns": 1,
+                },
+                aoColumnDefs: [
+                    { "bSortable": false, "aTargets": [2] }, 
+                    { "bSearchable": false, "aTargets": [2] }
+                ]
+            });
+        }
+    });
+
+    $("#tab-c-4").click(function(){
+        if (!$.fn.dataTable.isDataTable('#tabelAirKotor')) {
+            $('#tabelAirKotor').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/utilities/tarif/airkotor',
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'tarif', name: 'tarif', class : 'text-center' },
+                    { data: 'action', name: 'action', class : 'text-center' },
+                ],
+                stateSave: true,
+                scrollX: true,
+                deferRender: true,
+                pageLength: 8,
+                dom: "r<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                buttons: [
+                    {
+                        text: '<i class="fas fa-file-excel fa-lg"></i>',
+                        extend: 'excel',
+                        className: 'btn btn-success bg-gradient-success',
+                        title: 'Data Tarif Air Kotor',
+                        exportOptions: {
+                            columns: [ 0, 1]
+                        },
+                        titleAttr: 'Download Excel'
+                    }
+                ],
+                fixedColumns:   {
+                    "leftColumns": 1,
+                    "rightColumns": 1,
+                },
+                aoColumnDefs: [
+                    { "bSortable": false, "aTargets": [2] }, 
+                    { "bSearchable": false, "aTargets": [2] }
+                ]
+            });
+        }
+    });
+
+    $("#tab-c-6").click(function(){
+        if (!$.fn.dataTable.isDataTable('#tabelLain')) {
+            $('#tabelLain').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/utilities/tarif/lain',
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'tarif', name: 'tarif', class : 'text-center' },
+                    { data: 'action', name: 'action', class : 'text-center' },
+                ],
+                stateSave: true,
+                scrollX: true,
+                deferRender: true,
+                pageLength: 8,
+                dom: "r<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                buttons: [
+                    {
+                        text: '<i class="fas fa-file-excel fa-lg"></i>',
+                        extend: 'excel',
+                        className: 'btn btn-success bg-gradient-success',
+                        title: 'Data Tarif Lain - Lain',
+                        exportOptions: {
+                            columns: [ 0, 1]
+                        },
+                        titleAttr: 'Download Excel'
+                    }
+                ],
+                fixedColumns:   {
+                    "leftColumns": 1,
+                    "rightColumns": 1,
+                },
+                aoColumnDefs: [
+                    { "bSortable": false, "aTargets": [2] }, 
+                    { "bSearchable": false, "aTargets": [2] }
+                ]
+            });
+        }
+    });
+
+    $('#add_tarif').click(function(){
+		$('.modal-title').text('Tambah Tarif');
+		$('#action_btn').val('Tambah');
+		$('#action').val('Add');
+		$('#form_result').html('');
+        $('#form_tarif')[0].reset();
+        $('#myModal').modal('show');
+        
+        $('input[id="myCheck1"]').attr('disabled',false);
+        $('input[id="myCheck2"]').attr('disabled',false);
+        $('input[id="myCheck3"]').attr('disabled',false);
+        $('input[id="myCheck5"]').attr('disabled',false); 
+
+        $("#checkKeamananIpk").prop("checked", false);
+        $("#displayKeamananIpk").hide();
+        $("#checkKebersihan").prop("checked", false);
+        $("#displayKebersihan").hide();
+        $("#checkAirKotor").prop("checked", false);
+        $("#displayAirKotor").hide();
+        $("#checkLain").prop("checked", false);
+        $("#displayLain").hide();
+    });
+
+    $(document).on('click', '.edit', function(){
+        id = $(this).attr('id');
+        fas = $(this).attr('fas');
+		$('#form_result').html('');
+		$.ajax({
+			url :"/utilities/tarif/edit/" + fas + "/" + id,
+			dataType:"json",
+			success:function(data)
+			{
+                if(fas == 'keamananipk'){
+                    $('input[id="myCheck1"]').attr('disabled',false).prop("checked", true);
+                    $('input[id="myCheck2"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck3"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck5"]').attr('disabled',true).prop("checked", false);  
+                    
+                    $("#displayKeamananIpk").show();
+                    $("#displayKebersihan").hide();
+                    $("#displayAirKotor").hide();
+                    $("#displayLain").hide();
+
+                    $('#keamananIpk').val(data.result);
+                }
+
+                if(fas == 'kebersihan'){
+                    $('input[id="myCheck1"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck2"]').attr('disabled',false).prop("checked", true);
+                    $('input[id="myCheck3"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck5"]').attr('disabled',true).prop("checked", false);  
+                    
+                    $("#displayKeamananIpk").hide();
+                    $("#displayKebersihan").show();
+                    $("#displayAirKotor").hide();
+                    $("#displayLain").hide();
+                    
+                    $('#kebersihan').val(data.result);
+                }
+
+                if(fas == 'airkotor'){
+                    $('input[id="myCheck1"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck2"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck3"]').attr('disabled',false).prop("checked", true);
+                    $('input[id="myCheck5"]').attr('disabled',true).prop("checked", false);  
+                    
+                    $("#displayKeamananIpk").hide();
+                    $("#displayKebersihan").hide();
+                    $("#displayAirKotor").show();
+                    $("#displayLain").hide();
+
+                    $('#airkotor').val(data.result);
+                }
+
+                if(fas == 'lain'){
+                    $('input[id="myCheck1"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck2"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck3"]').attr('disabled',true).prop("checked", false);
+                    $('input[id="myCheck5"]').attr('disabled',false).prop("checked", true);  
+                    
+                    $("#displayKeamananIpk").hide();
+                    $("#displayKebersihan").hide();
+                    $("#displayAirKotor").hide();
+                    $("#displayLain").show();
+                    
+                    $('#lain').val(data.result);
+                }
+                
+				$('#hidden_id').val(id);
+				$('.modal-title').text('Edit Tarif');
+				$('#action_btn').val('Update');
+				$('#action').val('Edit');
+                $('#myModal').modal('show');
+			}
+		})
+    });
+
+    $('#form_tarif').on('submit', function(event){
+		event.preventDefault();
+		var action_url = '';
+
+		if($('#action').val() == 'Add')
+		{
+			action_url = "/utilities/tarif/store";
+        }
+
+        if($('#action').val() == 'Edit')
+		{
+			action_url = "/utilities/tarif/update";
+		}
+
+		$.ajax({
+			url: action_url,
+			method:"POST",
+			data:$(this).serialize(),
+			dataType:"json",
+			success:function(data)
+			{
+				var html = '';
+				if(data.result.status == 'success')
+				{
+					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.result.message + '</div>';
+                    $('#form_tarif')[0].reset();
+                    $("#checkKeamananIpk").prop("checked", false);
+                    $("#displayKeamananIpk").hide();
+                    $("#checkKebersihan").prop("checked", false);
+                    $("#displayKebersihan").hide();
+                    $("#checkAirKotor").prop("checked", false);
+                    $("#displayAirKotor").hide();
+                    $("#checkLain").prop("checked", false);
+                    $("#displayLain").hide();
+                    try{
+                        if(data.result.role == 'keamananipk'){
+                            $('#tab-c-2').trigger('click');
+                        }
+                        if(data.result.role == 'kebersihan'){
+                            $('#tab-c-3').trigger('click');
+                        }
+                        if(data.result.role == 'airkotor'){
+                            $('#tab-c-4').trigger('click');
+                        }
+                        if(data.result.role == 'lain'){
+                            $('#tab-c-6').trigger('click');
+                        }
+                    } catch(err){}
+                    finally{
+                        if(data.result.role == 'keamananipk'){
+                            $('#tabelKeamananIpk').DataTable().ajax.reload();
+                        }
+                        if(data.result.role == 'kebersihan'){
+                            $('#tabelKebersihan').DataTable().ajax.reload();
+                        }
+                        if(data.result.role == 'airkotor'){
+                            $('#tabelAirKotor').DataTable().ajax.reload();
+                        }
+                        if(data.result.role == 'lain'){
+                            $('#tabelLain').DataTable().ajax.reload();
+                        }
+                    }
+                }
+				if(data.result.status == 'error')
+				{
+                    html = '<div class="alert alert-danger" id="error-alert"> <strong>Maaf ! </strong>' + data.result.message + '</div>';
+				}
+				$('#form_result').html(html);
+                $('input[id="myCheck1"]').attr('disabled',false);
+                $('input[id="myCheck2"]').attr('disabled',false);
+                $('input[id="myCheck3"]').attr('disabled',false);
+                $('input[id="myCheck5"]').attr('disabled',false);
+                $("#success-alert,#error-alert,#info-alert,#warning-alert")
+                    .fadeTo(2000, 1000)
+                    .slideUp(2000, function () {
+                        $("#success-alert,#error-alert").slideUp(1000);
+                });
+			}
+		});
+    });
+
+    var user_id;
+    var fas;
+    $(document).on('click', '.delete', function(){
+		user_id = $(this).attr('id');
+		fas = $(this).attr('fas');
+		$('#confirmModal').modal('show');
+	});
+
+	$('#ok_button').click(function(){
+		$.ajax({
+			url:"/utilities/tarif/destroy/"+ fas + "/" + user_id,
+			beforeSend:function(){
+				$('#ok_button').text('Menghapus...');
+			},
+			success:function(data)
+			{
+				setTimeout(function(){
+                    $('#confirmModal').modal('hide');
+                    if(data.result.role == 'keamananipk'){
+                        $('#tabelKeamananIpk').DataTable().ajax.reload();
+                    }
+                    if(data.result.role == 'kebersihan'){
+                        $('#tabelKebersihan').DataTable().ajax.reload();
+                    }
+                    if(data.result.role == 'airkotor'){
+                        $('#tabelAirKotor').DataTable().ajax.reload();
+                    }
+                    if(data.result.role == 'lain'){
+                        $('#tabelLain').DataTable().ajax.reload();
+                    }
+				}, 4000);
+                html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.result.status + '</div>';
+                $('#confirm_result').html(html);     
+                $("#success-alert,#error-alert,#info-alert,#warning-alert")
+                    .fadeTo(2000, 1000)
+                    .slideUp(2000, function () {
+                        $("#success-alert,#error-alert").slideUp(1000);
+                });
+            },
+            complete:function(){
+                $('#ok_button').text('Hapus');
+            }
+        })
+    });
+
     function evaluate() {
         var item = $(this);
         var relatedItem = $("#" + item.attr("data-related-item")).parent();

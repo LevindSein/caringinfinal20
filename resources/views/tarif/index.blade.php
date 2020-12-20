@@ -82,6 +82,25 @@
 
 @section('modal')
 <!-- Tambah Content pada Body modal -->
+<div id="confirmModal" class="modal fade" role="dialog" tabIndex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Apakah yakin hapus data tarif?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <span id="confirm_result"></span>
+            <div class="modal-body-short">Pilih "Hapus" di bawah ini jika anda yakin untuk menghapus data tarif.</div>
+            <div class="modal-footer">
+            	<button type="button" name="ok_button" id="ok_button" class="btn btn-danger">Hapus</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div
     class="modal fade"
     id="myModal"
@@ -114,7 +133,7 @@
                                     Keamanan IPK
                                 </label>
                             </div>
-                            <div class="form-group" style="display:none">
+                            <div class="form-group" style="display:none" id="displayKeamananIpk">
                                 <div class="input-group" id="myDiv1">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
@@ -141,7 +160,7 @@
                                     Kebersihan
                                 </label>
                             </div>
-                            <div class="form-group" style="display:none">
+                            <div class="form-group" style="display:none" id="displayKebersihan">
                                 <div class="input-group" id="myDiv2">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
@@ -168,7 +187,7 @@
                                     Air Kotor
                                 </label>
                             </div>
-                            <div class="form-group" style="display:none">
+                            <div class="form-group" style="display:none" id="displayAirKotor">
                                 <div class="input-group" id="myDiv3">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
@@ -195,7 +214,7 @@
                                     Lain - Lain
                                 </label>
                             </div>
-                            <div class="form-group" style="display:none">
+                            <div class="form-group" style="display:none" id="displayLain">
                                 <div class="input-group" id="myDiv5">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
@@ -214,6 +233,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <input type="hidden" id="hidden_tarif" name="fasilitas" value="tarif" />
                     <input type="hidden" name="action" id="action" value="Add" />
                     <input type="hidden" name="hidden_id" id="hidden_id" />
                     <input type="submit" class="btn btn-primary btn-sm" name="action_btn" id="action_btn" value="Tambah" />

@@ -55,148 +55,154 @@ class CekLogin
             }
         }
 
-        if($page == 'dashboard'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master','manajer');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
+        if(Session::get('login') != NULL){
+            if($page == 'dashboard'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','manajer');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
                 }
                 else{
-                    abort(403);
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
                 }
             }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+
+            if($page == 'pedagang'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','admin');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'tarif'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','admin');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'alatmeter'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','admin');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'harilibur'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','admin');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'blok'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','admin');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'user'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'log'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
             }
         }
-
-        if($page == 'pedagang'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master','admin');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
-                }
-                else{
-                    abort(403);
-                }
-            }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
-            }
-        }
-
-        if($page == 'tarif'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master','admin');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
-                }
-                else{
-                    abort(403);
-                }
-            }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
-            }
-        }
-
-        if($page == 'alatmeter'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master','admin');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
-                }
-                else{
-                    abort(403);
-                }
-            }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
-            }
-        }
-
-        if($page == 'harilibur'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master','admin');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
-                }
-                else{
-                    abort(403);
-                }
-            }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
-            }
-        }
-
-        if($page == 'blok'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master','admin');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
-                }
-                else{
-                    abort(403);
-                }
-            }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
-            }
-        }
-
-        if($page == 'user'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
-                }
-                else{
-                    abort(403);
-                }
-            }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
-            }
-        }
-
-        if($page == 'log'){
-            $explode = explode('-',Session::get('login'));
-            $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-            $roles = array('master');
-            if($validator != NULL){
-                if(in_array($explode[1],$roles)){
-                    return $next($request);
-                }
-                else{
-                    abort(403);
-                }
-            }
-            else{
-                Session::flush();
-                return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
-            }
+        else{
+            Session::flush();
+            return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
         }
     }
 }

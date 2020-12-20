@@ -28,80 +28,136 @@ class TarifController extends Controller
         ]);
     }
 
+    public function keamananipk(Request $request){
+        if($request->ajax()){
+            $data = TarifKeamananIpk::orderBy('tarif','asc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" fas="keamananipk" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" fas="keamananipk" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                    return $button;
+                })
+                ->editColumn('tarif', function ($data) {
+                    return number_format($data->tarif);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    public function kebersihan(Request $request){
+        if($request->ajax()){
+            $data = TarifKebersihan::orderBy('tarif','asc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" fas="kebersihan" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" fas="kebersihan" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                    return $button;
+                })
+                ->editColumn('tarif', function ($data) {
+                    return number_format($data->tarif);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    public function airkotor(Request $request){
+        if($request->ajax()){
+            $data = TarifAirKotor::orderBy('tarif','asc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" fas="airkotor" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" fas="airkotor" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                    return $button;
+                })
+                ->editColumn('tarif', function ($data) {
+                    return number_format($data->tarif);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
+    public function lain(Request $request){
+        if($request->ajax()){
+            $data = TarifLain::orderBy('tarif','asc')->get();
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($data){
+                    $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" fas="lain" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" fas="lain" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                    return $button;
+                })
+                ->editColumn('tarif', function ($data) {
+                    return number_format($data->tarif);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+    }
+
     public function store(Request $request){
-        if($request->radioMeter == 'listrik'){
-            $rules = array(
-                'standListrik' => 'required',
-                'dayaListrik'  => 'required'
-            );
-            $role = 'listrik';
-        }
-        else{
-            $rules = array(
-                'standAir' => 'required'
-            );
-            $role = 'air';
-        }
-
-        $error = Validator::make($request->all(), $rules);
-
-        if($error->fails())
-        {
-            return response()->json(['errors' => 'Data Gagal Ditambah.']);
-        }
-
-        if($request->nomor == null){
-            $nomor = NULL;
-        }
-        else{
-            $nomor = $request->nomor;
-            $nomor = strtoupper($nomor);
-        }
-        
         $dataset = array();
-        $kode = str_shuffle('0123456789');
-        $kode = substr($kode,0,5);
-
+        $role = '';
         try{
-            if($request->radioMeter == 'listrik'){
-                $akhir = explode(',',$request->standListrik);
-                $akhir = implode('',$akhir);
-                $daya = explode(',',$request->dayaListrik);
-                $daya = implode('',$daya);
-                $data = [
-                    'kode'      => 'ML'.$kode,
-                    'nomor'     => $nomor,
-                    'akhir'     => $akhir,
-                    'daya'      => $daya,
-                    'stt_sedia' => 0,
-                    'stt_bayar' => 0
-                ];
+            $keamananipk = $request->checkKeamananIpk;
+            $kebersihan = $request->checkKebersihan;
+            $airkotor = $request->checkAirKotor;
+            $lain = $request->checkLain;
 
-                AlatListrik::create($data);
+            if(empty($keamananipk) == FALSE){
+                $tarif = explode(',',$request->keamananIpk);
+                $tarif = implode('',$tarif);
+                $data = [
+                    'tarif' => $tarif,
+                ];
+                TarifKeamananIpk::create($data);
+                $role = 'keamananipk';
             }
 
-            if($request->radioMeter == 'air'){
-                $akhir = explode(',',$request->standAir);
-                $akhir = implode('',$akhir);
+            if(empty($kebersihan) == FALSE){
+                $tarif = explode(',',$request->kebersihan);
+                $tarif = implode('',$tarif);
                 $data = [
-                    'kode'      => 'MA'.$kode,
-                    'nomor'     => $nomor,
-                    'akhir'     => $akhir,
-                    'stt_sedia' => 0,
-                    'stt_bayar' => 0
+                    'tarif' => $tarif,
                 ];
-
-                AlatAir::create($data);
+                TarifKebersihan::create($data);
+                $role = 'kebersihan';
             }
+
+            if(empty($airkotor) == FALSE){
+                $tarif = explode(',',$request->airkotor);
+                $tarif = implode('',$tarif);
+                $data = [
+                    'tarif' => $tarif,
+                ];
+                TarifAirKotor::create($data);
+                $role = 'airkotor';
+            }
+
+            if(empty($lain) == FALSE){
+                $tarif = explode(',',$request->lain);
+                $tarif = implode('',$tarif);
+                $data = [
+                    'tarif' => $tarif,
+                ];
+                TarifLain::create($data);
+                $role = 'lain';
+            }
+
             $dataset['status'] = 'success';
             $dataset['message'] = 'Data Berhasil Ditambah';
             $dataset['role'] = $role;
-            return response()->json(['result' => $dataset]);  
+
+            return response()->json(['result' => $dataset]);
         }
         catch(\Exception $e){
             $dataset['status'] = 'error';
             $dataset['message'] = 'Data Gagal Ditambah';
-            $dataset['role'] = $role;
             return response()->json(['result' => $dataset]);
         }
     }
@@ -109,14 +165,32 @@ class TarifController extends Controller
     public function edit($fasilitas, $id){
         if(request()->ajax())
         {
-            if($fasilitas == 'listrik'){
-                $data = AlatListrik::findOrFail($id);
-                return response()->json(['result' => $data]);
+            $data = '';
+            if($fasilitas == 'keamananipk'){
+                $data = TarifKeamananIpk::find($id);
+                if($data != NULL){
+                    $data = number_format($data->tarif);
+                }
             }
-            if($fasilitas == 'air'){
-                $data = AlatAir::findOrFail($id);
-                return response()->json(['result' => $data]);
+            if($fasilitas == 'kebersihan'){
+                $data = TarifKebersihan::find($id);
+                if($data != NULL){
+                    $data = number_format($data->tarif);
+                }
             }
+            if($fasilitas == 'airkotor'){
+                $data = TarifAirKotor::find($id);
+                if($data != NULL){
+                    $data = number_format($data->tarif);
+                }
+            }
+            if($fasilitas == 'lain'){
+                $data = TarifLain::find($id);
+                if($data != NULL){
+                    $data = number_format($data->tarif);
+                }
+            }
+            return response()->json(['result' => $data]);
         }
     }
 
@@ -195,20 +269,93 @@ class TarifController extends Controller
             catch(\Exception $e){
                 return response()->json(['errors' => 'Data Gagal Disimpan']);
             }
+
+            if($request->fasilitas == 'tarif'){
+
+            }
+        }
+        if($request->fasilitas == 'tarif'){
+            $dataset = array();
+            $role = '';
+            try{
+                $keamananipk = $request->checkKeamananIpk;
+                $kebersihan = $request->checkKebersihan;
+                $airkotor = $request->checkAirKotor;
+                $lain = $request->checkLain;
+
+                if(empty($keamananipk) == FALSE){
+                    $tarif = explode(',',$request->keamananIpk);
+                    $tarif = implode('',$tarif);
+                    $data = [
+                        'tarif' => $tarif,
+                    ];
+                    TarifKeamananIpk::whereId($request->hidden_id)->update($data);
+                    $role = 'keamananipk';
+                }
+
+                if(empty($kebersihan) == FALSE){
+                    $tarif = explode(',',$request->kebersihan);
+                    $tarif = implode('',$tarif);
+                    $data = [
+                        'tarif' => $tarif,
+                    ];
+                    TarifKebersihan::whereId($request->hidden_id)->update($data);
+                    $role = 'kebersihan';
+                }
+
+                if(empty($airkotor) == FALSE){
+                    $tarif = explode(',',$request->airkotor);
+                    $tarif = implode('',$tarif);
+                    $data = [
+                        'tarif' => $tarif,
+                    ];
+                    TarifAirKotor::whereId($request->hidden_id)->update($data);
+                    $role = 'airkotor';
+                }
+
+                if(empty($lain) == FALSE){
+                    $tarif = explode(',',$request->lain);
+                    $tarif = implode('',$tarif);
+                    $data = [
+                        'tarif' => $tarif,
+                    ];
+                    TarifLain::whereId($request->hidden_id)->update($data);
+                    $role = 'lain';
+                }
+
+                $dataset['status'] = 'success';
+                $dataset['message'] = 'Data Berhasil Ditambah';
+                $dataset['role'] = $role;
+
+                return response()->json(['result' => $dataset]);
+            }
+            catch(\Exception $e){
+                $dataset['status'] = 'error';
+                $dataset['message'] = 'Data Gagal Ditambah';
+                return response()->json(['result' => $dataset]);
+            }
         }
     }
 
     public function destroy($fasilitas, $id){
-        if($fasilitas == 'listrik'){
-            $data = AlatListrik::find($id);
-            $role = 'listrik';
-        }
-        else{
-            $data = AlatAir::find($id);
-            $role = 'air';
-        }
-
         $dataset = array();
+        $role = '';
+        if($fasilitas == 'keamananipk'){
+            $data = TarifKeamananIpk::find($id);
+            $role = 'keamananipk';
+        }
+        if($fasilitas == 'kebersihan'){
+            $data = TarifKebersihan::find($id);
+            $role = 'kebersihan';
+        }
+        if($fasilitas == 'airkotor'){
+            $data = TarifAirKotor::find($id);
+            $role = 'airkotor';
+        }
+        if($fasilitas == 'lain'){
+            $data = TarifLain::find($id);
+            $role = 'lain';
+        }
         try{
             $dataset['status'] = 'Data telah dihapus';
             $dataset['role'] = $role;
