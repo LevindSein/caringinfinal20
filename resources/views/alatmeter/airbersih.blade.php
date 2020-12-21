@@ -7,7 +7,7 @@
         style="font-size:0.75rem;">
         <thead>
             <tr>
-                <th style="max-width:10px;">No.</th>
+                <th style="width:10px;">No.</th>
                 <th>Kode</th>
                 <th>Nomor</th>
                 <th>Stand</th>

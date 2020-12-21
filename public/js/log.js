@@ -6,7 +6,7 @@ $(document).ready(function(){
 			url: "/log",
 		},
 		columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
 			{ data: 'username', name: 'username', class : 'text-center' },
 			{ data: 'nama', name: 'nama', class : 'text-center' },
 			{ data: 'ktp', name: 'ktp', class : 'text-center' },

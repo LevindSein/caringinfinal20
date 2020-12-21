@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Blok;
 use App\Models\User;
 use App\Models\TempatUsaha;
+use App\Models\AlatAir;
+use App\Models\AlatListrik;
 
 class SearchController extends Controller
 {
@@ -37,5 +39,28 @@ class SearchController extends Controller
             $alamat = TempatUsaha::select('id', 'kd_kontrol')->where('kd_kontrol', 'LIKE', '%'.$cariAlamat.'%')->get();
         }
         return response()->json($alamat);
+    }
+
+    public function cariAlatAir(Request $request){
+        $alat = [];
+        if ($request->has('q')) {
+            $cariAlat = $request->q;
+            $alat = AlatAir::where([['kode', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
+            ->orWhere([['nomor', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
+            ->get();
+        }
+        return response()->json($alat);
+    }
+
+    public function cariAlatListrik(Request $request){
+        $alat = [];
+        if ($request->has('q')) {
+            $cariAlat = $request->q;
+            $alat = AlatListrik::where([['kode', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
+            ->orWhere([['nomor', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
+            ->orWhere([['daya', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
+            ->get();
+        }
+        return response()->json($alat);
     }
 }

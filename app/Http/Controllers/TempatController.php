@@ -251,13 +251,10 @@ class TempatController extends Controller
 
             if(empty($request->listrik) == FALSE){
                 $tempat->trf_listrik = 1;
-                $value = $request->meterListrik;
-                $value = explode(',',$value);
-                $id_meteran_listrik = $value[0];
-                $dayaListrik = $value[1];
+                $id_meteran_listrik = $request->meterListrik;
                 $tempat->id_meteran_listrik = $id_meteran_listrik;
-                $tempat->daya = $dayaListrik;
                 $meteran = AlatListrik::find($id_meteran_listrik);
+                $tempat->daya = $meteran->daya;
                 $meteran->stt_sedia = 1;
                 $meteran->stt_bayar = 0;
                 $meteran->save();
@@ -389,11 +386,25 @@ class TempatController extends Controller
                 $data['id_pengguna'] = null;
             }
 
+            if($data->id_meteran_air != NULL && $data->trf_airbersih == 1){
+                $meterAir = AlatAir::find($data->id_meteran_air);
+                if($meterAir != NULL){
+                    $data['meterAir'] = $meterAir->kode." - ".$meterAir->nomor." (".$meterAir->akhir.")";
+                    $data['meterAirId'] = $meterAir->id;
+                }
+                else {
+                    $data['meterAirId'] = null;
+                }
+            }
+
             if($data->id_meteran_listrik != NULL && $data->trf_listrik == 1){
                 $meterListrik = AlatListrik::find($data->id_meteran_listrik);
                 if($meterListrik != NULL){
-                    $data['meterListrik'] = $meterListrik->kode." - ".$meterListrik->nomor." (".$meterListrik->akhir.' - '.$meterListrik->daya.")";
-                    $data['meterListrikId'] = $meterListrik->id.",".$meterListrik->daya;
+                    $data['meterListrik'] = $meterListrik->kode." - ".$meterListrik->nomor." (".$meterListrik->akhir.' - '.$meterListrik->daya." W)";
+                    $data['meterListrikId'] = $meterListrik->id;
+                }
+                else {
+                    $data['meterListrikId'] = null;
                 }
             }
 
@@ -440,9 +451,242 @@ class TempatController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try{
+            $tanggal = date("Y-m-d", time());
+
+            //deklarasi model
+            $tempat = TempatUsaha::find($request->hidden_id);
+
+            //blok
+            $blok = $request->blok;
+            $tempat->blok = $blok;
+            
+            //no_alamat
+            $los = strtoupper($request->los);
+            $tempat->no_alamat = $los;
+            
+            //jml_alamat
+            $los = explode(",",$los);
+            $tempat->jml_alamat = count($los);
+            
+            //kd_kontrol
+            $kode = TempatUsaha::kode($blok,$los);
+            $tempat->kd_kontrol = $kode;
+            
+            //bentuk_usaha
+            $tempat->bentuk_usaha = ucwords($request->usaha);
+            
+            //lok_tempat
+            $lokasi = $request->lokasi;
+            if($lokasi != NULL){
+                $tempat->lok_tempat = $lokasi;
+            }
+            else{
+                $tempat->lok_tempat = NULL;
+            }
+
+            //id_pemilik
+            $id_pemillik = $request->pemilik;
+            $tempat->id_pemilik = $id_pemillik;
+
+            // //id_pengguna
+            $id_pengguna = $request->pengguna;
+            $tempat->id_pengguna = $id_pengguna;
+
+            //Fasilitas
+            // if(empty($request->air) == FALSE){
+            //     $tempat->trf_airbersih = 1;
+            //     $id_meteran_air = $request->meterAir;
+            //     $tempat->id_meteran_air = $id_meteran_air;
+            //     $meteran = AlatAir::find($id_meteran_air);
+            //     $meteran->stt_sedia = 1;
+            //     $meteran->stt_bayar = 0;
+            //     $meteran->save();
+
+            //     $diskon = array();
+            //     if($request->radioAirBersih == 'dis_airbersih'){
+            //         if($request->persenDiskonAir != NULL){
+            //             $diskon['type'] = 'diskon';
+            //             $diskon['value'] = $request->persenDiskonAir;
+            //             $tempat->dis_airbersih = json_encode($diskon);
+            //         }
+            //         else{
+            //             $tempat->dis_airbersih = NULL;
+            //         }
+            //     }
+            //     else{
+            //         $pilihanDiskon = array('byr','beban','pemeliharaan','arkot','charge');
+            //         if($request->hanya != NULL){
+            //             $diskon['type'] = 'hanya';
+            //             $hanya = array();
+            //             $j = 0;
+            //             for($i=0; $i<count($pilihanDiskon); $i++){
+            //                 if(in_array($pilihanDiskon[$i],$request->hanya)){
+            //                     if($pilihanDiskon[$i] == 'charge'){
+            //                         if($request->persenChargeAir != NULL){
+            //                             $persen = $request->persenChargeAir;
+            //                             $dari = $request->chargeAir;
+            //                             $value = $persen.','.$dari;
+            //                             $hanya[$j] = [$pilihanDiskon[$i] => $value];
+            //                         }
+            //                     }
+            //                     else{
+            //                         $hanya[$j] = $pilihanDiskon[$i];
+            //                     }
+            //                     $j++;
+            //                 }
+            //             }
+            //             $diskon['value'] = $hanya;
+            //             $tempat->dis_airbersih = json_encode($diskon);
+            //         }
+            //         else{
+            //             $tempat->dis_airbersih = NULL;
+            //         }
+            //     }
+
+            //     //Tagihan Pasang
+            //     //Download Surat Perintah Bayar
+
+                
+            //     //Tagihan Ganti
+            //     //Ganti Baru atau Ganti Rusak
+            //     //Download Surat Perintah Bayar
+            // }
+            // else{
+            //     if($tempat->trf_airbersih != NULL){
+            //         $meteran = AlatAir::find($tempat->id_meteran_air);
+            //         $meteran->stt_sedia = 0;
+            //         $meteran->stt_bayar = 0;
+            //         $meteran->save();
+            //     }
+            //     $tempat->trf_airbersih = NULL;
+            //     $tempat->id_meteran_air = NULL;
+            //     $tempat->dis_airbersih = NULL;
+            // }
+
+            if(empty($request->listrik) == FALSE){
+                $tempat->trf_listrik = 1;
+                $id_meteran_listrik = $request->meterListrik;
+                $tempat->id_meteran_listrik = $id_meteran_listrik;
+                $meteran = AlatListrik::find($id_meteran_listrik);
+                $tempat->daya = $meteran->daya;
+                $meteran->stt_sedia = 1;
+                $meteran->stt_bayar = 0;
+                $meteran->save();
+
+                if(empty($request->dis_listrik) == FALSE){
+                    if($request->persenDiskonListrik == NULL){
+                        $tempat->dis_listrik = 0;
+                    }
+                    else{
+                        $tempat->dis_listrik = $request->persenDiskonListrik;
+                    }
+                }
+
+                //Tagihan Pasang
+                //Download Surat Perintah Bayar
+                
+
+                //Tagihan Ganti
+                //Ganti Baru atau Ganti Rusak
+                //Download Surat Perintah Bayar
+            }
+            else{
+                if($tempat->trf_listrik != NULL){
+                    $meteran = AlatListrik::find($tempat->id_meteran_listrik);
+                    $meteran->stt_sedia = 0;
+                    $meteran->stt_bayar = 0;
+                    $meteran->save();
+                }
+                $tempat->trf_listrik = NULL;
+                $tempat->daya = NULL;
+                $tempat->id_meteran_listrik = NULL;
+                $tempat->dis_listrik = NULL;
+            }
+
+            if(empty($request->keamananipk) == FALSE){
+                $tarif = TarifKeamananIpk::where('tarif',$request->trfKeamananIpk)->select('id')->first();
+                $tempat->trf_keamananipk = $tarif->id;
+
+                if(empty($request->dis_keamananipk) == FALSE){
+                    if($request->diskonKeamananIpk == NULL){
+                        $tempat->dis_keamananipk = 0;
+                    }
+                    else{
+                        $diskon = explode(',',$request->diskonKeamananIpk);
+                        $diskon = implode('',$diskon);
+                        $tempat->dis_keamananipk = $diskon;
+                    }
+                }
+            }
+            else{
+                $tempat->trf_keamananipk = NULL;
+                $tempat->dis_keamananipk = NULL;
+            }
+
+            if(empty($request->kebersihan) == FALSE){
+                $tarif = TarifKebersihan::where('tarif',$request->trfKebersihan)->select('id')->first();
+                $tempat->trf_kebersihan = $tarif->id;
+
+                if(empty($request->dis_kebersihan) == FALSE){
+                    if($request->diskonKebersihan == NULL){
+                        $tempat->dis_kebersihan = 0;
+                    }
+                    else{
+                        $diskon = explode(',',$request->diskonKebersihan);
+                        $diskon = implode('',$diskon);
+                        $tempat->dis_kebersihan = $diskon;
+                    }
+                }
+            }
+            else{
+                $tempat->trf_kebersihan = NULL;
+                $tempat->dis_kebersihan = NULL;
+            }
+
+            if(empty($request->airkotor) == FALSE){
+                $tempat->trf_airkotor = $request->trfAirKotor;
+            }
+            else{
+                $tempat->trf_airkotor = NULL;
+            }
+
+            if(empty($request->lain) == FALSE){
+                $tempat->trf_lain = $request->trfLain;
+            }
+            else{
+                $tempat->trf_lain = NULL;
+            }
+
+            // stt_cicil / Metode Pembayaran
+            $stt_cicil = $request->cicilan;
+            if($stt_cicil == "0"){
+                $tempat->stt_cicil = 0; //Kontan
+            }
+            else if ($stt_cicil == "1"){
+                $tempat->stt_cicil = 1; //Cicil
+            }
+
+            // stt_tempat
+            $stt_tempat = $request->status;
+            if($stt_tempat == "1"){
+                $tempat->stt_tempat = 1;
+            }
+            else if($stt_tempat == "2"){
+                $tempat->stt_tempat = 2;
+                $tempat->ket_tempat = $request->ket_tempat;
+            }
+
+            //Save Record Tempat Usaha Baru
+            $tempat->save();
+
+            return response()->json(['success' => 'Data Berhasil Diupdate.']);
+        }
+        catch(\Exception $e){
+            return response()->json(['errors' => 'Data Gagal Diupdate.']);
+        }
     }
 
     /**
@@ -454,9 +698,12 @@ class TempatController extends Controller
     public function destroy($id)
     {
         $data = TempatUsaha::findOrFail($id);
+        $listrikId = $data->id_meteran_listrik;
+        $airId = $data->id_meteran_air;
+
         try{
-            if($data->id_meteran_listrik != NULL){
-                $alat = AlatListrik::find($id_meteran_listrik);
+            if($listrikId != NULL){
+                $alat = AlatListrik::find($listrikId);
                 if($alat != NULL){
                     $alat->stt_sedia = 0;
                     $alat->stt_bayar = 0;
@@ -465,7 +712,7 @@ class TempatController extends Controller
             }
             
             if($data->id_meteran_air != NULL){
-                $alat = AlatAir::find($id_meteran_air);
+                $alat = AlatAir::find($airId);
                 if($alat != NULL){
                     $alat->stt_sedia = 0;
                     $alat->stt_bayar = 0;

@@ -29,7 +29,7 @@
                     style="font-size:0.75rem;">
                     <thead class="table-bordered">
                         <tr>
-                            <th>No</th>
+                            <th style="width:10px;">No</th>
                             <th>Tanggal</th>
                             <th>Ket</th>
                             <th>Action</th>

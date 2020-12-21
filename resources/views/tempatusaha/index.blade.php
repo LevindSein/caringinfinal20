@@ -177,12 +177,9 @@
                             </div>
                             <div class="form-group" style="display:none" id="displayAir">
                                 <label for="myDiv1">Meteran Air <span style="color:red;">*</span></label>
-                                <select class="form-control" name="meterAir" id="myDiv1">
-                                    <option selected hidden value="">--- Pilih Alat ---</option>
-                                    @foreach($airAvailable as $air)
-                                    <option value="{{$air->id}}">{{$air->kode}} - {{$air->nomor}} ({{$air->akhir}})</option>
-                                    @endforeach
-                                </select>
+                                <div class="form-group" id="myDiv1">
+                                    <select class="meterAir" name="meterAir" id="meterAir"></select>
+                                </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input
@@ -325,12 +322,9 @@
                             </div>
                             <div class="form-group" style="display:none" id="displayListrik">
                                 <label for="myDiv2">Meteran Listrik <span style="color:red;">*</span></label>
-                                <select class="form-control" name="meterListrik" id="myDiv2">
-                                    <option selected hidden value="">--- Pilih Alat ---</option>
-                                    @foreach($listrikAvailable as $listrik)
-                                    <option value="{{$listrik->id.','.$listrik->daya}}">{{$listrik->kode}} - {{$listrik->nomor}} ({{$listrik->akhir}} - {{$listrik->daya}} W)</option>
-                                    @endforeach
-                                </select>
+                                <div class="form-group" id="myDiv2">
+                                    <select class="meterListrik" name="meterListrik" id="meterListrik"></select>
+                                </div>
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input

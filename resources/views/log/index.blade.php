@@ -21,7 +21,7 @@
                     style="font-size:0.75rem;">
                     <thead>
                         <tr>
-                            <th style="max-width:10px;">No.</th>
+                            <th style="width:10px;">No.</th>
                             <th>Username</th>
                             <th>Nama</th>
                             <th>KTP</th>

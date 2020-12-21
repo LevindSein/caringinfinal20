@@ -119,7 +119,7 @@ Route::middleware('ceklogin:log')->group(function(){
     Route::get('log',function(Request $request){
         if($request->ajax())
         {
-            $data = LoginLog::orderBy('created_at','desc')->get();
+            $data = LoginLog::orderBy('created_at','desc');
             return DataTables::of($data)
                     ->addIndexColumn()
                     ->editColumn('ktp', function ($ktp) {
@@ -146,3 +146,5 @@ Route::middleware('ceklogin:log')->group(function(){
 Route::get('cari/blok',[SearchController::class, 'cariBlok']);
 Route::get('cari/nasabah',[SearchController::class, 'cariNasabah']);
 Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
+Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
+Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);

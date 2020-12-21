@@ -7,7 +7,7 @@
         style="font-size:0.75rem;">
         <thead class="table-bordered">
             <tr>
-                <th style="max-width:40px;">Kategori</th>
+                <th style="width:40px;">Kategori</th>
                 <th>Tarif (Rp.)</th>
                 <th>Action</th>
             </tr>

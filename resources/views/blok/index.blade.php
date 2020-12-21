@@ -29,7 +29,7 @@
                     style="font-size:0.75rem;">
                     <thead class="table-bordered">
                         <tr>
-                            <th style="max-width:10px;">No</th>
+                            <th style="width:10px;">No.</th>
                             <th>Blok</th>
                             <th>Jumlah</th>
                             <th>Action</th>

@@ -6,7 +6,7 @@ $(document).ready(function () {
 			url: "/utilities/harilibur",
 		},
 		columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
 			{ data: 'tanggal', name: 'tanggal', class : 'text-center' },
 			{ data: 'ket', name: 'ket', class : 'text-center' },
 			{ data: 'action', name: 'action', class : 'text-center' },

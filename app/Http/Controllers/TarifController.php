@@ -30,7 +30,7 @@ class TarifController extends Controller
 
     public function keamananipk(Request $request){
         if($request->ajax()){
-            $data = TarifKeamananIpk::orderBy('tarif','asc')->get();
+            $data = TarifKeamananIpk::orderBy('tarif','asc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -48,7 +48,7 @@ class TarifController extends Controller
 
     public function kebersihan(Request $request){
         if($request->ajax()){
-            $data = TarifKebersihan::orderBy('tarif','asc')->get();
+            $data = TarifKebersihan::orderBy('tarif','asc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -66,7 +66,7 @@ class TarifController extends Controller
 
     public function airkotor(Request $request){
         if($request->ajax()){
-            $data = TarifAirKotor::orderBy('tarif','asc')->get();
+            $data = TarifAirKotor::orderBy('tarif','asc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -84,7 +84,7 @@ class TarifController extends Controller
 
     public function lain(Request $request){
         if($request->ajax()){
-            $data = TarifLain::orderBy('tarif','asc')->get();
+            $data = TarifLain::orderBy('tarif','asc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){

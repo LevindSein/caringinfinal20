@@ -64,7 +64,7 @@ $(document).ready(function(){
                 serverSide: true,
                 ajax: '/utilities/tarif/keamananipk',
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
                     { data: 'tarif', name: 'tarif', class : 'text-center' },
                     { data: 'action', name: 'action', class : 'text-center' },
                 ],
@@ -104,7 +104,7 @@ $(document).ready(function(){
                 serverSide: true,
                 ajax: '/utilities/tarif/kebersihan',
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
                     { data: 'tarif', name: 'tarif', class : 'text-center' },
                     { data: 'action', name: 'action', class : 'text-center' },
                 ],
@@ -144,7 +144,7 @@ $(document).ready(function(){
                 serverSide: true,
                 ajax: '/utilities/tarif/airkotor',
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
                     { data: 'tarif', name: 'tarif', class : 'text-center' },
                     { data: 'action', name: 'action', class : 'text-center' },
                 ],
@@ -184,7 +184,7 @@ $(document).ready(function(){
                 serverSide: true,
                 ajax: '/utilities/tarif/lain',
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
                     { data: 'tarif', name: 'tarif', class : 'text-center' },
                     { data: 'action', name: 'action', class : 'text-center' },
                 ],

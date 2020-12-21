@@ -6,7 +6,7 @@ $(document).ready(function () {
 			url: "/utilities/blok",
 		},
 		columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
 			{ data: 'nama', name: 'nama', class : 'text-center' },
 			{ data: 'jumlah', name: 'jumlah', class : 'text-center' },
 			{ data: 'action', name: 'action', class : 'text-center' },

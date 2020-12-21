@@ -168,7 +168,6 @@ $(document).ready(function(){
         $('#displayAirKotor').hide();
         $('#displayLain').hide();
         $('#ketStatus').hide();
-        $("#myDiv2 option:selected" ).text('--- Pilih Alat ---').val('');
         $("#persenDiskonListrik").val();
         $("#myDiv3 option:selected" ).text('--- Pilih Tarif ---').val('');
         $("#diskonKeamananIpk").val();
@@ -176,6 +175,44 @@ $(document).ready(function(){
         $("#diskonKebersihan").val();
         $("#myDiv5 option:selected" ).text('--- Pilih Tarif ---').val('');
         $("#myDiv6 option:selected" ).text('--- Pilih Tarif ---').val('');
+        $('#meterAir').val('').select2({
+            placeholder: '--- Pilih Alat ---',
+            ajax: {
+                url: "/cari/alatair",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (alats) {
+                    return {
+                    results:  $.map(alats, function (alat) {
+                        return {
+                        text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir + ')',
+                        id: alat.id
+                        }
+                    })
+                    };
+                },
+                cache: true
+            }
+        });
+        $('#meterListrik').val('').select2({
+            placeholder: '--- Pilih Alat ---',
+            ajax: {
+                url: "/cari/alatlistrik",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (alats) {
+                    return {
+                    results:  $.map(alats, function (alat) {
+                        return {
+                        text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir +  ' - ' + alat.daya + ' W)',
+                        id: alat.id
+                        }
+                    })
+                    };
+                },
+                cache: true
+            }
+        });
         $('#blok').val('').select2({
             placeholder: '--- Pilih Blok ---',
             ajax: {
@@ -241,7 +278,45 @@ $(document).ready(function(){
     var id='';
     $(document).on('click', '.edit', function(){
 		id = $(this).attr('id');
-		$('#form_result').html('');
+        $('#form_result').html('');
+        $('#meterAir').val('').html('').select2({
+            placeholder: '--- Pilih Alat ---',
+            ajax: {
+                url: "/cari/alatair",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (alats) {
+                    return {
+                    results:  $.map(alats, function (alat) {
+                        return {
+                        text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir + ')',
+                        id: alat.id
+                        }
+                    })
+                    };
+                },
+                cache: true
+            }
+        });
+        $('#meterListrik').val('').html('').select2({
+            placeholder: '--- Pilih Alat ---',
+            ajax: {
+                url: "/cari/alatlistrik",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (alats) {
+                    return {
+                    results:  $.map(alats, function (alat) {
+                        return {
+                        text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir +  ' - ' + alat.daya + ' W)',
+                        id: alat.id
+                        }
+                    })
+                    };
+                },
+                cache: true
+            }
+        });
 		$('#blok').val('').html('').select2({
             placeholder: '--- Pilih Blok ---',
             ajax: {
@@ -312,7 +387,6 @@ $(document).ready(function(){
         $('#displayAirKotor').hide();
         $('#displayLain').hide();
         $('#ketStatus').hide();
-        $("#myDiv2 option:selected" ).val();
         $("#persenDiskonListrik").val();
         $("#myDiv3 option:selected" ).val();
         $("#diskonKeamananIpk").val();
@@ -354,11 +428,21 @@ $(document).ready(function(){
 
                 if(data.result.trf_airbersih != null){    
                     $("#myCheck1").prop("checked", true);
+                    $('#displayAir').show();
+                    if(data.result.meterAirId != null){
+                        var meter = new Option(data.result.meterAir, data.result.meterAirId, false, false);
+                        $('#meterAir').append(meter).trigger('change');
+                    }
                 }
+
                 if(data.result.trf_listrik != null && data.result.trf_listrik == 1){    
                     $("#myCheck2").prop("checked", true);
                     $('#displayListrik').show();
-                    $("#myDiv2 option:selected" ).text(data.result.meterListrik).val(data.result.meterListrikId);
+                    if(data.result.meterListrikId != null){
+                        var meter = new Option(data.result.meterListrik, data.result.meterListrikId, false, false);
+                        $('#meterListrik').append(meter).trigger('change');
+                    }
+
                     if(data.result.dis_listrik != null){ 
                         $("#dis_listrik").prop("checked", true);
                         $("#persenDiskonListrik").val(data.result.dis_listrik);
@@ -483,6 +567,45 @@ $(document).ready(function(){
     });
 
     //Search
+    $('#meterAir').val('').select2({
+        placeholder: '--- Pilih Alat ---',
+        ajax: {
+            url: "/cari/alatair",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (alats) {
+                return {
+                results:  $.map(alats, function (alat) {
+                    return {
+                    text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir + ')',
+                    id: alat.id
+                    }
+                })
+                };
+            },
+            cache: true
+        }
+    });
+    $('#meterListrik').val('').select2({
+        placeholder: '--- Pilih Alat ---',
+        ajax: {
+            url: "/cari/alatlistrik",
+            dataType: 'json',
+            delay: 250,
+            processResults: function (alats) {
+                return {
+                results:  $.map(alats, function (alat) {
+                    return {
+                    text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir +  ' - ' + alat.daya + ' W)',
+                    id: alat.id
+                    }
+                })
+                };
+            },
+            cache: true
+        }
+    });
+
     $('#blok').select2({
         placeholder: '--- Pilih Blok ---',
         ajax: {

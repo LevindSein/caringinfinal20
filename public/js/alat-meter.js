@@ -6,7 +6,7 @@ $(document).ready(function () {
 			url: "/utilities/alatmeter",
 		},
 		columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
 			{ data: 'kode', name: 'kode', class : 'text-center' },
 			{ data: 'nomor', name: 'nomor', class : 'text-center' },
 			{ data: 'akhir', name: 'akhir', class : 'text-center' },
@@ -48,7 +48,7 @@ $(document).ready(function () {
 			url: "/utilities/alatmeter/air",
 		},
 		columns: [
-            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
+            { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
 			{ data: 'kode', name: 'kode', class : 'text-center' },
 			{ data: 'nomor', name: 'nomor', class : 'text-center' },
 			{ data: 'akhir', name: 'akhir', class : 'text-center' },

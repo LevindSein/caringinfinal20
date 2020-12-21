@@ -21,7 +21,7 @@ class AlatController extends Controller
     public function index(Request $request){
         if($request->ajax())
         {
-            $data = AlatListrik::orderBy('id','desc')->get();
+            $data = AlatListrik::orderBy('id','desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -50,7 +50,7 @@ class AlatController extends Controller
     public function air(Request $request){
         if($request->ajax())
         {
-            $data = AlatAir::orderBy('id','desc')->get();
+            $data = AlatAir::orderBy('id','desc');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
