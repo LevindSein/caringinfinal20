@@ -84,8 +84,8 @@
                 </li>
 
                 <!-- Nav Item - Tempat Usaha -->
-                <li class="nav-item {{ (request()->is('tempatusaha/*')) ? 'active' : '' }}">
-                    <a class="nav-link" href="{{url('tempatusaha/data')}}">
+                <li class="nav-item {{ (request()->is('tempatusaha*')) ? 'active' : '' }}">
+                    <a class="nav-link" href="{{url('tempatusaha')}}">
                         <i class="fas fa-fw fa-store"></i>
                         <span>Tempat Usaha</span></a>
                 </li>

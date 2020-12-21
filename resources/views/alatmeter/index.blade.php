@@ -31,13 +31,6 @@
                     id="add_alat" 
                     class="btn btn-sm btn-success"><b>
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Alat Meter</b></button>
-                &nbsp;
-                <a 
-                    href="{{url('utilities/meteran/print')}}"
-                    type="submit" 
-                    target="_blank"
-                    class="btn btn-sm btn-info disabled"><b>
-                    <i class="fas fa-fw fa-print fa-sm text-white-50"></i> Print Form</b></a>
             </div>
         </div>
         <div class="card-body">

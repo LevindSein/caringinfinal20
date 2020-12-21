@@ -34,17 +34,17 @@ class PedagangController extends Controller
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
                 })
-                ->editColumn('ktp', function ($ktp) {
-                    if ($ktp->ktp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return $ktp->ktp;
+                ->editColumn('ktp', function ($data) {
+                    if ($data->ktp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else return $data->ktp;
                 })
-                ->editColumn('email', function ($email) {
-                    if ($email->email == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return $email->email;
+                ->editColumn('email', function ($data) {
+                    if ($data->email == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else return $data->email;
                 })
-                ->editColumn('hp', function ($hp) {
-                    if ($hp->hp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return $hp->hp;
+                ->editColumn('hp', function ($data) {
+                    if ($data->hp == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else return $data->hp;
                 })
                 ->rawColumns(['action','ktp','email','hp'])
                 ->make(true);

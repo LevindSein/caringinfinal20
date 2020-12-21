@@ -180,13 +180,23 @@ $(document).ready(function () {
                             $('#tabelAlatAir').DataTable().ajax.reload();
                         }
                     }
-				}
+                }
+                if($('#action').val() == 'Edit')
+                {
+                    setTimeout(function(){
+                        $('#myModal').modal('hide');
+                    }, 3000);
+                }
 				$('#form_result').html(html);
                 $("#listrik").prop("checked", true);
                 $("#meteranListrik").show();
                 $("#meteranAir").hide();
                 $('input[id="listrik"]').attr('disabled',false);
-                $('input[id="air"]').attr('disabled',true);
+                $('input[id="air"]').attr('disabled',false);
+                $('#form_alat')[0].reset();
+                $("#standAir").prop('required',false);
+                $("#standListrik").prop('required',false);
+                $("#dayaListrik").prop('required',false);
                 $("#success-alert,#error-alert,#info-alert,#warning-alert")
                     .fadeTo(2000, 1000)
                     .slideUp(2000, function () {

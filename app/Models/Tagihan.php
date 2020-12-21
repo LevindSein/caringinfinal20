@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Tagihan extends Model
 {
@@ -89,4 +90,22 @@ class Tagihan extends Model
         'updated_at',
         'created_at'
     ];
+
+    public static function fasilitas($id,$fas){
+        try{
+            $data = DB::table('tagihan')
+            ->leftJoin('tempat_usaha','tagihan.id_tempat','=','tempat_usaha.id')
+            ->where([
+                ['tagihan.id_tempat',$id],
+                ['tagihan.stt_lunas',0],
+                ['tempat_usaha.trf_'.$fas,'!=',NULL]
+            ])
+            ->select(DB::raw("SUM(sel_$fas) as selisih"))
+            ->get();
+            return $data[0]->selisih;
+        }
+        catch(\Exception $e){
+            return 0;
+        }
+    }
 }
