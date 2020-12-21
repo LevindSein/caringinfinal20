@@ -33,7 +33,7 @@ use App\Models\Tagihan;
         <tbody class="table-bordered">
         @foreach($dataset as $data)
         <?php 
-        $tagihan = Tagihan::fasilitas($data->id,$fas);
+        $tagihan = Tagihan::fasilitas($data->kd_kontrol,$fas);
         ?>
             <td class="text-center"
                     <?php if($data->stt_cicil==0){ ?> style="color:green;" <?php } ?>

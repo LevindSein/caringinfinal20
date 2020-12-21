@@ -56,6 +56,7 @@ Route::middleware('ceklogin:pedagang')->group(function (){
 });
 
 Route::middleware('ceklogin:tempatusaha')->group(function (){
+    Route::get('tempatusaha/qr/{id}',[TempatController::class, 'qr']);
     Route::get('tempatusaha/rekap', [TempatController::class, 'rekap']);
     Route::get('tempatusaha/rekap/{blok}',[TempatController::class, 'rekapdetail']);
     Route::get('tempatusaha/fasilitas/{fas}',[TempatController::class, 'fasilitas']);

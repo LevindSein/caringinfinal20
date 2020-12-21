@@ -12,9 +12,6 @@ class Tagihan extends Model
     protected $table ='tagihan';
     protected $fillable = [
         'id',
-        'id_tempat',
-        'id_pemilik',
-        'id_pengguna',
         'nama',
         'blok',
         'kd_kontrol',
@@ -94,9 +91,9 @@ class Tagihan extends Model
     public static function fasilitas($id,$fas){
         try{
             $data = DB::table('tagihan')
-            ->leftJoin('tempat_usaha','tagihan.id_tempat','=','tempat_usaha.id')
+            ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
             ->where([
-                ['tagihan.id_tempat',$id],
+                ['tagihan.kd_kontrol',$id],
                 ['tagihan.stt_lunas',0],
                 ['tempat_usaha.trf_'.$fas,'!=',NULL]
             ])

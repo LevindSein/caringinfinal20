@@ -934,4 +934,12 @@ $(document).ready(function(){
     $('input[type="checkbox"]')
         .click(checkLain)
         .each(checkLain);
+
+    $(document).on('click', '.qr', function(){
+        var id = $(this).attr('id');
+        window.open(
+            '/tempatusaha/qr/' + id,
+            '_blank'
+        );
+    });
 });

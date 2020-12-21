@@ -401,6 +401,9 @@ $(document).ready(function(){
                     if(data.result.role == 'kasir'){
                         $('#userKasir').DataTable().ajax.reload();
                     }
+                    if(data.result.role == 'nasabah'){
+                        $('#userNasabah').DataTable().ajax.reload();
+                    }
 				}, 4000);
                 html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.result.status + '</div>';
                 $('#confirm_result').html(html);     

@@ -37,7 +37,8 @@ class TempatController extends Controller
             $data = TempatUsaha::orderBy('kd_kontrol', 'asc');
             return DataTables::of($data)
                 ->addColumn('action', function($data){
-                    $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                    $button = '<a type="button" title="Print QR" name="qr" id="'.$data->id.'" class="qr"><i class="fas fa-qrcode" style="color:#fd7e14;"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                     $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                     return $button;
                 })
@@ -805,6 +806,18 @@ class TempatController extends Controller
             'trfKebersihan'=>TempatUsaha::trfKebersihan(),
             'trfAirKotor'=>TempatUsaha::trfAirKotor(),
             'trfLain'=>TempatUsaha::trfLain()
+        ]);
+    }
+
+    public function qr($id){
+        $dataset = TempatUsaha::find($id);
+        $kode = 'KODEKONTROL@'.$dataset->kd_kontrol;
+        $kontrol = $dataset->kd_kontrol;
+
+        return view('tempatusaha.qr',[
+            'id'=>$id,
+            'kode'=>$kode,
+            'kontrol'=>$kontrol
         ]);
     }
 }
