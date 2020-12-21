@@ -200,7 +200,10 @@ class TempatController extends Controller
                 $meteran->save();
 
                 $diskon = array();
-                if($request->radioAirBersih == 'dis_airbersih'){
+                if($request->radioAirBersih == "semua_airbersih"){
+                    $tempat->dis_airbersih = NULL;
+                }
+                else if($request->radioAirBersih == 'dis_airbersih'){
                     if($request->persenDiskonAir != NULL){
                         $diskon['type'] = 'diskon';
                         $diskon['value'] = $request->persenDiskonAir;
@@ -395,6 +398,18 @@ class TempatController extends Controller
                 else {
                     $data['meterAirId'] = null;
                 }
+
+                if($data->dis_airbersih != NULL){
+                    $diskon = json_decode($data->dis_airbersih);
+                    if($diskon->type == 'diskon'){
+                        $data['bebasAir'] = 'diskon';
+                        $data['diskonAir'] = $diskon->value;
+                    }
+                    else{
+                        $data['bebasAir'] = 'hanya';
+                        $data['diskonAir'] = $diskon->value;
+                    }
+                }
             }
 
             if($data->id_meteran_listrik != NULL && $data->trf_listrik == 1){
@@ -496,75 +511,78 @@ class TempatController extends Controller
             $tempat->id_pengguna = $id_pengguna;
 
             //Fasilitas
-            // if(empty($request->air) == FALSE){
-            //     $tempat->trf_airbersih = 1;
-            //     $id_meteran_air = $request->meterAir;
-            //     $tempat->id_meteran_air = $id_meteran_air;
-            //     $meteran = AlatAir::find($id_meteran_air);
-            //     $meteran->stt_sedia = 1;
-            //     $meteran->stt_bayar = 0;
-            //     $meteran->save();
+            if(empty($request->air) == FALSE){
+                $tempat->trf_airbersih = 1;
+                $id_meteran_air = $request->meterAir;
+                $tempat->id_meteran_air = $id_meteran_air;
+                $meteran = AlatAir::find($id_meteran_air);
+                $meteran->stt_sedia = 1;
+                $meteran->stt_bayar = 0;
+                $meteran->save();
 
-            //     $diskon = array();
-            //     if($request->radioAirBersih == 'dis_airbersih'){
-            //         if($request->persenDiskonAir != NULL){
-            //             $diskon['type'] = 'diskon';
-            //             $diskon['value'] = $request->persenDiskonAir;
-            //             $tempat->dis_airbersih = json_encode($diskon);
-            //         }
-            //         else{
-            //             $tempat->dis_airbersih = NULL;
-            //         }
-            //     }
-            //     else{
-            //         $pilihanDiskon = array('byr','beban','pemeliharaan','arkot','charge');
-            //         if($request->hanya != NULL){
-            //             $diskon['type'] = 'hanya';
-            //             $hanya = array();
-            //             $j = 0;
-            //             for($i=0; $i<count($pilihanDiskon); $i++){
-            //                 if(in_array($pilihanDiskon[$i],$request->hanya)){
-            //                     if($pilihanDiskon[$i] == 'charge'){
-            //                         if($request->persenChargeAir != NULL){
-            //                             $persen = $request->persenChargeAir;
-            //                             $dari = $request->chargeAir;
-            //                             $value = $persen.','.$dari;
-            //                             $hanya[$j] = [$pilihanDiskon[$i] => $value];
-            //                         }
-            //                     }
-            //                     else{
-            //                         $hanya[$j] = $pilihanDiskon[$i];
-            //                     }
-            //                     $j++;
-            //                 }
-            //             }
-            //             $diskon['value'] = $hanya;
-            //             $tempat->dis_airbersih = json_encode($diskon);
-            //         }
-            //         else{
-            //             $tempat->dis_airbersih = NULL;
-            //         }
-            //     }
+                $diskon = array();
+                if($request->radioAirBersih == "semua_airbersih"){
+                    $tempat->dis_airbersih = NULL;
+                }
+                else if($request->radioAirBersih == 'dis_airbersih'){
+                    if($request->persenDiskonAir != NULL){
+                        $diskon['type'] = 'diskon';
+                        $diskon['value'] = $request->persenDiskonAir;
+                        $tempat->dis_airbersih = json_encode($diskon);
+                    }
+                    else{
+                        $tempat->dis_airbersih = NULL;
+                    }
+                }
+                else{
+                    $pilihanDiskon = array('byr','beban','pemeliharaan','arkot','charge');
+                    if($request->hanya != NULL){
+                        $diskon['type'] = 'hanya';
+                        $hanya = array();
+                        $j = 0;
+                        for($i=0; $i<count($pilihanDiskon); $i++){
+                            if(in_array($pilihanDiskon[$i],$request->hanya)){
+                                if($pilihanDiskon[$i] == 'charge'){
+                                    if($request->persenChargeAir != NULL){
+                                        $persen = $request->persenChargeAir;
+                                        $dari = $request->chargeAir;
+                                        $value = $persen.','.$dari;
+                                        $hanya[$j] = [$pilihanDiskon[$i] => $value];
+                                    }
+                                }
+                                else{
+                                    $hanya[$j] = $pilihanDiskon[$i];
+                                }
+                                $j++;
+                            }
+                        }
+                        $diskon['value'] = $hanya;
+                        $tempat->dis_airbersih = json_encode($diskon);
+                    }
+                    else{
+                        $tempat->dis_airbersih = NULL;
+                    }
+                }
 
-            //     //Tagihan Pasang
-            //     //Download Surat Perintah Bayar
+                //Tagihan Pasang
+                //Download Surat Perintah Bayar
 
                 
-            //     //Tagihan Ganti
-            //     //Ganti Baru atau Ganti Rusak
-            //     //Download Surat Perintah Bayar
-            // }
-            // else{
-            //     if($tempat->trf_airbersih != NULL){
-            //         $meteran = AlatAir::find($tempat->id_meteran_air);
-            //         $meteran->stt_sedia = 0;
-            //         $meteran->stt_bayar = 0;
-            //         $meteran->save();
-            //     }
-            //     $tempat->trf_airbersih = NULL;
-            //     $tempat->id_meteran_air = NULL;
-            //     $tempat->dis_airbersih = NULL;
-            // }
+                //Tagihan Ganti
+                //Ganti Baru atau Ganti Rusak
+                //Download Surat Perintah Bayar
+            }
+            else{
+                if($tempat->trf_airbersih != NULL){
+                    $meteran = AlatAir::find($tempat->id_meteran_air);
+                    $meteran->stt_sedia = 0;
+                    $meteran->stt_bayar = 0;
+                    $meteran->save();
+                }
+                $tempat->trf_airbersih = NULL;
+                $tempat->id_meteran_air = NULL;
+                $tempat->dis_airbersih = NULL;
+            }
 
             if(empty($request->listrik) == FALSE){
                 $tempat->trf_listrik = 1;

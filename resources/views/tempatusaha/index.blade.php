@@ -183,6 +183,18 @@
                                 <div class="col-sm-12">
                                     <div class="form-check">
                                         <input
+                                            checked
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioAirBersih"
+                                            id="semua_airbersih"
+                                            value="semua_airbersih">
+                                        <label class="form-check-label" for="semua_airbersih">
+                                            Bayar Semua
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input
                                             class="form-check-input"
                                             type="radio"
                                             name="radioAirBersih"
@@ -280,7 +292,7 @@
                                                     Charge
                                                 </label>
                                             </div>
-                                            <div class="form-group" style="display:none">
+                                            <div class="form-group" style="display:none" id="displayCharge">
                                                 <div class="col-sm-12" id="chargeAir">
                                                     <div class="input-group">
                                                         <input 
@@ -296,8 +308,8 @@
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="inputGroupPrepend">%</span>
                                                         </div>
-                                                        <select class="form-control" name="chargeAir">
-                                                            <option selected value="ttl">Tagihan</option>
+                                                        <select class="form-control" name="chargeAir" id="dariChargeAir">
+                                                            <option value="ttl">Tagihan</option>
                                                             <option value="byr">Pemakaian</option>
                                                         </select>
                                                     </div>

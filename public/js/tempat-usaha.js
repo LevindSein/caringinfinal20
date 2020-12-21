@@ -159,6 +159,7 @@ $(document).ready(function(){
         $('#displayAir').hide();
         $('#diskonBayarAir').hide();
         $('#hanyaBayarAir').hide();
+        $('#displayCharge').hide();
         $('#displayListrik').hide();
         $('#displayListrikDiskon').hide();
         $('#displayKeamananIpk').hide();
@@ -168,6 +169,7 @@ $(document).ready(function(){
         $('#displayAirKotor').hide();
         $('#displayLain').hide();
         $('#ketStatus').hide();
+        $("#persenDiskonAir").val();
         $("#persenDiskonListrik").val();
         $("#myDiv3 option:selected" ).text('--- Pilih Tarif ---').val('');
         $("#diskonKeamananIpk").val();
@@ -378,6 +380,7 @@ $(document).ready(function(){
         $('#displayAir').hide();
         $('#diskonBayarAir').hide();
         $('#hanyaBayarAir').hide();
+        $('#displayCharge').hide();
         $('#displayListrik').hide();
         $('#displayListrikDiskon').hide();
         $('#displayKeamananIpk').hide();
@@ -387,6 +390,7 @@ $(document).ready(function(){
         $('#displayAirKotor').hide();
         $('#displayLain').hide();
         $('#ketStatus').hide();
+        $("#persenDiskonAir").val();
         $("#persenDiskonListrik").val();
         $("#myDiv3 option:selected" ).val();
         $("#diskonKeamananIpk").val();
@@ -432,6 +436,46 @@ $(document).ready(function(){
                     if(data.result.meterAirId != null){
                         var meter = new Option(data.result.meterAir, data.result.meterAirId, false, false);
                         $('#meterAir').append(meter).trigger('change');
+                    }
+
+                    if(data.result.dis_airbersih != null){ 
+                        if(data.result.bebasAir == 'diskon'){
+                            $('#dis_airbersih').prop('checked',true);
+                            $('#diskonBayarAir').show();
+                            $("#persenDiskonAir").val(data.result.diskonAir);
+                        }
+                        else{
+                            $('#hanya_airbersih').prop('checked',true);
+                            $('#hanyaBayarAir').show();
+                            if(jQuery.inArray("byr", data.result.diskonAir) !== -1){
+                                $('#hanyaPemakaianAir').prop('checked',true);
+                            }  
+                            if(jQuery.inArray("beban", data.result.diskonAir) !== -1){
+                                $('#hanyaBebanAir').prop('checked',true);
+                            }  
+                            if(jQuery.inArray("pemeliharaan", data.result.diskonAir) !== -1){
+                                $('#hanyaPemeliharaanAir').prop('checked',true);
+                            }  
+                            if(jQuery.inArray("arkot", data.result.diskonAir) !== -1){
+                                $('#hanyaArkotAir').prop('checked',true);
+                            }  
+                            if(typeof data.result.diskonAir[data.result.diskonAir.length - 1] === 'object'){
+                                $('#hanyaChargeAir').prop('checked',true);
+                                $('#displayCharge').show();
+                                var charge = data.result.diskonAir[data.result.diskonAir.length - 1]['charge'];
+                                charge = charge.split(',');
+                                $("#persenChargeAir").val(charge[0]);
+                                if(charge[1] === 'ttl'){
+                                    $("#dariChargeAir").val('ttl');
+                                }
+                                if(charge[1] === 'byr'){
+                                    $("#dariChargeAir").val('byr');
+                                }
+                            }  
+                        }
+                    }
+                    else{
+                        $('#semua_airbersih').prop('checked',true);
                     }
                 }
 
