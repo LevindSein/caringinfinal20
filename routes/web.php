@@ -14,6 +14,8 @@ use App\Http\Controllers\BlokController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 
+use App\Http\Controllers\KasirController;
+
 use App\Models\User;
 use App\Models\LoginLog;
 
@@ -47,6 +49,17 @@ Route::get('logout',function(){
 
 Route::middleware('ceklogin:dashboard')->group(function () {
     Route::get('dashboard',[DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::middleware('ceklogin:kasir')->group(function(){
+    Route::get('kasir/periode',[KasirController::class, 'periode']);
+    Route::get('kasir/rincian/periode/{kontrol}',[KasirController::class, 'rincianPeriode']);
+    Route::post('kasir/periode',[KasirController::class, 'storePeriode']);
+    Route::post('kasir/bayar/periode/{kontrol}',[KasirController::class, 'bayarPeriode']);
+
+    Route::get('kasir/bayar/{kontrol}',[KasirController::class, 'bayar']);
+    Route::get('kasir/rincian/{kontrol}',[KasirController::class, 'rincian']);
+    Route::resource('kasir', KasirController::class);
 });
 
 Route::middleware('ceklogin:pedagang')->group(function (){

@@ -174,7 +174,10 @@ class TempatController extends Controller
             $tempat->kd_kontrol = $kode;
             
             //bentuk_usaha
-            $tempat->bentuk_usaha = ucwords($request->usaha);
+            if($request->usaha != null)
+                $tempat->bentuk_usaha = ucwords($request->usaha);
+            else
+                $tempat->bentuk_usaha = NULL;
             
             //lok_tempat
             $lokasi = $request->lokasi;
@@ -492,7 +495,10 @@ class TempatController extends Controller
             $tempat->kd_kontrol = $kode;
             
             //bentuk_usaha
-            $tempat->bentuk_usaha = ucwords($request->usaha);
+            if($request->usaha != null)
+                $tempat->bentuk_usaha = ucwords($request->usaha);
+            else
+                $tempat->bentuk_usaha = NULL;
             
             //lok_tempat
             $lokasi = $request->lokasi;

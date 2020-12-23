@@ -131,9 +131,8 @@
                             placeholder="Pedagang K5 Di Depan A-1-001">
                     </div>
                     <div class="form-group col-lg-12">
-                        <label for="los">Bentuk Usaha <span style="color:red;">*</span></label>
+                        <label for="los">Bentuk Usaha</label>
                         <input
-                            required
                             type="text"
                             name="usaha"
                             autocomplete="off"

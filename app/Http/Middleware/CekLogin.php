@@ -23,8 +23,8 @@ class CekLogin
     public function handle(Request $request, Closure $next, $page)
     {
         if($page == 'home'){
-            $pass = md5(hash('gost',$request->get('password')));
-            $user = User::where([['username', $request->get('username')],['password',$pass]])->first();
+            $pass = md5(hash('gost',$request->password));
+            $user = User::where([['username', $request->username],['password',$pass]])->first();
             try{
                 Session::put('userId',$user->id);
                 Session::put('username',$user->nama);
@@ -45,11 +45,13 @@ class CekLogin
                 $loginLog->platform = $agent->platform()." ".$agent->version($agent->platform())." ".$agent->browser()." ".$agent->version($agent->browser());
                 $loginLog->save();
 
-                if($user->role == 'master' || 'manajer') {
+                if($user->role === 'master' || $user->role === 'manajer') {
                     return redirect()->route('dashboard')->with('success','Selamat Datang');
                 }
                 
-                return $next($request);
+                if($user->role === 'kasir') {
+                    return redirect()->route('kasir.index');
+                }
             }catch(\Exception $e){
                 return redirect()->route('login')->with('error','Username atau Password Salah');
             }
@@ -60,6 +62,24 @@ class CekLogin
                 $explode = explode('-',Session::get('login'));
                 $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
                 $roles = array('master','manajer');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'kasir'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('kasir');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
                         return $next($request);
