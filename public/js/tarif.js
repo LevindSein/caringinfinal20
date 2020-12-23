@@ -5,6 +5,7 @@ $(document).ready(function(){
         $('#listrik_result').html('');
 		$.ajax({
 			url :"/utilities/tarif/update",
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -34,6 +35,7 @@ $(document).ready(function(){
         $('#air_result').html('');
 		$.ajax({
 			url :"/utilities/tarif/update",
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -246,6 +248,7 @@ $(document).ready(function(){
 		$('#form_result').html('');
 		$.ajax({
 			url :"/utilities/tarif/edit/" + fas + "/" + id,
+            cache:false,
 			dataType:"json",
 			success:function(data)
 			{
@@ -330,6 +333,7 @@ $(document).ready(function(){
 
 		$.ajax({
 			url: action_url,
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -406,6 +410,7 @@ $(document).ready(function(){
 	$('#ok_button').click(function(){
 		$.ajax({
 			url:"/utilities/tarif/destroy/"+ fas + "/" + user_id,
+            cache:false,
 			beforeSend:function(){
 				$('#ok_button').text('Menghapus...');
 			},

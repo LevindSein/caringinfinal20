@@ -4,6 +4,7 @@ $(document).ready(function(){
 		serverSide: true,
 		ajax: {
 			url: "/tempatusaha",
+            cache:false,
 		},
 		columns: [
 			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center' },
@@ -402,6 +403,7 @@ $(document).ready(function(){
         $('#form_tempat')[0].reset();
 		$.ajax({
 			url :"/tempatusaha/" + id + "/edit",
+            cache:false,
 			dataType:"json",
 			success:function(data)
 			{
@@ -549,6 +551,7 @@ $(document).ready(function(){
 
 		$.ajax({
 			url: action_url,
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -587,6 +590,7 @@ $(document).ready(function(){
 	$('#ok_button').click(function(){
 		$.ajax({
 			url:"/tempatusaha/destroy/"+user_id,
+            cache:false,
 			beforeSend:function(){
 				$('#ok_button').text('Menghapus...');
 			},

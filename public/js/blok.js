@@ -4,6 +4,7 @@ $(document).ready(function () {
 		serverSide: true,
 		ajax: {
 			url: "/utilities/blok",
+            cache:false,
 		},
 		columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
@@ -52,6 +53,7 @@ $(document).ready(function () {
 		$('#form_result').html('');
 		$.ajax({
 			url :"/utilities/blok/edit/"+id,
+            cache:false,
 			dataType:"json",
 			success:function(data)
 			{
@@ -81,6 +83,7 @@ $(document).ready(function () {
 
 		$.ajax({
 			url: action_url,
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -116,6 +119,7 @@ $(document).ready(function () {
 	$('#ok_button').click(function(){
 		$.ajax({
 			url:"/utilities/blok/destroy/"+user_id,
+            cache:false,
 			beforeSend:function(){
 				$('#ok_button').text('Menghapus...');
 			},

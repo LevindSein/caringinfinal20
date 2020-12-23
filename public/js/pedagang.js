@@ -4,6 +4,7 @@ $(document).ready(function(){
 		serverSide: true,
 		ajax: {
 			url: "/pedagang",
+            cache:false,
 		},
 		columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
@@ -110,6 +111,7 @@ $(document).ready(function(){
 
 		$.ajax({
 			url: action_url,
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -186,6 +188,7 @@ $(document).ready(function(){
 		$('#alamatPengguna').html('');
 		$.ajax({
 			url :"/pedagang/"+id+"/edit",
+            cache:false,
 			dataType:"json",
 			success:function(data)
 			{
@@ -375,6 +378,7 @@ $(document).ready(function(){
 	$('#ok_button').click(function(){
 		$.ajax({
 			url:"/pedagang/destroy/"+user_id,
+            cache:false,
 			beforeSend:function(){
 				$('#ok_button').text('Menghapus...');
 			},

@@ -4,6 +4,7 @@ $(document).ready(function(){
 		serverSide: true,
 		ajax: {
 			url: "/log",
+            cache:false,
 		},
 		columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },

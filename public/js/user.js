@@ -4,6 +4,7 @@ $(document).ready(function(){
 		serverSide: true,
 		ajax: {
 			url: "/user",
+            cache:false,
 		},
 		columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center' },
@@ -246,6 +247,7 @@ $(document).ready(function(){
 
 		$.ajax({
 			url: action_url,
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -304,6 +306,7 @@ $(document).ready(function(){
 		$('#form_result').html('');
 		$.ajax({
 			url :"/user/"+id+"/edit",
+            cache:false,
 			dataType:"json",
 			success:function(data)
 			{
@@ -382,6 +385,7 @@ $(document).ready(function(){
 	$('#ok_button').click(function(){
 		$.ajax({
 			url:"/user/destroy/"+user_id,
+            cache:false,
 			beforeSend:function(){
 				$('#ok_button').text('Menghapus...');
 			},
@@ -456,6 +460,7 @@ $(document).ready(function(){
         $("#harilibur").prop("checked", false);
 		$.ajax({
 			url :"/user/"+id+"/otoritas",
+            cache:false,
 			dataType:"json",
 			success:function(data)
 			{
@@ -545,6 +550,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		$.ajax({
 			url: '/user/otoritas',
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -582,6 +588,7 @@ $(document).ready(function(){
         });
 		$.ajax({       
 			url: '/user/reset/'+id,
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
