@@ -311,22 +311,21 @@ class KasirController extends Controller
     }
 
     public function rincian(Request $request, $kontrol){
-        if($request->ajax()){
-            $bulan = date("Y-m", time());
-            $time = strtotime($bulan);
-            $bulan = date("Y-m", strtotime("-1 month", $time)); //-1 month seharusnya
+        $bulan = date("Y-m", time());
+        Session::put('periode',$bulan);
 
+        if($request->ajax()){
             $data = array();
-            $data1 = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_pakai','<',$bulan]])
+            $data1 = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','<',Session::get('periode')]])
             ->select(
                 DB::raw('SUM(sel_tagihan) as tunggakan'),
                 DB::raw('SUM(den_tagihan) as denda'))
             ->get();
             
-            $data['tunggakan']  = $data1[0]->tunggakan;
-            $data['denda']      = $data1[0]->denda;
+            $data['tunggakan'] = $data1[0]->tunggakan;
+            $data['denda']     = $data1[0]->denda;
 
-            $data2 = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_pakai',$bulan]])
+            $data2 = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')]])
             ->select(
                 'sel_listrik',
                 'sel_airbersih',
@@ -336,17 +335,26 @@ class KasirController extends Controller
             )
             ->first();
 
-            $data['listrik']     = $data2->sel_listrik;
-            $data['airbersih']   = $data2->sel_airbersih;
-            $data['keamananipk'] = $data2->sel_keamananipk;
-            $data['kebersihan']  = $data2->sel_kebersihan;
-            $data['airkotor']    = $data2->sel_airkotor;
+            if($data2 != NULL){
+                $data['listrik']     = $data2->sel_listrik;
+                $data['airbersih']   = $data2->sel_airbersih;
+                $data['keamananipk'] = $data2->sel_keamananipk;
+                $data['kebersihan']  = $data2->sel_kebersihan;
+                $data['airkotor']    = $data2->sel_airkotor;
+            }
+            else{
+                $data['listrik']     = 0;
+                $data['airbersih']   = 0;
+                $data['keamananipk'] = 0;
+                $data['kebersihan']  = 0;
+                $data['airkotor']    = 0;
+            }
 
             $data3 = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_pakai','<=',$bulan]])
             ->select(DB::raw('SUM(sel_lain) as lain'))
             ->get();
 
-            $data['lain']        = $data3[0]->lain;
+            $data['lain'] = $data3[0]->lain;
 
             return response()->json(['result' => $data]);
         }
