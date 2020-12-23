@@ -107,6 +107,75 @@
             <form class="user" id="form_rincian" method="POST">
                 <div class="modal-body">
                     @csrf
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap:wrap;">
+                        <div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="bayar[]"
+                                    id="checkListrik"
+                                    value="listrik">
+                                <label for="checkListrik">
+                                    Listrik
+                                </label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="bayar[]"
+                                    id="checkAirBersih"
+                                    value="airbersih">
+                                <label for="checkAirBersih">
+                                    Air Bersih
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="bayar[]"
+                                    id="checkKeamananIpk"
+                                    value="keamananipk">
+                                <label for="checkKeamananIpk">
+                                    Keamanan IPK
+                                </label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="bayar[]"
+                                    id="checkKebersihan"
+                                    value="kebersihan">
+                                <label for="checkKebersihan">
+                                    Kebersihan
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="bayar[]"
+                                    id="checkAirKotor"
+                                    value="airkotor">
+                                <label for="checkAirKotor">
+                                    Air Kotor
+                                </label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="bayar[]"
+                                    id="checkLain"
+                                    value="lain">
+                                <label for="checkLain">
+                                    Lain Lain
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                     <div class="col-lg-12 justify-content-between" style="display: flex;flex-wrap: wrap;">
                         <div>
                             <span style="color:#3f6ad8;"><strong>Fasilitas</strong></span>

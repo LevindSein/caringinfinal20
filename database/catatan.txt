@@ -1,0 +1,4 @@
+Tempat Usaha :
+
+Delete (Update Alat)
+Ganti Alat (Update Alat Lama nya)
