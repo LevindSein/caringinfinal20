@@ -96,7 +96,7 @@ $(document).ready(function () {
 				{
 					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
                     $('#form_harilibur')[0].reset();
-					$('#tabelHariLibur').DataTable().ajax.reload();
+					$('#tabelHariLibur').DataTable().ajax.reload(function(){}, false);
 				}
 				$('#form_result').html(html);
                 $("#success-alert,#error-alert,#info-alert,#warning-alert")
@@ -124,7 +124,7 @@ $(document).ready(function () {
 			{
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
-                    $('#tabelHariLibur').DataTable().ajax.reload();
+                    $('#tabelHariLibur').DataTable().ajax.reload(function(){}, false);
 				}, 4000);
                 html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.status + '</div>';
                 $('#confirm_result').html(html);     

@@ -174,10 +174,10 @@ $(document).ready(function () {
                     } catch(err){}
                     finally{
                         if(data.result.role == 'listrik'){
-                            $('#tabelAlatListrik').DataTable().ajax.reload();
+                            $('#tabelAlatListrik').DataTable().ajax.reload(function(){}, false);
                         }
                         if(data.result.role == 'air'){
-                            $('#tabelAlatAir').DataTable().ajax.reload();
+                            $('#tabelAlatAir').DataTable().ajax.reload(function(){}, false);
                         }
                     }
                 }
@@ -234,10 +234,10 @@ $(document).ready(function () {
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
                     if(data.result.role == 'listrik'){
-                        $('#tabelAlatListrik').DataTable().ajax.reload();
+                        $('#tabelAlatListrik').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'air'){
-                        $('#tabelAlatAir').DataTable().ajax.reload();
+                        $('#tabelAlatAir').DataTable().ajax.reload(function(){}, false);
                     }
 				}, 4000);
                 html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.result.status + '</div>';

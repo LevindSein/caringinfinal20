@@ -4,7 +4,8 @@ $(document).ready(function () {
         processing: true,
 		serverSide: true,
 		ajax: {
-			url: "/kasir",
+            url: "/kasir",
+            cache:false,
 		},
 		columns: [
 			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center' },
@@ -43,6 +44,7 @@ $(document).ready(function () {
         $.ajax({
 			url :"/kasir/rincian/" + kontrol,
 			dataType:"json",
+            cache:false,
 			success:function(data)
 			{
                 $("#tempatId").val(kontrol);
@@ -178,6 +180,7 @@ $(document).ready(function () {
 		event.preventDefault();
 		$.ajax({
 			url: '/kasir',
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -192,7 +195,7 @@ $(document).ready(function () {
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
                     ajax_print('/kasir/bayar/' + kode_kontrol);
-					$('#tabelKasir').DataTable().ajax.reload();
+					$('#tabelKasir').DataTable().ajax.reload(function(){}, false);
 				}
                 $('#myRincian').modal('hide');
                 $('#form_result').html(html);

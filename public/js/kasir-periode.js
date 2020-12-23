@@ -7,6 +7,7 @@ $(document).ready(function () {
             url: "/kasir/periode?" + 
                  "bulan="          + document.getElementById('bln_periode').value + 
                  "&tahun="         + document.getElementById('thn_periode').value,
+            cache:false,
 		},
 		columns: [
 			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center' },
@@ -45,6 +46,7 @@ $(document).ready(function () {
             url : "/kasir/rincian/periode/" + kontrol +
                   "?bulan="          + document.getElementById('bln_periode').value + 
                   "&tahun="         + document.getElementById('thn_periode').value,
+            cache:false,
 			dataType:"json",
 			success:function(data)
 			{
@@ -176,6 +178,7 @@ $(document).ready(function () {
 		event.preventDefault();
 		$.ajax({
 			url: '/kasir/periode',
+            cache:false,
 			method:"POST",
 			data:$(this).serialize(),
 			dataType:"json",
@@ -190,7 +193,7 @@ $(document).ready(function () {
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
                     ajax_print('/kasir/bayar/periode' + kode_kontrol);
-					$('#tabelKasir').DataTable().ajax.reload();
+					$('#tabelKasir').DataTable().ajax.reload(function(){}, false);
 				}
                 $('#myRincian').modal('hide');
                 $('#form_result').html(html);

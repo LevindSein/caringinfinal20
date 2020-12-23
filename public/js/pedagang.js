@@ -124,7 +124,7 @@ $(document).ready(function(){
 				{
 					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
 					$('#form_pedagang')[0].reset();
-                    $('#tabelPedagang').DataTable().ajax.reload();
+                    $('#tabelPedagang').DataTable().ajax.reload(function(){}, false);
                     $('#displayPemilik').hide();
                     $('#displayPengguna').hide();
                     $('#alamatPemilik').select2("destroy").select2({
@@ -382,7 +382,7 @@ $(document).ready(function(){
 			{
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
-					$('#tabelPedagang').DataTable().ajax.reload();
+					$('#tabelPedagang').DataTable().ajax.reload(function(){}, false);
 				}, 4000);
                 html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.status + '</div>';
                 $('#confirm_result').html(html);     

@@ -565,7 +565,7 @@ $(document).ready(function(){
 					
                     setTimeout(function(){
                         $('#myModal').modal('hide');
-                        $('#tabelTempat').DataTable().ajax.reload();
+                        $('#tabelTempat').DataTable().ajax.reload(function(){}, false);
                     }, 4000);
 				}
 				$('#form_result').html(html);
@@ -594,7 +594,7 @@ $(document).ready(function(){
 			{
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
-					$('#tabelTempat').DataTable().ajax.reload();
+					$('#tabelTempat').DataTable().ajax.reload(function(){}, false);
 				}, 4000);
                 html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.status + '</div>';
                 $('#confirm_result').html(html);     

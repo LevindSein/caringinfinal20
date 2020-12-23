@@ -364,16 +364,16 @@ $(document).ready(function(){
                     } catch(err){}
                     finally{
                         if(data.result.role == 'keamananipk'){
-                            $('#tabelKeamananIpk').DataTable().ajax.reload();
+                            $('#tabelKeamananIpk').DataTable().ajax.reload(function(){}, false);
                         }
                         if(data.result.role == 'kebersihan'){
-                            $('#tabelKebersihan').DataTable().ajax.reload();
+                            $('#tabelKebersihan').DataTable().ajax.reload(function(){}, false);
                         }
                         if(data.result.role == 'airkotor'){
-                            $('#tabelAirKotor').DataTable().ajax.reload();
+                            $('#tabelAirKotor').DataTable().ajax.reload(function(){}, false);
                         }
                         if(data.result.role == 'lain'){
-                            $('#tabelLain').DataTable().ajax.reload();
+                            $('#tabelLain').DataTable().ajax.reload(function(){}, false);
                         }
                     }
                 }
@@ -414,16 +414,16 @@ $(document).ready(function(){
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
                     if(data.result.role == 'keamananipk'){
-                        $('#tabelKeamananIpk').DataTable().ajax.reload();
+                        $('#tabelKeamananIpk').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'kebersihan'){
-                        $('#tabelKebersihan').DataTable().ajax.reload();
+                        $('#tabelKebersihan').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'airkotor'){
-                        $('#tabelAirKotor').DataTable().ajax.reload();
+                        $('#tabelAirKotor').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'lain'){
-                        $('#tabelLain').DataTable().ajax.reload();
+                        $('#tabelLain').DataTable().ajax.reload(function(){}, false);
                     }
 				}, 4000);
                 html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.result.status + '</div>';

@@ -276,16 +276,16 @@ $(document).ready(function(){
                     } catch(err){}
                     finally{
                         if(data.result.role == 'admin'){
-                            $('#userAdmin').DataTable().ajax.reload();
+                            $('#userAdmin').DataTable().ajax.reload(function(){}, false);
                         }
                         if(data.result.role == 'manajer'){
-                            $('#userManajer').DataTable().ajax.reload();
+                            $('#userManajer').DataTable().ajax.reload(function(){}, false);
                         }
                         if(data.result.role == 'keuangan'){
-                            $('#userKeuangan').DataTable().ajax.reload();
+                            $('#userKeuangan').DataTable().ajax.reload(function(){}, false);
                         }
                         if(data.result.role == 'kasir'){
-                            $('#userKasir').DataTable().ajax.reload();
+                            $('#userKasir').DataTable().ajax.reload(function(){}, false);
                         }
                     }
 				}
@@ -390,19 +390,19 @@ $(document).ready(function(){
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
                     if(data.result.role == 'admin'){
-                        $('#userAdmin').DataTable().ajax.reload();
+                        $('#userAdmin').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'manajer'){
-                        $('#userManajer').DataTable().ajax.reload();
+                        $('#userManajer').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'keuangan'){
-                        $('#userKeuangan').DataTable().ajax.reload();
+                        $('#userKeuangan').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'kasir'){
-                        $('#userKasir').DataTable().ajax.reload();
+                        $('#userKasir').DataTable().ajax.reload(function(){}, false);
                     }
                     if(data.result.role == 'nasabah'){
-                        $('#userNasabah').DataTable().ajax.reload();
+                        $('#userNasabah').DataTable().ajax.reload(function(){}, false);
                     }
 				}, 4000);
                 html = '<div class="alert alert-info" id="info-alert"> <strong>Info! </strong>' + data.result.status + '</div>';
@@ -558,7 +558,7 @@ $(document).ready(function(){
 				if(data.success)
 				{
 					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
-                    $('#userAdmin').DataTable().ajax.reload();
+                    $('#userAdmin').DataTable().ajax.reload(function(){}, false);
                     setTimeout(function(){
                         $('#myOtoritas').modal('hide');
                     }, 4000);
