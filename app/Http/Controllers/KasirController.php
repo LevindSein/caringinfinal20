@@ -212,56 +212,133 @@ class KasirController extends Controller
                 $pembayaran->kd_kontrol = $d->kd_kontrol;
                 $pembayaran->pengguna = $d->nama;
                 $pembayaran->id_tagihan = $d->id;
-                $pembayaran->byr_listrik = $d->sel_listrik;
-                $pembayaran->byr_denlistrik = $d->den_listrik;
-                $pembayaran->sel_listrik = 0;
-                $pembayaran->byr_airbersih = $d->sel_airbersih;
-                $pembayaran->byr_denairbersih = $d->den_airbersih;
-                $pembayaran->sel_airbersih = 0;
-                $pembayaran->byr_keamananipk = $d->sel_keamananipk;
-                $pembayaran->sel_keamananipk = 0;
-                $pembayaran->byr_kebersihan = $d->sel_kebersihan;
-                $pembayaran->sel_kebersihan = 0;
-                $pembayaran->byr_airkotor = $d->sel_airkotor;
-                $pembayaran->sel_airkotor = 0;
-                $pembayaran->byr_lain = $d->sel_lain;
-                $pembayaran->sel_lain = 0;
+
+                $total = 0;
+                $selisih = $d->sel_tagihan;
+
+                if(empty($request->checkListrik) == FALSE){
+                    $pembayaran->byr_listrik = $d->sel_listrik;
+                    $pembayaran->byr_denlistrik = $d->den_listrik;
+                    $pembayaran->sel_listrik = 0;
+
+                    $total = $total + $pembayaran->byr_listrik;
+                    $selisih = $selisih - $pembayaran->byr_listrik;
+                }
+                
+                if(empty($request->checkAirBersih) == FALSE){
+                    $pembayaran->byr_airbersih = $d->sel_airbersih;
+                    $pembayaran->byr_denairbersih = $d->den_airbersih;
+                    $pembayaran->sel_airbersih = 0;
+                    
+                    $total = $total + $pembayaran->byr_airbersih;
+                    $selisih = $selisih - $pembayaran->byr_airbersih;
+                }
+                
+                if(empty($request->checkKeamananIpk) == FALSE){
+                    $pembayaran->byr_keamananipk = $d->sel_keamananipk;
+                    $pembayaran->sel_keamananipk = 0;
+                    
+                    $total = $total + $pembayaran->byr_keamananipk;
+                    $selisih = $selisih - $pembayaran->byr_keamananipk;
+                }
+
+                if(empty($request->checkKebersihan) == FALSE){
+                    $pembayaran->byr_kebersihan = $d->sel_kebersihan;
+                    $pembayaran->sel_kebersihan = 0;
+                    
+                    $total = $total + $pembayaran->byr_kebersihan;
+                    $selisih = $selisih - $pembayaran->byr_kebersihan;
+                }
+
+                if(empty($request->checkAirKotor) == FALSE){
+                    $pembayaran->byr_airkotor = $d->sel_airkotor;
+                    $pembayaran->sel_airkotor = 0;
+                    
+                    $total = $total + $pembayaran->byr_airkotor;
+                    $selisih = $selisih - $pembayaran->byr_airkotor;
+                }
+
+                if(empty($request->checkLain) == FALSE){
+                    $pembayaran->byr_lain = $d->sel_lain;
+                    $pembayaran->sel_lain = 0;
+                    
+                    $total = $total + $pembayaran->byr_lain;
+                    $selisih = $selisih - $pembayaran->byr_lain;
+                }
+
                 $pembayaran->diskon = $d->dis_tagihan;
-                $pembayaran->total = $d->sel_tagihan;
-                $pembayaran->sel_tagihan = 0;
+                $pembayaran->total = $total;
+                $pembayaran->sel_tagihan = $selisih;
                 $pembayaran->save();
 
                 //-------------------------------------------------------------
+                $total = 0;
+                $selisih = $d->sel_tagihan;
 
-                $d->rea_airbersih = $d->ttl_airbersih;
-                $d->sel_airbersih = 0;
-                $d->rea_listrik = $d->ttl_listrik;
-                $d->sel_listrik = 0;
-                $d->rea_keamananipk = $d->ttl_keamananipk;
-                $d->sel_keamananipk = 0;
-                $d->rea_kebersihan = $d->ttl_kebersihan;
-                $d->sel_kebersihan = 0;
-                $d->rea_airkotor = $d->ttl_airkotor;
-                $d->sel_airkotor = 0;
-                $d->rea_lain = $d->ttl_lain;
-                $d->sel_lain = 0;
-                $d->rea_tagihan = $d->ttl_tagihan;
-                $d->sel_tagihan = 0;
+                if(empty($request->checkAirBersih) == FALSE){
+                    $d->rea_airbersih = $d->ttl_airbersih;
+                    $d->sel_airbersih = 0;
+
+                    $total = $total + $d->rea_airbersih;
+                    $selisih = $selisih - $d->rea_airbersih;
+                }
+
+                if(empty($request->checkListrik) == FALSE){
+                    $d->rea_listrik = $d->ttl_listrik;
+                    $d->sel_listrik = 0;
+                    
+                    $total = $total + $d->rea_listrik;
+                    $selisih = $selisih - $d->rea_listrik;
+                }
+
+                if(empty($request->checkKeamananIpk) == FALSE){
+                    $d->rea_keamananipk = $d->ttl_keamananipk;
+                    $d->sel_keamananipk = 0;
+                    
+                    $total = $total + $d->rea_keamananipk;
+                    $selisih = $selisih - $d->rea_keamananipk;
+                }
+
+                if(empty($request->checkKebersihan) == FALSE){
+                    $d->rea_kebersihan = $d->ttl_kebersihan;
+                    $d->sel_kebersihan = 0;
+                    
+                    $total = $total + $d->rea_kebersihan;
+                    $selisih = $selisih - $d->rea_kebersihan;
+                }
+
+                if(empty($request->checkAirKotor) == FALSE){
+                    $d->rea_airkotor = $d->ttl_airkotor;
+                    $d->sel_airkotor = 0;
+                    
+                    $total = $total + $d->rea_airkotor;
+                    $selisih = $selisih - $d->rea_airkotor;
+                }
+
+                if(empty($request->checkLain) == FALSE){
+                    $d->rea_lain = $d->ttl_lain;
+                    $d->sel_lain = 0;
+                    
+                    $total = $total + $d->rea_lain;
+                    $selisih = $selisih - $d->rea_lain;
+                }
+
+                
+                if($selisih == 0){
+                    $d->stt_lunas = 1;
+                }
+
+                if($total != 0){
+                    $d->stt_bayar = 1;
+                }
+
+                $d->rea_tagihan = $total;
+                $d->sel_tagihan = $selisih;
                 $d->save();
             }
-            $bayar = 'kontan';
             return response()->json(['success' => 'Transaksi Berhasil']);
         } catch(\Exception $e){
             return response()->json(['errors' => 'Transaksi Gagal']);
-        } finally{
-            //Pembayaran Kontan
-            if($bayar == 'kontan'){
-                foreach($tagihan as $d){
-                    $d->stt_lunas = 1;
-                    $d->stt_bayar = 1;
-                    $d->save();
-                }
-            }
         }
     }
 
@@ -318,12 +395,23 @@ class KasirController extends Controller
             $data = array();
             $data1 = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','<',Session::get('periode')]])
             ->select(
+                DB::raw('SUM(sel_listrik) as listrik'),
+                DB::raw('SUM(sel_airbersih) as airbersih'),
+                DB::raw('SUM(sel_keamananipk) as keamananipk'),
+                DB::raw('SUM(sel_kebersihan) as kebersihan'),
+                DB::raw('SUM(sel_airkotor) as airkotor'),
                 DB::raw('SUM(sel_tagihan) as tunggakan'),
                 DB::raw('SUM(den_tagihan) as denda'))
             ->get();
             
-            $data['tunggakan'] = $data1[0]->tunggakan;
-            $data['denda']     = $data1[0]->denda;
+            $data['tunggakan']     = $data1[0]->tunggakan;
+            $data['denda']         = $data1[0]->denda;
+
+            $data['tlistrik'] = $data1[0]->listrik;
+            $data['tairbersih']  = $data1[0]->airbersih;
+            $data['tkeamananipk'] = $data1[0]->keamananipk;
+            $data['tkebersihan']  = $data1[0]->kebersihan;
+            $data['tairkotor']  = $data1[0]->airkotor;
 
             $data2 = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')]])
             ->select(
@@ -646,56 +734,132 @@ class KasirController extends Controller
                 $pembayaran->kd_kontrol = $d->kd_kontrol;
                 $pembayaran->pengguna = $d->nama;
                 $pembayaran->id_tagihan = $d->id;
-                $pembayaran->byr_listrik = $d->sel_listrik;
-                $pembayaran->byr_denlistrik = $d->den_listrik;
-                $pembayaran->sel_listrik = 0;
-                $pembayaran->byr_airbersih = $d->sel_airbersih;
-                $pembayaran->byr_denairbersih = $d->den_airbersih;
-                $pembayaran->sel_airbersih = 0;
-                $pembayaran->byr_keamananipk = $d->sel_keamananipk;
-                $pembayaran->sel_keamananipk = 0;
-                $pembayaran->byr_kebersihan = $d->sel_kebersihan;
-                $pembayaran->sel_kebersihan = 0;
-                $pembayaran->byr_airkotor = $d->sel_airkotor;
-                $pembayaran->sel_airkotor = 0;
-                $pembayaran->byr_lain = $d->sel_lain;
-                $pembayaran->sel_lain = 0;
+                $total = 0;
+                $selisih = $d->sel_tagihan;
+
+                if(empty($request->checkListrik) == FALSE){
+                    $pembayaran->byr_listrik = $d->sel_listrik;
+                    $pembayaran->byr_denlistrik = $d->den_listrik;
+                    $pembayaran->sel_listrik = 0;
+
+                    $total = $total + $pembayaran->byr_listrik;
+                    $selisih = $selisih - $pembayaran->byr_listrik;
+                }
+                
+                if(empty($request->checkAirBersih) == FALSE){
+                    $pembayaran->byr_airbersih = $d->sel_airbersih;
+                    $pembayaran->byr_denairbersih = $d->den_airbersih;
+                    $pembayaran->sel_airbersih = 0;
+                    
+                    $total = $total + $pembayaran->byr_airbersih;
+                    $selisih = $selisih - $pembayaran->byr_airbersih;
+                }
+                
+                if(empty($request->checkKeamananIpk) == FALSE){
+                    $pembayaran->byr_keamananipk = $d->sel_keamananipk;
+                    $pembayaran->sel_keamananipk = 0;
+                    
+                    $total = $total + $pembayaran->byr_keamananipk;
+                    $selisih = $selisih - $pembayaran->byr_keamananipk;
+                }
+
+                if(empty($request->checkKebersihan) == FALSE){
+                    $pembayaran->byr_kebersihan = $d->sel_kebersihan;
+                    $pembayaran->sel_kebersihan = 0;
+                    
+                    $total = $total + $pembayaran->byr_kebersihan;
+                    $selisih = $selisih - $pembayaran->byr_kebersihan;
+                }
+
+                if(empty($request->checkAirKotor) == FALSE){
+                    $pembayaran->byr_airkotor = $d->sel_airkotor;
+                    $pembayaran->sel_airkotor = 0;
+                    
+                    $total = $total + $pembayaran->byr_airkotor;
+                    $selisih = $selisih - $pembayaran->byr_airkotor;
+                }
+
+                if(empty($request->checkLain) == FALSE){
+                    $pembayaran->byr_lain = $d->sel_lain;
+                    $pembayaran->sel_lain = 0;
+                    
+                    $total = $total + $pembayaran->byr_lain;
+                    $selisih = $selisih - $pembayaran->byr_lain;
+                }
+
                 $pembayaran->diskon = $d->dis_tagihan;
-                $pembayaran->total = $d->sel_tagihan;
-                $pembayaran->sel_tagihan = 0;
+                $pembayaran->total = $total;
+                $pembayaran->sel_tagihan = $selisih;
                 $pembayaran->save();
 
                 //-------------------------------------------------------------
+                $total = 0;
+                $selisih = $d->sel_tagihan;
 
-                $d->rea_airbersih = $d->ttl_airbersih;
-                $d->sel_airbersih = 0;
-                $d->rea_listrik = $d->ttl_listrik;
-                $d->sel_listrik = 0;
-                $d->rea_keamananipk = $d->ttl_keamananipk;
-                $d->sel_keamananipk = 0;
-                $d->rea_kebersihan = $d->ttl_kebersihan;
-                $d->sel_kebersihan = 0;
-                $d->rea_airkotor = $d->ttl_airkotor;
-                $d->sel_airkotor = 0;
-                $d->rea_lain = $d->ttl_lain;
-                $d->sel_lain = 0;
-                $d->rea_tagihan = $d->ttl_tagihan;
-                $d->sel_tagihan = 0;
+                if(empty($request->checkAirBersih) == FALSE){
+                    $d->rea_airbersih = $d->ttl_airbersih;
+                    $d->sel_airbersih = 0;
+
+                    $total = $total + $d->rea_airbersih;
+                    $selisih = $selisih - $d->rea_airbersih;
+                }
+
+                if(empty($request->checkListrik) == FALSE){
+                    $d->rea_listrik = $d->ttl_listrik;
+                    $d->sel_listrik = 0;
+                    
+                    $total = $total + $d->rea_listrik;
+                    $selisih = $selisih - $d->rea_listrik;
+                }
+
+                if(empty($request->checkKeamananIpk) == FALSE){
+                    $d->rea_keamananipk = $d->ttl_keamananipk;
+                    $d->sel_keamananipk = 0;
+                    
+                    $total = $total + $d->rea_keamananipk;
+                    $selisih = $selisih - $d->rea_keamananipk;
+                }
+
+                if(empty($request->checkKebersihan) == FALSE){
+                    $d->rea_kebersihan = $d->ttl_kebersihan;
+                    $d->sel_kebersihan = 0;
+                    
+                    $total = $total + $d->rea_kebersihan;
+                    $selisih = $selisih - $d->rea_kebersihan;
+                }
+
+                if(empty($request->checkAirKotor) == FALSE){
+                    $d->rea_airkotor = $d->ttl_airkotor;
+                    $d->sel_airkotor = 0;
+                    
+                    $total = $total + $d->rea_airkotor;
+                    $selisih = $selisih - $d->rea_airkotor;
+                }
+
+                if(empty($request->checkLain) == FALSE){
+                    $d->rea_lain = $d->ttl_lain;
+                    $d->sel_lain = 0;
+                    
+                    $total = $total + $d->rea_lain;
+                    $selisih = $selisih - $d->rea_lain;
+                }
+
+                
+                if($selisih == 0){
+                    $d->stt_lunas = 1;
+                }
+
+                if($total != 0){
+                    $d->stt_bayar = 1;
+                }
+
+                $d->rea_tagihan = $total;
+                $d->sel_tagihan = $selisih;
                 $d->save();
             }
-            $bayar = 'kontan';
             return response()->json(['success' => 'Transaksi Berhasil']);
         } catch(\Exception $e){
             return response()->json(['errors' => 'Transaksi Gagal']);
-        } finally{
-            //Pembayaran Kontan
-            if($bayar == 'kontan'){
-                foreach($tagihan as $d){
-                    $d->stt_lunas = 1;
-                    $d->stt_bayar = 1;
-                    $d->save();
-                }
-            }
         }
     }
 

@@ -112,7 +112,7 @@
                             <div>
                                 <input
                                     type="checkbox"
-                                    name="bayar[]"
+                                    name="checkListrik"
                                     id="checkListrik"
                                     value="listrik">
                                 <label for="checkListrik">
@@ -122,7 +122,7 @@
                             <div>
                                 <input
                                     type="checkbox"
-                                    name="bayar[]"
+                                    name="checkAirBersih"
                                     id="checkAirBersih"
                                     value="airbersih">
                                 <label for="checkAirBersih">
@@ -134,7 +134,7 @@
                             <div>
                                 <input
                                     type="checkbox"
-                                    name="bayar[]"
+                                    name="checkKeamananIpk"
                                     id="checkKeamananIpk"
                                     value="keamananipk">
                                 <label for="checkKeamananIpk">
@@ -144,7 +144,7 @@
                             <div>
                                 <input
                                     type="checkbox"
-                                    name="bayar[]"
+                                    name="checkKebersihan"
                                     id="checkKebersihan"
                                     value="kebersihan">
                                 <label for="checkKebersihan">
@@ -156,7 +156,7 @@
                             <div>
                                 <input
                                     type="checkbox"
-                                    name="bayar[]"
+                                    name="checkAirKotor"
                                     id="checkAirKotor"
                                     value="airkotor">
                                 <label for="checkAirKotor">
@@ -166,7 +166,7 @@
                             <div>
                                 <input
                                     type="checkbox"
-                                    name="bayar[]"
+                                    name="checkLain"
                                     id="checkLain"
                                     value="lain">
                                 <label for="checkLain">

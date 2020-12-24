@@ -50,6 +50,7 @@ $(document).ready(function () {
                 $("#tempatId").val(kontrol);
                 $("#judulRincian").html(kontrol);
                 var total = 0;
+                var tunggakan = Number(data.result.tunggakan);
                 if(Number(data.result.listrik) != 0){
                     $("#checkListrik").prop("checked", true).prop("disabled", false);
                     $("#divListrik").show();
@@ -58,13 +59,23 @@ $(document).ready(function () {
                 
                     $('#checkListrik').click(function() {
                         if(!$(this).is(':checked')){
-                            total = total - Number(data.result.listrik);
                             $("#divListrik").hide();
+                            tunggakan = tunggakan - Number(data.result.tlistrik);
+                            total = total - Number(data.result.listrik) - Number(data.result.tlistrik);
                         }
                         else{
-                            total = total + Number(data.result.listrik);
                             $("#divListrik").show();
+                            tunggakan = tunggakan + Number(data.result.tlistrik);
+                            total = total + Number(data.result.listrik) + Number(data.result.tlistrik);
                         }
+
+                        if(tunggakan != 0){
+                            $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                        }
+                        else{
+                            $("#divTunggakan").hide();
+                        }
+
                         $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     });
                 }
@@ -76,13 +87,23 @@ $(document).ready(function () {
                     
                     $('#checkAirBersih').click(function() {
                         if(!$(this).is(':checked')){
-                            total = total - Number(data.result.airbersih);
                             $("#divAirBersih").hide();
+                            tunggakan = tunggakan - Number(data.result.tairbersih);
+                            total = total - Number(data.result.airbersih) - Number(data.result.tairbersih);
                         }
                         else{
-                            total = total + Number(data.result.airbersih);
                             $("#divAirBersih").show();
+                            tunggakan = tunggakan + Number(data.result.tairbersih);
+                            total = total + Number(data.result.airbersih) + Number(data.result.tairbersih);
                         }
+
+                        if(tunggakan != 0){
+                            $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                        }
+                        else{
+                            $("#divTunggakan").hide();
+                        }
+
                         $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     });
                 }
@@ -94,13 +115,23 @@ $(document).ready(function () {
                     
                     $('#checkKeamananIpk').click(function() {
                         if(!$(this).is(':checked')){
-                            total = total - Number(data.result.keamananipk);
                             $("#divKeamananIpk").hide();
+                            tunggakan = tunggakan - Number(data.result.tkeamananipk);
+                            total = total - Number(data.result.keamananipk) - Number(data.result.tkeamananipk);
                         }
                         else{
-                            total = total + Number(data.result.keamananipk);
                             $("#divKeamananIpk").show();
+                            tunggakan = tunggakan + Number(data.result.tkeamananipk);
+                            total = total + Number(data.result.keamananipk) + Number(data.result.tkeamananipk);
                         }
+
+                        if(tunggakan != 0){
+                            $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                        }
+                        else{
+                            $("#divTunggakan").hide();
+                        }
+
                         $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     });
                 }
@@ -112,13 +143,23 @@ $(document).ready(function () {
                     
                     $('#checkKebersihan').click(function() {
                         if(!$(this).is(':checked')){
-                            total = total - Number(data.result.kebersihan);
                             $("#divKebersihan").hide();
+                            tunggakan = tunggakan - Number(data.result.tkebersihan);
+                            total = total - Number(data.result.kebersihan) - Number(data.result.tkebersihan);
                         }
                         else{
-                            total = total + Number(data.result.kebersihan);
                             $("#divKebersihan").show();
+                            tunggakan = tunggakan + Number(data.result.tkebersihan);
+                            total = total + Number(data.result.kebersihan) + Number(data.result.tkebersihan);
                         }
+
+                        if(tunggakan != 0){
+                            $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                        }
+                        else{
+                            $("#divTunggakan").hide();
+                        }
+
                         $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     });
                 }
@@ -130,20 +171,30 @@ $(document).ready(function () {
 
                     $('#checkAirKotor').click(function() {
                         if(!$(this).is(':checked')){
-                            total = total - Number(data.result.airkotor);
                             $("#divAirKotor").hide();
+                            tunggakan = tunggakan - Number(data.result.tairkotor);
+                            total = total - Number(data.result.airkotor) - Number(data.result.tairkotor);
                         }
                         else{
-                            total = total + Number(data.result.airkotor);
                             $("#divAirKotor").show();
+                            tunggakan = tunggakan + Number(data.result.tairkotor);
+                            total = total + Number(data.result.airkotor) + Number(data.result.tairkotor);
                         }
+
+                        if(tunggakan != 0){
+                            $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                        }
+                        else{
+                            $("#divTunggakan").hide();
+                        }
+
                         $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     });
                 }
-                if(Number(data.result.tunggakan) != 0){
+                if(tunggakan != 0){
                     $("#divTunggakan").show();
-                    $("#nominalTunggakan").html(Number(data.result.tunggakan).toLocaleString());
-                    total = total + Number(data.result.tunggakan);
+                    $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                    total = total + tunggakan;
                 }
                 if(Number(data.result.denda) != 0){
                     $("#divDenda").show();
