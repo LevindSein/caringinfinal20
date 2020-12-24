@@ -175,6 +175,38 @@
                                 </label>
                             </div>
                             <div class="form-group" style="display:none" id="displayAir">
+                                <div class="col-sm-12 form-check py-3 d-flex flex-row align-items-center justify-content-center">
+                                    <div>
+                                        <input
+                                            checked
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioAlatAir"
+                                            id="normal_airbersih"
+                                            value="normal_airbersih">
+                                        <label class="form-check-label" for="normal_airbersih" style="margin-right:30px;">
+                                            Normal
+                                        </label>
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioAlatAir"
+                                            id="pasang_airbersih"
+                                            value="pasang_airbersih">
+                                        <label class="form-check-label" for="pasang_airbersih" style="margin-right:30px;">
+                                            Pasang
+                                        </label>
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioAlatAir"
+                                            id="ganti_airbersih"
+                                            value="ganti_airbersih">
+                                        <label class="form-check-label" for="ganti_airbersih">
+                                            Ganti
+                                        </label>
+                                    </div>
+                                </div>
                                 <label for="myDiv1">Meteran Air <span style="color:red;">*</span></label>
                                 <div class="form-group" id="myDiv1">
                                     <select class="meterAir" name="meterAir" id="meterAir"></select>
@@ -332,6 +364,38 @@
                                 </label>
                             </div>
                             <div class="form-group" style="display:none" id="displayListrik">
+                                <div class="col-sm-12 form-check py-3 d-flex flex-row align-items-center justify-content-center">
+                                    <div>
+                                        <input
+                                            checked
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioAlatListrik"
+                                            id="normal_listrik"
+                                            value="normal_listrik">
+                                        <label class="form-check-label" for="normal_listrik" style="margin-right:30px;">
+                                            Normal
+                                        </label>
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioAlatListrik"
+                                            id="pasang_listrik"
+                                            value="pasang_listrik">
+                                        <label class="form-check-label" for="pasang_listrik" style="margin-right:30px;">
+                                            Pasang
+                                        </label>
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="radioAlatListrik"
+                                            id="ganti_listrik"
+                                            value="ganti_listrik">
+                                        <label class="form-check-label" for="ganti_listrik">
+                                            Ganti
+                                        </label>
+                                    </div>
+                                </div>
                                 <label for="myDiv2">Meteran Listrik <span style="color:red;">*</span></label>
                                 <div class="form-group" id="myDiv2">
                                     <select class="meterListrik" name="meterListrik" id="meterListrik"></select>

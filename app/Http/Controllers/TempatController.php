@@ -198,10 +198,35 @@ class TempatController extends Controller
                 $tempat->trf_airbersih = 1;
                 $id_meteran_air = $request->meterAir;
                 $tempat->id_meteran_air = $id_meteran_air;
-                $meteran = AlatAir::find($id_meteran_air);
-                $meteran->stt_sedia = 1;
-                $meteran->stt_bayar = 0;
-                $meteran->save();
+
+                //Normal
+                if($request->radioAlatAir == 'normal_airbersih'){
+                    $meteran = AlatAir::find($id_meteran_air);
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+                }
+
+                //Pasang Alat
+                if($request->radioAlatAir == 'pasang_airbersih'){
+                    $meteran = AlatAir::find($id_meteran_air);
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 0;
+                    $meteran->save();
+
+                    //Download Surat Perintah Bayar
+                    //Download Surat Perintah Ganti / Pasang
+                }
+
+                //Ganti Alat
+                if($request->radioAlatAir == 'ganti_airbersih'){
+                    $meteran = AlatAir::find($id_meteran_air);
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+
+                    //Download Surat Perintah Ganti
+                }
 
                 $diskon = array();
                 if($request->radioAirBersih == "semua_airbersih"){
@@ -260,11 +285,38 @@ class TempatController extends Controller
                 $tempat->trf_listrik = 1;
                 $id_meteran_listrik = $request->meterListrik;
                 $tempat->id_meteran_listrik = $id_meteran_listrik;
-                $meteran = AlatListrik::find($id_meteran_listrik);
-                $tempat->daya = $meteran->daya;
-                $meteran->stt_sedia = 1;
-                $meteran->stt_bayar = 0;
-                $meteran->save();
+
+                //Normal
+                if($request->radioAlatListrik == 'normal_listrik'){
+                    $meteran = AlatListrik::find($id_meteran_listrik);
+                    $tempat->daya = $meteran->daya;
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+                }
+
+                //Pasang Alat
+                if($request->radioAlatListrik == 'pasang_listrik'){
+                    $meteran = AlatListrik::find($id_meteran_listrik);
+                    $tempat->daya = $meteran->daya;
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 0;
+                    $meteran->save();
+
+                    //Download Surat Perintah Bayar
+                    //Download Surat Perintah Ganti / Pasang
+                }
+
+                //Ganti Alat
+                if($request->radioAlatListrik == 'ganti_listrik'){
+                    $meteran = AlatListrik::find($id_meteran_listrik);
+                    $tempat->daya = $meteran->daya;
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+
+                    //Download Surat Perintah Ganti
+                }
 
                 if(empty($request->dis_listrik) == FALSE){
                     if($request->persenDiskonListrik == NULL){
@@ -274,14 +326,6 @@ class TempatController extends Controller
                         $tempat->dis_listrik = $request->persenDiskonListrik;
                     }
                 }
-
-                //Tagihan Pasang
-                //Download Surat Perintah Bayar
-                
-
-                //Tagihan Ganti
-                //Ganti Baru atau Ganti Rusak
-                //Download Surat Perintah Bayar
             }
 
             if(empty($request->keamananipk) == FALSE){
@@ -522,10 +566,35 @@ class TempatController extends Controller
                 $tempat->trf_airbersih = 1;
                 $id_meteran_air = $request->meterAir;
                 $tempat->id_meteran_air = $id_meteran_air;
-                $meteran = AlatAir::find($id_meteran_air);
-                $meteran->stt_sedia = 1;
-                $meteran->stt_bayar = 0;
-                $meteran->save();
+
+                //Normal
+                if($request->radioAlatAir == 'normal_airbersih'){
+                    $meteran = AlatAir::find($id_meteran_air);
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+                }
+
+                //Pasang Alat
+                if($request->radioAlatAir == 'pasang_airbersih'){
+                    $meteran = AlatAir::find($id_meteran_air);
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 0;
+                    $meteran->save();
+
+                    //Download Surat Perintah Bayar
+                    //Download Surat Perintah Ganti / Pasang
+                }
+
+                //Ganti Alat
+                if($request->radioAlatAir == 'ganti_airbersih'){
+                    $meteran = AlatAir::find($id_meteran_air);
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+
+                    //Download Surat Perintah Ganti
+                }
 
                 $diskon = array();
                 if($request->radioAirBersih == "semua_airbersih"){
@@ -570,14 +639,6 @@ class TempatController extends Controller
                         $tempat->dis_airbersih = NULL;
                     }
                 }
-
-                //Tagihan Pasang
-                //Download Surat Perintah Bayar
-
-                
-                //Tagihan Ganti
-                //Ganti Baru atau Ganti Rusak
-                //Download Surat Perintah Bayar
             }
             else{
                 if($tempat->trf_airbersih != NULL){
@@ -595,12 +656,39 @@ class TempatController extends Controller
                 $tempat->trf_listrik = 1;
                 $id_meteran_listrik = $request->meterListrik;
                 $tempat->id_meteran_listrik = $id_meteran_listrik;
-                $meteran = AlatListrik::find($id_meteran_listrik);
-                $tempat->daya = $meteran->daya;
-                $meteran->stt_sedia = 1;
-                $meteran->stt_bayar = 0;
-                $meteran->save();
+               
+                //Normal
+                if($request->radioAlatListrik == 'normal_listrik'){
+                    $meteran = AlatListrik::find($id_meteran_listrik);
+                    $tempat->daya = $meteran->daya;
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+                }
 
+                //Pasang Alat
+                if($request->radioAlatListrik == 'pasang_listrik'){
+                    $meteran = AlatListrik::find($id_meteran_listrik);
+                    $tempat->daya = $meteran->daya;
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 0;
+                    $meteran->save();
+
+                    //Download Surat Perintah Bayar
+                    //Download Surat Perintah Ganti / Pasang
+                }
+
+                //Ganti Alat
+                if($request->radioAlatListrik == 'ganti_listrik'){
+                    $meteran = AlatListrik::find($id_meteran_listrik);
+                    $tempat->daya = $meteran->daya;
+                    $meteran->stt_sedia = 1;
+                    $meteran->stt_bayar = 1;
+                    $meteran->save();
+
+                    //Download Surat Perintah Ganti
+                }
+                
                 if(empty($request->dis_listrik) == FALSE){
                     if($request->persenDiskonListrik == NULL){
                         $tempat->dis_listrik = 0;

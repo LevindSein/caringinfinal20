@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
         'dashboard' => \App\Http\Middleware\Dashboard::class,
         'pedagang' => \App\Http\Middleware\Pedagang::class,
         'tempatusaha' => \App\Http\Middleware\TempatUsaha::class,
+        'tagihan' => \App\Http\Middleware\Tagihan::class,
         'tarif' => \App\Http\Middleware\Tarif::class,
         'alatmeter' => \App\Http\Middleware\AlatMeter::class,
         'harilibur' => \App\Http\Middleware\HariLibur::class,

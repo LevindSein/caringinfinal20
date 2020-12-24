@@ -91,8 +91,8 @@
                 </li>
 
                 <!-- Nav Item - Tagihan -->
-                <li class="nav-item {{ (request()->is('tagihan/*')) ? 'active' : '' }}">
-                    <a class="nav-link" href="{{url('tagihan/index/now')}}">
+                <li class="nav-item {{ (request()->is('tagihan*')) ? 'active' : '' }}">
+                    <a class="nav-link" href="{{url('tagihan')}}">
                         <i class="fas fa-fw fa-plus"></i>
                         <span>Tagihan</span></a>
                 </li>

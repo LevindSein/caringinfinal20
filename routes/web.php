@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedagangController;
 use App\Http\Controllers\TempatController;
+use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\TarifController;
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\HariLiburController;
@@ -76,6 +77,12 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
     Route::post('tempatusaha/update', [TempatController::class, 'update']);
     Route::get('tempatusaha/destroy/{id}', [TempatController::class, 'destroy']);
     Route::resource('tempatusaha', TempatController::class);
+});
+
+Route::middleware('ceklogin:tagihan')->group(function (){
+    Route::post('tagihan/update', [TagihanController::class, 'update']);
+    Route::get('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
+    Route::resource('tagihan', TagihanController::class);
 });
 
 Route::middleware('ceklogin:tarif')->group(function(){

@@ -9,7 +9,7 @@ $(document).ready(function () {
 		},
 		columns: [
 			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center' },
-			{ data: 'tagihan', name: 'tagihan', class : 'text-center', orderable: false },
+			{ data: 'tagihan', name: 'tagihan', class : 'text-center' },
 			{ data: 'pengguna', name: 'pengguna', class : 'text-center', orderable: false },
 			{ data: 'lokasi', name: 'lokasi', class : 'text-center', orderable: false },
 			{ data: 'action', name: 'action', class : 'text-center', orderable: false, searchable: false },
