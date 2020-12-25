@@ -12,7 +12,7 @@ $(document).ready(function () {
 		columns: [
 			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center', width: '25%' },
 			{ data: 'tagihan', name: 'tagihan', class : 'text-center', width: '25%' },
-			{ data: 'pengguna', name: 'pengguna', class : 'text-center', width: '20%', orderable: false },
+			{ data: 'pengguna', name: 'pengguna', class : 'text-center', width: '20%' },
 			{ data: 'lokasi', name: 'lokasi', class : 'text-center', width: '20%', orderable: false },
 			{ data: 'action', name: 'action', class : 'text-center', width: '10%', orderable: false, searchable: false },
         ],

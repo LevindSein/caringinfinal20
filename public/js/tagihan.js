@@ -109,7 +109,7 @@ $(document).ready(function(){
 				$('#action_btn').val('Update');
                 $('#myTagihan').modal('show');
 			}
-		})
+        });
     });
 
     $('#form_tagihan').on('submit', function(event){

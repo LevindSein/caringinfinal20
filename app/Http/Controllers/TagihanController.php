@@ -50,13 +50,13 @@ class TagihanController extends Controller
             $data = Tagihan::where('bln_tagihan',$periode);
             return DataTables::of($data)
                 ->addColumn('action', function($data){
-                    // if($data->stt_publish === 0){
+                    if($data->stt_publish === 0){
                         $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
-                    // }
-                    // else{
-                    //     $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
-                    // }
+                    }
+                    else{
+                        $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
+                    }
                     return $button;
                 })
                 ->editColumn('daya_listrik', function ($data) {
@@ -228,6 +228,94 @@ class TagihanController extends Controller
 
                 //Update Tagihan
                 Tagihan::listrik($awal,$akhir,$daya,$id);
+            }
+
+            if($request->stt_airbersih == 'ok'){
+                $awal = $request->awalAir;
+                $awal = explode(',',$awal);
+                $awal = implode("",$awal);
+
+                $akhir = $request->akhirAir;
+                $akhir = explode(',',$akhir);
+                $akhir = implode("",$akhir);
+
+                $tempat = TempatUsaha::where('kd_kontrol',$request->kontrol)->first();
+                if($tempat != NULL){
+                    $meter = AlatAir::find($tempat->id_meteran_air);
+                    if($meter != NULL){
+                        $meter->akhir = $akhir;
+                        $meter->save();
+                    }
+                }
+
+                //Update Tagihan
+                Tagihan::airbersih($awal,$akhir,$id);
+            }
+
+            if($request->stt_keamananipk == 'ok'){
+                $tarif = $request->keamananipk;
+                $tarif = explode(',',$tarif);
+                $tarif = implode("",$tarif);
+
+                $diskon = $request->dis_keamananipk;
+                $diskon = explode(',',$diskon);
+                $diskon = implode("",$diskon);
+
+                if($diskon > $tarif){
+                    $diskon = $tarif;
+                }
+                $tagihan = Tagihan::find($id);
+                $tagihan->sub_keamananipk = $tarif;
+                $tagihan->dis_keamananipk = $diskon;
+                $tagihan->ttl_keamananipk = $tarif - $diskon;
+                $tagihan->sel_keamananipk = $tagihan->ttl_keamananipk - $tagihan->rea_keamananipk;
+                $tagihan->stt_keamananipk = 1;
+                $tagihan->save();
+            }
+
+            if($request->stt_kebersihan == 'ok'){
+                $tarif = $request->kebersihan;
+                $tarif = explode(',',$tarif);
+                $tarif = implode("",$tarif);
+
+                $diskon = $request->dis_kebersihan;
+                $diskon = explode(',',$diskon);
+                $diskon = implode("",$diskon);
+
+                if($diskon > $tarif){
+                    $diskon = $tarif;
+                }
+                $tagihan = Tagihan::find($id);
+                $tagihan->sub_kebersihan = $tarif;
+                $tagihan->dis_kebersihan = $diskon;
+                $tagihan->ttl_kebersihan = $tarif - $diskon;
+                $tagihan->sel_kebersihan = $tagihan->ttl_kebersihan - $tagihan->rea_kebersihan;
+                $tagihan->stt_kebersihan = 1;
+                $tagihan->save();
+            }
+
+            if($request->stt_airkotor == 'ok'){
+                $tarif = $request->airkotor;
+                $tarif = explode(',',$tarif);
+                $tarif = implode("",$tarif);
+
+                $tagihan = Tagihan::find($id);
+                $tagihan->ttl_airkotor = $tarif;
+                $tagihan->sel_airkotor = $tagihan->ttl_airkotor - $tagihan->rea_airkotor;
+                $tagihan->stt_airkotor = 1;
+                $tagihan->save();
+            }
+            
+            if($request->stt_lain == 'ok'){
+                $tarif = $request->lain;
+                $tarif = explode(',',$tarif);
+                $tarif = implode("",$tarif);
+
+                $tagihan = Tagihan::find($id);
+                $tagihan->ttl_lain = $tarif;
+                $tagihan->sel_lain = $tagihan->ttl_lain - $tagihan->rea_lain;
+                $tagihan->stt_lain = 1;
+                $tagihan->save();
             }
 
             Tagihan::totalTagihan($id);
