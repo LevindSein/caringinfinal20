@@ -7,25 +7,38 @@
 <!-- Tambah Content Pada Body Utama -->
 <title>Tagihan Pedagang | BP3C</title>
 <span id="form_result"></span>
+<div id="process" style="display:none;text-align:center;">
+    <p>Please Wait, Updating <img src="{{asset('img/updating.gif')}}"/></p>
+</div>
 <div class = "container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Tagihan Periode {{$periode}}</h6><input type="hidden" id="periode" value="{{$periode}}"/>
             <div>
-                <a 
+                @if(Session::get('sync') != 'off')
+                <button 
+                    type="submit"
+                    title="Sinkronisasi"
+                    class="sync btn btn-sm btn-danger"><b>
+                    <i class="fas fa-fw fa-sync-alt fa-sm text-white-50"></i> Tagihan</b></span>
+                </button>
+                &nbsp;
+                @else
+                <a
                     href="{{url('tagihan/listrik')}}"
                     type="submit"
                     class="btn btn-sm btn-warning"><b>
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Listrik </b> <span class="badge badge-pill badge-light">{{$listrik_badge}}</span>
                 </a>
                 &nbsp;
-                <a 
+                <a
                     href="{{url('tagihan/airbersih')}}"
                     type="submit"
                     class="btn btn-sm btn-info"><b>
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Air Bersih </b> <span class="badge badge-pill badge-light">{{$air_badge}}</span>
                 </a>
                 &nbsp;
+                @endif
                 <div class="dropdown no-arrow" style="display:inline-block">
                     <a 
                         class="dropdown-toggle btn btn-sm btn-success" 

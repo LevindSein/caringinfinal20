@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Exception;
 use App\Models\User;
 use App\Models\LoginLog;
+use App\Models\Sinkronisasi;
 use App\Models\Tagihan;
 use Jenssegers\Agent\Agent;
 
@@ -31,7 +32,7 @@ class CekLogin
                 Session::put('role',$user->role);
                 Session::put('login',$user->username.'-'.$user->role);
 
-                if(LoginLog::count() > 7000){
+                if(LoginLog::count() > 10000){
                     LoginLog::orderBy('id','asc')->limit(1000)->delete();
                 }
 
@@ -135,6 +136,30 @@ class CekLogin
                 $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
                 $roles = array('master','admin');
                 if($validator != NULL){
+                    $date = date('Y-m-d',time());
+                    $check = date('Y-m-25',time());
+                    $time = strtotime($date);
+                    $nanti = date('Y-m-01', strtotime("+1 month", $time));
+                    $sekarang = date('Y-m-01',time());
+                    if($date < $check){
+                        $sync = Sinkronisasi::where('sinkron',$sekarang)->first();
+                        if($sync == NULL){
+                            Session::put('sync',$sekarang);
+                        }
+                        else{
+                            Session::put('sync','off');
+                        }
+                    }
+                    if($date >= $check){
+                        $sync = Sinkronisasi::where('sinkron',$nanti)->first();
+                        if($sync == NULL){
+                            Session::put('sync',$nanti);
+                        }
+                        else{
+                            Session::put('sync','off');
+                        }
+                    }
+
                     if(in_array($explode[1],$roles)){
                         return $next($request);
                     }

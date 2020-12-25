@@ -80,7 +80,12 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 });
 
 Route::middleware('ceklogin:tagihan')->group(function (){
+    Route::get('tagihan/listrik', [TagihanController::class, 'listrik'])->name('listrik');
+    Route::get('tagihan/airbersih', [TagihanController::class, 'airbersih'])->name('airbersih');
+    Route::post('tagihan/listrik', [TagihanController::class, 'listrikUpdate']);
+    Route::post('tagihan/airbersih', [TagihanController::class, 'airbersihUpdate']);
     Route::get('tagihan/print', [TagihanController::class, 'print']);
+    Route::post('tagihan/sinkronisasi', [TagihanController::class, 'sinkronisasi']);
     Route::post('tagihan/update', [TagihanController::class, 'update']);
     Route::get('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
     Route::resource('tagihan', TagihanController::class);

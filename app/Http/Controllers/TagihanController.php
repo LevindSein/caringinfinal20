@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use DataTables;
 use Validator;
 use Exception;
@@ -12,6 +13,8 @@ use App\Models\TempatUsaha;
 use App\Models\AlatListrik;
 use App\Models\AlatAir;
 
+use App\Models\HariLibur;
+use App\Models\Sinkronisasi;
 use App\Models\IndoDate;
 use App\Models\Blok;
 
@@ -30,19 +33,17 @@ class TagihanController extends Controller
     public function index(Request $request)
     {
         $now = date("Y-m-d",time());
-        $check = date("Y-m-26",time());
+        $check = date("Y-m-25",time());
 
         if($now < $check){
             $sekarang = date("Y-m", time());
             $time     = strtotime($sekarang);
             $periode  = date("Y-m", time());
-            $pakai    = date("Y-m", strtotime("-1 month", $time));
         }
         else if($now >= $check){
             $sekarang = date("Y-m", time());
             $time     = strtotime($sekarang);
             $periode  = date("Y-m", strtotime("+1 month", $time));
-            $pakai    = date("Y-m", time());
         }
 
         if($request->ajax())
@@ -60,51 +61,51 @@ class TagihanController extends Controller
                     return $button;
                 })
                 ->editColumn('daya_listrik', function ($data) {
-                    if ($data->daya_listrik == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->daya_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->daya_listrik);
                 })
                 ->editColumn('awal_listrik', function ($data) {
-                    if ($data->awal_listrik == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->awal_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->awal_listrik);
                 })
                 ->editColumn('akhir_listrik', function ($data) {
-                    if ($data->akhir_listrik == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->akhir_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->akhir_listrik);
                 })
                 ->editColumn('ttl_listrik', function ($data) {
-                    if ($data->ttl_listrik == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->ttl_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->ttl_listrik);
                 })
                 ->editColumn('awal_airbersih', function ($data) {
-                    if ($data->awal_airbersih == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->awal_airbersih === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->awal_airbersih);
                 })
                 ->editColumn('akhir_airbersih', function ($data) {
-                    if ($data->akhir_airbersih == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->akhir_airbersih === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->akhir_airbersih);
                 })
                 ->editColumn('ttl_airbersih', function ($data) {
-                    if ($data->ttl_airbersih == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->ttl_airbersih === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->ttl_airbersih);
                 })
                 ->editColumn('ttl_keamananipk', function ($data) {
-                    if ($data->ttl_keamananipk == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->ttl_keamananipk === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->ttl_keamananipk);
                 })
                 ->editColumn('ttl_kebersihan', function ($data) {
-                    if ($data->ttl_kebersihan == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->ttl_kebersihan === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->ttl_kebersihan);
                 })
                 ->editColumn('ttl_airkotor', function ($data) {
-                    if ($data->ttl_airkotor == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->ttl_airkotor === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->ttl_airkotor);
                 })
                 ->editColumn('ttl_lain', function ($data) {
-                    if ($data->ttl_lain == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->ttl_lain === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->ttl_lain);
                 })
                 ->editColumn('ttl_tagihan', function ($data) {
-                    if ($data->ttl_tagihan == NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if ($data->ttl_tagihan === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return number_format($data->ttl_tagihan);
                 })
                 ->rawColumns([
@@ -270,6 +271,14 @@ class TagihanController extends Controller
                 $tagihan->ttl_keamananipk = $tarif - $diskon;
                 $tagihan->sel_keamananipk = $tagihan->ttl_keamananipk - $tagihan->rea_keamananipk;
                 $tagihan->stt_keamananipk = 1;
+
+                //Diskon Tempat
+                $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
+                if($tempat != NULL){
+                    $tempat->dis_keamananipk = $diskon;
+                    $tempat->save();
+                }
+
                 $tagihan->save();
             }
 
@@ -291,6 +300,14 @@ class TagihanController extends Controller
                 $tagihan->ttl_kebersihan = $tarif - $diskon;
                 $tagihan->sel_kebersihan = $tagihan->ttl_kebersihan - $tagihan->rea_kebersihan;
                 $tagihan->stt_kebersihan = 1;
+
+                //Diskon Tempat
+                $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
+                if($tempat != NULL){
+                    $tempat->dis_kebersihan = $diskon;
+                    $tempat->save();
+                }
+
                 $tagihan->save();
             }
 
@@ -387,5 +404,179 @@ class TagihanController extends Controller
         return view('tagihan.print',[
             'dataset'=>$dataset
         ]);
+    }
+
+    public function sinkronisasi(Request $request){
+        if($request->ajax()){
+            try{
+                if(Session::get('sync') != 'off'){
+                    Sinkronisasi::sinkron();
+                }
+                return response()->json(['success' => 'Sinkronisasi Sukses']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => 'Oops! Sinkronisasi Gagal']);
+            }
+        }
+    }
+
+    public function listrik(Request $request){
+        $tagihan = Tagihan::where([['stt_listrik',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
+
+        if($tagihan == NULL){
+            return redirect()->route('tagihan.index');
+        }
+        else{
+            $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_listrik',1]])->orderBy('created_at','desc')->limit(3)->get();
+            if($suggest != NULL){
+                $saran = 0;
+                foreach($suggest as $sug){
+                    $saran = $saran + $sug->pakai_listrik;
+                }
+                $suggest = round($saran / 3);
+                $suggest = $suggest + $tagihan->awal_listrik;
+            }
+            else{
+                $suggest = $tagihan->awal_listrik;
+            }
+            return view('tagihan.listrik',['dataset' => $tagihan, 'suggest' => $suggest]);
+        }
+    }
+
+    public function listrikUpdate(Request $request){
+        $daya = explode(',',$request->daya);
+        $daya = implode('',$daya);
+        
+        $awal = explode(',',$request->awal);
+        $awal = implode('',$awal);
+        
+        $akhir = explode(',',$request->akhir);
+        $akhir = implode('',$akhir);
+        
+        Tagihan::listrik($awal, $akhir, $daya, $request->hidden_id);
+
+        $tempat = TempatUsaha::where('kd_kontrol',$request->kd_kontrol)->first();
+        if($tempat != NULL){
+            $meter = AlatListrik::find($tempat->id_meteran_listrik);
+            if($meter != NULL){
+                $meter->akhir = $akhir;
+                $meter->daya  = $daya;
+                $meter->save();
+            }
+        }
+
+        $nama = Tagihan::find($request->hidden_id);
+        $nama->nama = $request->nama;
+        $nama->save();
+
+        $this->total($request->hidden_id);
+
+        return redirect()->route('listrik');
+    }
+    
+    public function airbersih(){
+        $tagihan = Tagihan::where([['stt_airbersih',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
+
+        if($tagihan == NULL){
+            return redirect()->route('tagihan.index');
+        }
+        else{
+            $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_airbersih',1]])->orderBy('created_at','desc')->limit(3)->get();
+            if($suggest != NULL){
+                $saran = 0;
+                foreach($suggest as $sug){
+                    $saran = $saran + $sug->pakai_airbersih;
+                }
+                $suggest = round($saran / 3);
+                $suggest = $suggest + $tagihan->awal_airbersih;
+            }
+            else{
+                $suggest = $tagihan->awal_airbersih;
+            }
+            return view('tagihan.airbersih',['dataset' => $tagihan, 'suggest' => $suggest]);
+        }
+    }
+
+    public function airbersihUpdate(Request $request){
+        $awal = explode(',',$request->awal);
+        $awal = implode('',$awal);
+        
+        $akhir = explode(',',$request->akhir);
+        $akhir = implode('',$akhir);
+        
+        Tagihan::airbersih($awal, $akhir, $request->hidden_id);
+
+        $tempat = TempatUsaha::where('kd_kontrol',$request->kd_kontrol)->first();
+        if($tempat != NULL){
+            $meter = AlatAir::find($tempat->id_meteran_air);
+            if($meter != NULL){
+                $meter->akhir = $akhir;
+                $meter->save();
+            }
+        }
+
+        $nama = Tagihan::find($request->hidden_id);
+        $nama->nama = $request->nama;
+        $nama->save();
+
+        $this->total($request->hidden_id);
+
+        return redirect()->route('airbersih');
+    }
+
+    public function total($id){
+        $tagihan = Tagihan::find($id);
+        //Subtotal
+        $subtotal = 
+                $tagihan->sub_listrik     + 
+                $tagihan->sub_airbersih   + 
+                $tagihan->sub_keamananipk + 
+                $tagihan->sub_kebersihan  + 
+                $tagihan->ttl_airkotor    + 
+                $tagihan->ttl_lain;
+        $tagihan->sub_tagihan = $subtotal;
+
+        //Diskon
+        $diskon = 
+            $tagihan->dis_listrik     + 
+            $tagihan->dis_airbersih   + 
+            $tagihan->dis_keamananipk + 
+            $tagihan->dis_kebersihan;
+        $tagihan->dis_tagihan = $diskon;
+
+        //Denda
+        $tagihan->den_tagihan = $tagihan->den_listrik + $tagihan->den_airbersih;
+
+        //TOTAL
+        $total = 
+            $tagihan->ttl_listrik     + 
+            $tagihan->ttl_airbersih   + 
+            $tagihan->ttl_keamananipk + 
+            $tagihan->ttl_kebersihan  + 
+            $tagihan->ttl_airkotor    + 
+            $tagihan->ttl_lain;
+        $tagihan->ttl_tagihan = $total;
+
+        //Realisasi
+        $realisasi = 
+                $tagihan->rea_listrik     + 
+                $tagihan->rea_airbersih   + 
+                $tagihan->rea_keamananipk + 
+                $tagihan->rea_kebersihan  + 
+                $tagihan->rea_airkotor    + 
+                $tagihan->rea_lain;
+        $tagihan->rea_tagihan = $realisasi;
+
+        //Selisih
+        $selisih =
+                $tagihan->sel_listrik     + 
+                $tagihan->sel_airbersih   + 
+                $tagihan->sel_keamananipk + 
+                $tagihan->sel_kebersihan  + 
+                $tagihan->sel_airkotor    + 
+                $tagihan->sel_lain;
+        $tagihan->sel_tagihan = $selisih;
+
+        $tagihan->save();
     }
 }

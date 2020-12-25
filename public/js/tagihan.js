@@ -176,6 +176,40 @@ $(document).ready(function(){
             }
         })
     });
+
+    $(document).on('click', '.sync', function(){
+        $('#process').show();
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+		$.ajax({       
+			url: "/tagihan/sinkronisasi",
+            cache:false,
+			method:"POST",
+			dataType:"json",
+			success:function(data)
+			{
+				if(data.errors)
+				{
+                    $('#process').hide();
+                    alert(data.errors);
+                    location.reload();
+				}
+				if(data.success)
+				{
+                    $('#process').hide();
+                    location.reload();
+                }
+            },
+            error: function(data){
+                alert('Oops! Kesalahan Sistem');
+                $('#process').hide();
+                location.reload();
+            }
+		});
+    });
     
     document
         .getElementById('awalListrik')
