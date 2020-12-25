@@ -16,19 +16,6 @@ $(document).ready(function () {
         scrollX: true,
         deferRender: true,
         pageLength: 8,
-        dom: "r<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-        buttons: [
-            {
-                text: '<i class="fas fa-file-excel fa-lg"></i>',
-                extend: 'excel',
-                className: 'btn btn-success bg-gradient-success',
-                title: 'Data Blok',
-                exportOptions: {
-                    columns: [ 0, 1, 2]
-                },
-                titleAttr: 'Download Excel'
-            }
-        ],
         fixedColumns:   {
             "leftColumns": 2,
             "rightColumns": 1,

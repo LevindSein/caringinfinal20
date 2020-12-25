@@ -9,6 +9,8 @@ use Exception;
 
 use App\Models\Tagihan;
 use App\Models\TempatUsaha;
+use App\Models\AlatListrik;
+use App\Models\AlatAir;
 
 use App\Models\IndoDate;
 use App\Models\Blok;
@@ -28,7 +30,7 @@ class TagihanController extends Controller
     public function index(Request $request)
     {
         $now = date("Y-m-d",time());
-        $check = date("Y-m-25",time());
+        $check = date("Y-m-26",time());
 
         if($now < $check){
             $sekarang = date("Y-m", time());
@@ -48,8 +50,13 @@ class TagihanController extends Controller
             $data = Tagihan::where('bln_tagihan',$periode);
             return DataTables::of($data)
                 ->addColumn('action', function($data){
-                    $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
-                    $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                    // if($data->stt_publish === 0){
+                        $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                    // }
+                    // else{
+                    //     $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
+                    // }
                     return $button;
                 })
                 ->editColumn('daya_listrik', function ($data) {
@@ -172,7 +179,12 @@ class TagihanController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(request()->ajax())
+        {
+            $data = Tagihan::findOrFail($id);
+
+            return response()->json(['result' => $data]);
+        }
     }
 
     /**
@@ -182,9 +194,48 @@ class TagihanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try{
+            $id = $request->hidden_id;
+            
+            if($request->stt_listrik == 'ok'){
+                $daya = $request->dayaListrik;
+                $daya = explode(',',$daya);
+                $daya = implode("",$daya);
+
+                $awal = $request->awalListrik;
+                $awal = explode(',',$awal);
+                $awal = implode("",$awal);
+
+                $akhir = $request->akhirListrik;
+                $akhir = explode(',',$akhir);
+                $akhir = implode("",$akhir);
+
+                $tempat = TempatUsaha::where('kd_kontrol',$request->kontrol)->first();
+                if($tempat != NULL){
+                    //Update Meteran
+                    $tempat->daya = $daya;
+                    $tempat->save();
+
+                    $meter = AlatListrik::find($tempat->id_meteran_listrik);
+                    if($meter != NULL){
+                        $meter->akhir = $akhir;
+                        $meter->daya  = $daya;
+                        $meter->save();
+                    }
+                }
+
+                //Update Tagihan
+                Tagihan::listrik($awal,$akhir,$daya,$id);
+            }
+
+            Tagihan::totalTagihan($id);
+            return response()->json(['success' => 'Data Berhasil Diedit.']);
+        }
+        catch(\Exception $e){
+            return response()->json(['errors' => 'Data Gagal Diedit.']);
+        }
     }
 
     /**
@@ -195,6 +246,58 @@ class TagihanController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Tagihan::findOrFail($id);
+        try{
+            $data->delete();
+        }
+        catch(\Exception $e){
+            return response()->json(['status' => 'Data gagal dihapus.']);
+        }
+        return response()->json(['status' => 'Data telah dihapus.']);
+    }
+
+    public function print(){
+        $blok = Blok::select('nama')->get();
+        $dataListrik = array();
+        $dataAir = array();
+        $i = 0;
+        $j = 0;
+        foreach($blok as $b){
+            $tempatListrik = TempatUsaha::where([['blok',$b->nama],['trf_listrik',1]])->count();
+            if($tempatListrik != 0){
+                $dataListrik[$i][0] = $b->nama;
+                $dataListrik[$i][1] = TempatUsaha::where([['tempat_usaha.blok', $b->nama],['trf_listrik',1]])
+                ->leftJoin('user as pengguna','tempat_usaha.id_pengguna','=','pengguna.id')
+                ->leftJoin('meteran_listrik','tempat_usaha.id_meteran_listrik','=','meteran_listrik.id')
+                ->select(
+                    'pengguna.nama as nama',
+                    'tempat_usaha.kd_kontrol as kontrol',
+                    'meteran_listrik.nomor as nomor',
+                    'meteran_listrik.akhir as lalu')
+                ->orderBy('tempat_usaha.kd_kontrol')
+                ->get();
+                $i++;
+            }
+
+            $tempatAir = TempatUsaha::where([['blok',$b->nama],['trf_airbersih',1]])->count();
+            if($tempatAir != 0){
+                $dataAir[$j][0] = $b->nama;
+                $dataAir[$j][1] = TempatUsaha::where([['tempat_usaha.blok', $b->nama],['trf_airbersih',1]])
+                ->leftJoin('user as pengguna','tempat_usaha.id_pengguna','=','pengguna.id')
+                ->leftJoin('meteran_air','tempat_usaha.id_meteran_air','=','meteran_air.id')
+                ->select(
+                    'pengguna.nama as nama',
+                    'tempat_usaha.kd_kontrol as kontrol',
+                    'meteran_air.nomor as nomor',
+                    'meteran_air.akhir as lalu')
+                ->orderBy('tempat_usaha.kd_kontrol')
+                ->get();
+                $j++;
+            }
+        }
+        $dataset = [$dataListrik,$dataAir];
+        return view('tagihan.print',[
+            'dataset'=>$dataset
+        ]);
     }
 }

@@ -8,11 +8,11 @@ $(document).ready(function () {
             cache:false,
 		},
 		columns: [
-			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center' },
-			{ data: 'tagihan', name: 'tagihan', class : 'text-center' },
-			{ data: 'pengguna', name: 'pengguna', class : 'text-center', orderable: false },
-			{ data: 'lokasi', name: 'lokasi', class : 'text-center', orderable: false },
-			{ data: 'action', name: 'action', class : 'text-center', orderable: false, searchable: false },
+			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center', width: '25%' },
+			{ data: 'tagihan', name: 'tagihan', class : 'text-center', width: '25%' },
+			{ data: 'pengguna', name: 'pengguna', class : 'text-center', width: '20%', orderable: false },
+			{ data: 'lokasi', name: 'lokasi', class : 'text-center', width: '20%', orderable: false },
+			{ data: 'action', name: 'action', class : 'text-center', width: '10%', orderable: false, searchable: false },
         ],
         pageLength: 3,
         stateSave: true,
@@ -20,7 +20,7 @@ $(document).ready(function () {
         deferRender: true,
         dom : "r<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         responsive : true,
-    });
+    }).columns.adjust().draw();
 
     var kode_kontrol = '';
     $(document).on('click', '.bayar', function(){

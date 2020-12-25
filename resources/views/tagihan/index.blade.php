@@ -6,10 +6,11 @@
 @section('content')
 <!-- Tambah Content Pada Body Utama -->
 <title>Tagihan Pedagang | BP3C</title>
+<span id="form_result"></span>
 <div class = "container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Tagihan Periode {{$periode}}</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Tagihan Periode {{$periode}}</h6><input type="hidden" id="periode" value="{{$periode}}"/>
             <div>
                 <a 
                     href="{{url('tagihan/listrik')}}"
@@ -59,10 +60,10 @@
                         <div class="dropdown-header">Edaran:</div>
                         <a 
                             class="dropdown-item"
-                            href="{{url('#')}}"
+                            href="{{url('tagihan/print')}}"
                             type="submit" 
                             target="_blank">
-                            <i class="far fa-fw fa-file fa-sm text-gray-500"></i> Print Form
+                            <i class="far fa-fw fa-file fa-sm text-gray-500"></i> Form Pendataan
                         </a>
                         <a 
                             class="dropdown-item" 
@@ -124,6 +125,25 @@
 
 @section('modal')
 <!-- Tambah Content pada Body modal -->
+<div id="confirmModal" class="modal fade" role="dialog" tabIndex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Apakah yakin hapus data tagihan?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <span id="confirm_result"></span>
+            <div class="modal-body-short">Pilih "Hapus" di bawah ini jika anda yakin untuk menghapus data tagihan.</div>
+            <div class="modal-footer">
+            	<button type="button" name="ok_button" id="ok_button" class="btn btn-danger">Hapus</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div
     class="modal fade"
     id="myModal"
@@ -210,6 +230,7 @@
         </div>
     </div>
 </div>
+
 <div
     class="modal fade"
     id="myPembayaran"
@@ -239,6 +260,227 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="cetakPembayaran" class="btn btn-primary btn-sm">Cetak Pembayaran</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div
+    class="modal fade"
+    id="myTagihan"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit_tagihan">Edit Tagihan</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form class="user" id="form_tagihan" method="POST">
+            @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-group col-lg-12">
+                            <label for="kontrol">Kontrol</label>
+                            <input
+                                readonly
+                                required
+                                name="kontrol"
+                                class="form-control"
+                                id="kontrol">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label for="pengguna">Pengguna </label>
+                            <input
+                                readonly
+                                required
+                                name="pengguna"
+                                class="form-control"
+                                id="pengguna">
+                        </div>
+                        <hr>
+
+                        <div id="divEditListrik">
+                            <input type="hidden" name="stt_listrik" id="stt_listrik" val="" />
+                            <div class="form-group col-lg-12">
+                                <label for="dayaListrik">Daya Listrik <span style="color:red;">*</span></label>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="dayaListrik"
+                                    class="form-control"
+                                    id="dayaListrik">
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="awalListrik">Stand Awal Listrik <span style="color:red;">*</span></label>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="awalListrik"
+                                    class="form-control"
+                                    id="awalListrik">
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="akhirListrik">Stand Akhir Listrik <span style="color:red;">*</span></label>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="akhirListrik"
+                                    class="form-control"
+                                    id="akhirListrik">
+                            </div>
+                            <hr>
+                        </div>
+                        
+                        <div id="divEditAirBersih">
+                            <input type="hidden" name="stt_airbersih" id="stt_airbersih" val="" />
+                            <div class="form-group col-lg-12">
+                                <label for="awalAir">Stand Awal Air <span style="color:red;">*</span></label>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="awalAir"
+                                    class="form-control"
+                                    id="awalAir">
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="akhirAir">Stand Akhir Air <span style="color:red;">*</span></label>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="akhirAir"
+                                    class="form-control"
+                                    id="akhirAir">
+                            </div>
+                            <hr>
+                        </div>
+
+                        <div id="divEditKeamananIpk">
+                            <input type="hidden" name="stt_keamananipk" id="stt_keamananipk" val="" />
+                            <div class="form-group col-lg-12">
+                                <label for="keamananipk">Keamanan & IPK <span style="color:red;">*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                    </div>
+                                    <input 
+                                        autocomplete="off"
+                                        type="text" 
+                                        pattern="^[\d,]+$"
+                                        name="keamananipk"
+                                        class="form-control"
+                                        id="keamananipk"
+                                        aria-describedby="inputGroupPrepend">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-10">
+                                <label for="dis_keamananipk">Diskon Keamanan & IPK</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                    </div>
+                                    <input
+                                        autocomplete="off"
+                                        type="text" 
+                                        pattern="^[\d,]+$"
+                                        name="dis_keamananipk"
+                                        class="form-control"
+                                        id="dis_keamananipk"
+                                        aria-describedby="inputGroupPrepend">
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        
+                        <div id="divEditkebersihan">
+                            <input type="hidden" name="stt_kebersihan" id="stt_kebersihan" val="" />
+                            <div class="form-group col-lg-12">
+                                <label for="kebersihan">Kebersihan <span style="color:red;">*</span></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                    </div>
+                                    <input
+                                        autocomplete="off"
+                                        type="text" 
+                                        pattern="^[\d,]+$"
+                                        name="kebersihan"
+                                        class="form-control"
+                                        id="kebersihan"
+                                        aria-describedby="inputGroupPrepend">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-10">
+                                <label for="dis_kebersihan">Diskon Kebersihan</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                    </div>
+                                    <input
+                                        autocomplete="off"
+                                        type="text" 
+                                        pattern="^[\d,]+$"
+                                        name="dis_kebersihan"
+                                        class="form-control"
+                                        id="dis_kebersihan"
+                                        aria-describedby="inputGroupPrepend">
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        
+                        <div id="divEditAirKotor">
+                            <input type="hidden" name="stt_airkotor" id="stt_airkotor" val="" />
+                            <div class="form-group col-lg-12">
+                                <label for="airkotor">Air Kotor <span style="color:red;">*</span></label>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="airkotor"
+                                    class="form-control"
+                                    id="airkotor"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                            <hr>
+                        </div>
+                        
+                        <div id="divEditLain">
+                            <input type="hidden" name="stt_lain" id="stt_lain" val="" />
+                            <div class="form-group col-lg-12">
+                                <label for="lain">Lain - Lain <span style="color:red;">*</span></label>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="lain"
+                                    class="form-control"
+                                    id="lain"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="hidden_id" id="hidden_id" />
+                    <input type="submit" class="btn btn-primary btn-sm" name="action_btn" id="action_btn" value="Edit" />
                 </div>
             </form>
         </div>

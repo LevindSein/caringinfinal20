@@ -201,6 +201,8 @@ class KasirController extends Controller
                 $tanggal = date("Y-m-d", time());
                 $bulan = date("Y-m", time());
                 $tahun = date("Y", time());
+    
+                //--------------------------------------------------------------
                 $pembayaran = new Pembayaran;
                 $pembayaran->tgl_bayar = $tanggal;
                 $pembayaran->bln_bayar = $bulan;
@@ -331,10 +333,9 @@ class KasirController extends Controller
                 if($total != 0){
                     $d->stt_bayar = 1;
                 }
-
-                $d->rea_tagihan = $total;
-                $d->sel_tagihan = $selisih;
                 $d->save();
+
+                Tagihan::totalTagihan($d->id);
             }
             return response()->json(['success' => 'Transaksi Berhasil']);
         } catch(\Exception $e){
@@ -723,6 +724,8 @@ class KasirController extends Controller
                 $tanggal = date("Y-m-d", time());
                 $bulan = date("Y-m", time());
                 $tahun = date("Y", time());
+    
+                //--------------------------------------------------------------
                 $pembayaran = new Pembayaran;
                 $pembayaran->tgl_bayar = $tanggal;
                 $pembayaran->bln_bayar = $bulan;
@@ -734,6 +737,7 @@ class KasirController extends Controller
                 $pembayaran->kd_kontrol = $d->kd_kontrol;
                 $pembayaran->pengguna = $d->nama;
                 $pembayaran->id_tagihan = $d->id;
+
                 $total = 0;
                 $selisih = $d->sel_tagihan;
 
@@ -852,10 +856,9 @@ class KasirController extends Controller
                 if($total != 0){
                     $d->stt_bayar = 1;
                 }
-
-                $d->rea_tagihan = $total;
-                $d->sel_tagihan = $selisih;
                 $d->save();
+
+                Tagihan::totalTagihan($d->id);
             }
             return response()->json(['success' => 'Transaksi Berhasil']);
         } catch(\Exception $e){

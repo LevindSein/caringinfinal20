@@ -80,6 +80,7 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 });
 
 Route::middleware('ceklogin:tagihan')->group(function (){
+    Route::get('tagihan/print', [TagihanController::class, 'print']);
     Route::post('tagihan/update', [TagihanController::class, 'update']);
     Route::get('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
     Route::resource('tagihan', TagihanController::class);
