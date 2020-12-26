@@ -73,10 +73,10 @@ $(document).ready(function(){
 			{
 				$('#kontrol').val(data.result.kd_kontrol);
                 $('#pengguna').val(data.result.nama);
-                var listrik = 0;
-                var air = 0;
-                var keamananipk = 0;
-                var kebersihan = 0;
+                var listrik = 1;
+                var air = 1;
+                var keamananipk = 1;
+                var kebersihan = 1;
                 
                 if(data.result.sub_listrik != 0 ){
                     $('#divEditListrik').show();
