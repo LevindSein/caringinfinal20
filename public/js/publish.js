@@ -21,6 +21,7 @@ $(document).ready(function () {
         },
     });
 
+    localStorage.setItem("update", "0");
     $(document).on('click', '#publish', function(){
         $('#process').show();
         $.ajaxSetup({
@@ -47,6 +48,8 @@ $(document).ready(function () {
                     alert(data.success);
                     window.close();
                 }
+
+                localStorage.setItem("update", "1");
             },
             error: function(data){
                 alert('Oops! Kesalahan Sistem');

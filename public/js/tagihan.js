@@ -40,6 +40,13 @@ $(document).ready(function(){
         ]
     });
 
+    window.setInterval(function(){
+        if(localStorage["update"] == "1"){
+            localStorage["update"] = "0";
+            $('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
+        }
+    }, 500);
+
     $(document).on('click', '.edit', function(){
 		id = $(this).attr('id');
         $('#form_tagihan')[0].reset();
@@ -350,6 +357,13 @@ $(document).ready(function(){
                 $('#ok_button').text('Hapus');
             }
         })
+    });
+    
+    $('#publish').click(function(){
+        window.open(
+            '/tagihan/publish',
+            '_blank'
+        );
     });
 
     $(document).on('click', '.sync', function(){

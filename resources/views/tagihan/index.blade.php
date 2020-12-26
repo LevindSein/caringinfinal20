@@ -52,13 +52,12 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                         <div class="dropdown-header">Preview Tagihan:</div>
-                        <a 
+                        <button
                             class="dropdown-item" 
-                            href="{{url('tagihan/publish')}}"
-                            target="_blank"
+                            id="publish"
                             type="submit">
                             <i class="fas fa-fw fa-paper-plane fa-sm text-gray-500"></i> Publish
-                        </a>
+                        </button>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-header">Periode:</div>
                         <a 
