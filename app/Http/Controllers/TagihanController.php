@@ -739,13 +739,9 @@ class TagihanController extends Controller
         if($request->ajax()){
             try{
                 $dataset = Tagihan::where('stt_publish',0)->get();
-                // foreach($dataset as $d){
-                //     $d->stt_publish = 1;
-                //     $d->save();
-                // }
-                for($i = 0; $i < 5; $i++){
-                    $dataset[$i]->stt_publish = 1;
-                    $dataset[$i]->save();
+                foreach($dataset as $d){
+                    $d->stt_publish = 1;
+                    $d->save();
                 }
                 return response()->json(['success' => 'Publish Sukses']);
             }
