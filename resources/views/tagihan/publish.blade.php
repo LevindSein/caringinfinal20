@@ -45,54 +45,93 @@
 
     <body id="page-top">   
         <div class="se-pre-con"> </div>
+        <div id="process" style="display:none;text-align:center;">
+            <p>Please Wait, Updating <img src="{{asset('img/updating.gif')}}"/></p>
+        </div>
         <div class = "container-fluid">
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <div class="table-responsive ">
                         <table
-                            class="table"
+                            class="table table-bordered"
                             id="tabelPublish"
                             width="100%"
                             cellspacing="0"
                             style="font-size:0.75rem;">
-                            <thead class="table-bordered">
+                            <thead>
                                 <tr>
-                                    <th colspan="12" style="width:100%">Publish</th>
+                                    <th colspan="12">
+                                        <button
+                                            id="publish"
+                                            type="submit"
+                                            class="publish btn btn-danger"><b>
+                                            <i class="fas fa-fw fa-paper-plane fa-sm text-white-50"></i> PUBLISH NOW</b>
+                                        </button>
+                                    </th>
                                 </tr>
                                 <tr>
-                                    <th rowspan="2" style="width:5%">Kontrol</th>
-                                    <th rowspan="2" style="width:5%">Pengguna</th>
-                                    <th colspan="3" style="width:15%" class="listrik">Listrik</th>
-                                    <th colspan="2" style="width:10%" class="air">Air Bersih</th>
-                                    <th rowspan="2" style="width:5%" class="keamanan">K.aman IPK</th>
-                                    <th rowspan="2" style="width:5%" class="kebersihan">Kebersihan</th>
-                                    <th rowspan="2" style="width:5%;background-color:rgba(50, 255, 255, 0.2);">A.Kotor</th>
-                                    <th rowspan="2" style="width:5%;background-color:rgba(255, 50, 255, 0.2);">Lain&#178;</th>
-                                    <th rowspan="2" style="width:5%;background-color:rgba(255, 212, 71, 0.2);">Jumlah</th>
+                                    <th rowspan="2">Kontrol</th>
+                                    <th rowspan="2">Pengguna</th>
+                                    <th colspan="3" class="listrik">Listrik</th>
+                                    <th colspan="2" class="air">Air Bersih</th>
+                                    <th rowspan="2" class="keamanan">K.aman IPK</th>
+                                    <th rowspan="2" class="kebersihan">Kebersihan</th>
+                                    <th rowspan="2" style="background-color:rgba(50, 255, 255, 0.2);">A.Kotor</th>
+                                    <th rowspan="2" style="background-color:rgba(255, 50, 255, 0.2);">Lain&#178;</th>
+                                    <th rowspan="2" style="background-color:rgba(255, 212, 71, 0.2);">Jumlah</th>
                                 </tr>
                                 <tr>
-                                    <th style="width:5%" class="listrik-hover">Daya</th>
-                                    <th style="width:5%" class="listrik-hover">Pakai</th>
-                                    <th style="width:5%" class="listrik-hover">Total</th>
-                                    <th style="width:5%" class="air-hover">Pakai</th>
-                                    <th style="width:5%" class="air-hover">Total</th>
+                                    <th class="listrik-hover">Daya</th>
+                                    <th class="listrik-hover">Pakai</th>
+                                    <th class="listrik-hover">Total</th>
+                                    <th class="air-hover">Pakai</th>
+                                    <th class="air-hover">Total</th>
                                 </tr>
                             </thead>
-                            <tbody class="table-bordered">
+                            <tbody>
                                 @foreach($dataset as $d)
+                                <?php $warna = max($d->warna_listrik, $d->warna_airbersih); ?>
                                 <tr>
-                                    <td style="width:5%" class="text-center">{{$d->kd_kontrol}}</td>
-                                    <td style="width:5%" class="text-left">{{substr($d->nama,0,10)}}</td>
-                                    <td style="width:5%">{{number_format($d->daya_listrik)}}</td>
-                                    <td style="width:5%">{{number_format($d->pakai_listrik)}}</td>
-                                    <td style="width:5%">{{number_format($d->ttl_listrik)}}</td>
-                                    <td style="width:5%">{{number_format($d->pakai_airbersih)}}</td>
-                                    <td style="width:5%">{{number_format($d->ttl_airbersih)}}</td>
-                                    <td style="width:5%">{{number_format($d->ttl_keamananipk)}}</td>
-                                    <td style="width:5%">{{number_format($d->ttl_kebersihan)}}</td>
-                                    <td style="width:5%">{{number_format($d->ttl_airkotor)}}</td>
-                                    <td style="width:5%">{{number_format($d->ttl_lain)}}</td>
-                                    <td style="width:5%">{{number_format($d->ttl_tagihan)}}</td>
+                                    @if($warna == 1 || $warna == 2)
+                                    <td style="color:#f6c23e;" class="text-center listrik-hover">{{$d->kd_kontrol}}</td>
+                                    <td style="color:#f6c23e;" class="text-left listrik-hover"><span>{{substr($d->nama,0,20)}}</span></td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->daya_listrik)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->pakai_listrik)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->ttl_listrik)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->pakai_airbersih)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->ttl_airbersih)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->ttl_keamananipk)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->ttl_kebersihan)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->ttl_airkotor)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->ttl_lain)}}</td>
+                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->ttl_tagihan)}}</td>
+                                    @elseif($warna == 3)
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);" class="text-center">{{$d->kd_kontrol}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);" class="text-left"><span>{{substr($d->nama,0,20)}}</span></td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->daya_listrik)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->pakai_listrik)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->ttl_listrik)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->pakai_airbersih)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->ttl_airbersih)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->ttl_keamananipk)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->ttl_kebersihan)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->ttl_airkotor)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->ttl_lain)}}</td>
+                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->ttl_tagihan)}}</td>
+                                    @else
+                                    <td class="text-center">{{$d->kd_kontrol}}</td>
+                                    <td class="text-left">{{substr($d->nama,0,20)}}</td>
+                                    <td>{{number_format($d->daya_listrik)}}</td>
+                                    <td>{{number_format($d->pakai_listrik)}}</td>
+                                    <td>{{number_format($d->ttl_listrik)}}</td>
+                                    <td>{{number_format($d->pakai_airbersih)}}</td>
+                                    <td>{{number_format($d->ttl_airbersih)}}</td>
+                                    <td>{{number_format($d->ttl_keamananipk)}}</td>
+                                    <td>{{number_format($d->ttl_kebersihan)}}</td>
+                                    <td>{{number_format($d->ttl_airkotor)}}</td>
+                                    <td>{{number_format($d->ttl_lain)}}</td>
+                                    <td>{{number_format($d->ttl_tagihan)}}</td>
+                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -102,22 +141,7 @@
             </div>    
         </div>
 
-        <script>
-            $(document).ready(function () {
-                $(
-                    '#tabelPublish'
-                ).DataTable({
-                    "scrollCollapse": true,
-                    "deferRender": true,
-                    "dom": "r<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'><'col-sm-12 col-md-7'>>",
-                    fixedHeader: {
-                        header: true,
-                    },
-                    "paging":false,
-                    "ordering":false,
-                }).draw();
-            });
-        </script>
+        <script src="{{asset('js/publish.js')}}"></script>
 
         <script>
             $(window).load(function () {
