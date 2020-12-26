@@ -55,38 +55,11 @@
     <input type="hidden" name="hidden_id" id="hidden_id" value="{{$dataset->id}}">
     <input type="hidden" name="kd_kontrol" id="kd_kontrol" value="{{$dataset->kd_kontrol}}">
     <div class="form-group col-lg-12">
-        <Input type="submit" value="Tambah Tagihan" class="btn btn-primary btn-user btn-block">
+        <Input type="submit" id="tambah" value="Tambah Tagihan" class="btn btn-primary btn-user btn-block">
     </div>
 </form>
 @endsection
 
 @section('jsplus')
-<script>
-$(document).ready(function(){
-    document
-        .getElementById('akhir')
-        .addEventListener(
-            'input',
-            event => event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
-        );
-    
-    document
-        .getElementById('awal')
-        .addEventListener(
-            'input',
-            event => event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
-        );
-    document
-        .getElementById('daya')
-        .addEventListener(
-            'input',
-            event => event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
-        );
-
-    var input = $("#akhir");
-    var len = input.val().length;
-    input[0].focus();
-    input[0].setSelectionRange(len, len);
-});
-</script>
+<script src="{{asset('js/form-listrik.js')}}"></script>
 @endsection

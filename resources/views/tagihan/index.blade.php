@@ -54,7 +54,7 @@
                         <div class="dropdown-header">Preview Tagihan:</div>
                         <a 
                             class="dropdown-item" 
-                            href="#"
+                            href="{{url('tagihan/publish')}}"
                             target="_blank"
                             type="submit">
                             <i class="fas fa-fw fa-paper-plane fa-sm text-gray-500"></i> Publish
@@ -110,8 +110,8 @@
                         <tr>
                             <th rowspan="2">Kontrol</th>
                             <th rowspan="2">Pengguna</th>
-                            <th colspan="4" class="listrik">Listrik</th>
-                            <th colspan="3" class="air">Air</th>
+                            <th colspan="5" class="listrik">Listrik</th>
+                            <th colspan="4" class="air">Air</th>
                             <th rowspan="2" class="keamanan">Keamanan IPK (Rp.)</th>
                             <th rowspan="2" class="kebersihan">Kebersihan (Rp.)</th>
                             <th rowspan="2" style="background-color:rgba(50, 255, 255, 0.2);">Air Kotor (Rp.)</th>
@@ -123,9 +123,11 @@
                             <th class="listrik-hover">Daya</th>
                             <th class="listrik-hover">Lalu</th>
                             <th class="listrik-hover">Baru</th>
+                            <th class="listrik-hover">Pakai</th>
                             <th class="listrik-hover">Total (Rp.)</th>
                             <th class="air-hover">Lalu</th>
                             <th class="air-hover">Baru</th>
+                            <th class="air-hover">Pakai</th>
                             <th class="air-hover">Total (Rp.)</th>
                         </tr>
                     </thead>

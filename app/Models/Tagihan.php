@@ -93,6 +93,8 @@ class Tagihan extends Model
         'ket',
         'via_tambah',
         'stt_publish',
+        'warna_airbersih',
+        'warna_listrik',
         'updated_at',
         'created_at'
     ];
@@ -183,6 +185,38 @@ class Tagihan extends Model
         $tagihan->sel_listrik = $tagihan->ttl_listrik - $tagihan->rea_listrik;
         
         $tagihan->stt_listrik = 1;
+
+        $warna = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_listrik',1]])->orderBy('id','desc')->limit(3)->get();
+        if($warna != NULL){
+            $warna_ku = 0;
+            foreach($warna as $war){
+                $warna_ku = $warna_ku + $war->pakai_listrik;
+            }
+            $warna = round($warna_ku / 3);
+        
+            $lima_persen             = $warna * (5/100);
+            $seratussepuluh_persen   = ($warna * (110/100)) + $warna;
+            $seratuslimapuluh_persen = ($warna * (150/100)) + $warna;
+            
+            if($pakai_listrik <= $lima_persen){
+                $warna = 1;
+            }
+            else if($pakai_listrik >= $seratussepuluh_persen && $pakai_listrik < $seratuslimapuluh_persen){
+                $warna = 2;
+            }
+            else if($pakai_listrik >= $seratuslimapuluh_persen){
+                $warna = 3;
+            }
+            else{
+                $warna = 0;
+            }
+        }
+        else{
+            $warna = 0;
+        }
+
+        $tagihan->warna_listrik = $warna;
+        
         $tagihan->save();
     }
 
@@ -277,6 +311,38 @@ class Tagihan extends Model
         $tagihan->sel_airbersih = $tagihan->ttl_airbersih - $tagihan->rea_airbersih;
         
         $tagihan->stt_airbersih = 1;
+
+        $warna = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_airbersih',1]])->orderBy('id','desc')->limit(3)->get();
+        if($warna != NULL){
+            $warna_ku = 0;
+            foreach($warna as $war){
+                $warna_ku = $warna_ku + $war->pakai_airbersih;
+            }
+            $warna = round($warna_ku / 3);
+        
+            $lima_persen             = $warna * (5/100);
+            $seratussepuluh_persen   = ($warna * (110/100)) + $warna;
+            $seratuslimapuluh_persen = ($warna * (150/100)) + $warna;
+            
+            if($pakai_airbersih <= $lima_persen){
+                $warna = 1;
+            }
+            else if($pakai_airbersih >= $seratussepuluh_persen && $pakai_airbersih < $seratuslimapuluh_persen){
+                $warna = 2;
+            }
+            else if($pakai_airbersih >= $seratuslimapuluh_persen){
+                $warna = 3;
+            }
+            else{
+                $warna = 0;
+            }
+        }
+        else{
+            $warna = 0;
+        }
+
+        $tagihan->warna_airbersih = $warna;
+       
         $tagihan->save();
     }
 

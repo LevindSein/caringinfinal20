@@ -61,52 +61,200 @@ class TagihanController extends Controller
                     return $button;
                 })
                 ->editColumn('daya_listrik', function ($data) {
-                    if ($data->daya_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->daya_listrik);
+                    $hasil = number_format($data->daya_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->daya_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('awal_listrik', function ($data) {
-                    if ($data->awal_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->awal_listrik);
+                    $hasil = number_format($data->awal_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->awal_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('akhir_listrik', function ($data) {
-                    if ($data->akhir_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->akhir_listrik);
+                    $hasil = number_format($data->akhir_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->akhir_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('pakai_listrik', function ($data) {
+                    $hasil = number_format($data->pakai_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->pakai_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('ttl_listrik', function ($data) {
-                    if ($data->ttl_listrik === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->ttl_listrik);
+                    $hasil = number_format($data->ttl_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('awal_airbersih', function ($data) {
-                    if ($data->awal_airbersih === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->awal_airbersih);
+                    $hasil = number_format($data->awal_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->awal_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('akhir_airbersih', function ($data) {
-                    if ($data->akhir_airbersih === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->akhir_airbersih);
+                    $hasil = number_format($data->akhir_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->akhir_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('pakai_airbersih', function ($data) {
+                    $hasil = number_format($data->pakai_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->pakai_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('ttl_airbersih', function ($data) {
-                    if ($data->ttl_airbersih === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->ttl_airbersih);
+                    $hasil = number_format($data->ttl_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('ttl_keamananipk', function ($data) {
-                    if ($data->ttl_keamananipk === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->ttl_keamananipk);
+                    $hasil = number_format($data->ttl_keamananipk);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_keamananipk === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('ttl_kebersihan', function ($data) {
-                    if ($data->ttl_kebersihan === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->ttl_kebersihan);
+                    $hasil = number_format($data->ttl_kebersihan);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_kebersihan === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('ttl_airkotor', function ($data) {
-                    if ($data->ttl_airkotor === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->ttl_airkotor);
+                    $hasil = number_format($data->ttl_airkotor);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_airkotor === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('ttl_lain', function ($data) {
-                    if ($data->ttl_lain === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->ttl_lain);
+                    $hasil = number_format($data->ttl_lain);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_lain === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->editColumn('ttl_tagihan', function ($data) {
-                    if ($data->ttl_tagihan === NULL) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($data->ttl_tagihan);
+                    $hasil = number_format($data->ttl_tagihan);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_tagihan === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
                 })
                 ->rawColumns([
                     'action',
@@ -114,9 +262,11 @@ class TagihanController extends Controller
                     'daya_listrik',
                     'awal_listrik',
                     'akhir_listrik',
+                    'pakai_listrik',
                     'ttl_listrik',
                     'awal_airbersih',
                     'akhir_airbersih',
+                    'pakai_airbersih',
                     'ttl_airbersih',
                     'ttl_keamananipk',
                     'ttl_kebersihan',
@@ -427,7 +577,7 @@ class TagihanController extends Controller
             return redirect()->route('tagihan.index');
         }
         else{
-            $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_listrik',1]])->orderBy('created_at','desc')->limit(3)->get();
+            $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_listrik',1]])->orderBy('id','desc')->limit(3)->get();
             if($suggest != NULL){
                 $saran = 0;
                 foreach($suggest as $sug){
@@ -481,7 +631,7 @@ class TagihanController extends Controller
             return redirect()->route('tagihan.index');
         }
         else{
-            $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_airbersih',1]])->orderBy('created_at','desc')->limit(3)->get();
+            $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_airbersih',1]])->orderBy('id','desc')->limit(3)->get();
             if($suggest != NULL){
                 $saran = 0;
                 foreach($suggest as $sug){
@@ -578,5 +728,10 @@ class TagihanController extends Controller
         $tagihan->sel_tagihan = $selisih;
 
         $tagihan->save();
+    }
+
+    public function publish(){
+        $dataset = Tagihan::where('stt_publish',0)->get();
+        return view('tagihan.publish',['dataset' => $dataset]);
     }
 }
