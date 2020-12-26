@@ -416,7 +416,7 @@
                             <hr>
                         </div>
                         
-                        <div id="divEditkebersihan">
+                        <div id="divEditKebersihan">
                             <input type="hidden" name="stt_kebersihan" id="stt_kebersihan" val="" />
                             <div class="form-group col-lg-12">
                                 <label for="kebersihan">Kebersihan <span style="color:red;">*</span></label>

@@ -132,7 +132,7 @@ $(document).ready(function(){
                     });
                 }
 
-                if(data.result.sub_airbersih != 0 ){
+                if(data.result.sub_airbersih !== 0 ){
                     $('#divEditAirBersih').show();
                     $('#stt_airbersih').val('ok');
                     $('#awalAir').val(data.result.awal_airbersih.toLocaleString());
@@ -175,7 +175,7 @@ $(document).ready(function(){
                     });
                 }
 
-                if(data.result.sub_keamananipk != 0 ){
+                if(data.result.sub_keamananipk !== 0 ){
                     $('#divEditKeamananIpk').show();
                     $('#stt_keamananipk').val('ok');
                     $('#keamananipk').val(data.result.sub_keamananipk.toLocaleString());
@@ -217,7 +217,7 @@ $(document).ready(function(){
                     });
                 }
                 
-                if(data.result.sub_kebersihan != 0 ){
+                if(data.result.sub_kebersihan !== 0 ){
                     $('#divEditKebersihan').show();
                     $('#stt_kebersihan').val('ok');
                     $('#kebersihan').val(data.result.sub_kebersihan.toLocaleString());

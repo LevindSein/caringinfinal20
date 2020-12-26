@@ -60,6 +60,34 @@ class TagihanController extends Controller
                     }
                     return $button;
                 })
+                ->editColumn('kd_kontrol', function ($data) {
+                    $hasil = $data->kd_kontrol;
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->kd_kontrol === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('nama', function ($data) {
+                    $hasil = $data->nama;
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->nama === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
                 ->editColumn('daya_listrik', function ($data) {
                     $hasil = number_format($data->daya_listrik);
                     $warna = max($data->warna_airbersih, $data->warna_listrik);
@@ -259,6 +287,8 @@ class TagihanController extends Controller
                 ->rawColumns([
                     'action',
                     'los',
+                    'kd_kontrol',
+                    'nama',
                     'daya_listrik',
                     'awal_listrik',
                     'akhir_listrik',
