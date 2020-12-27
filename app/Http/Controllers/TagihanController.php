@@ -1044,7 +1044,7 @@ class TagihanController extends Controller
 
             $ket = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
             if($ket != NULL){
-                $ket = $ket->lok_tempat;
+                $ket = $ket;
             }
             else{
                 $ket = '';
@@ -1113,7 +1113,7 @@ class TagihanController extends Controller
             
             $ket = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
             if($ket != NULL){
-                $ket = $ket->lok_tempat;
+                $ket = $ket;
             }
             else{
                 $ket = '';

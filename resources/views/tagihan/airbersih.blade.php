@@ -15,12 +15,21 @@
             class="form-control"
             id="nama">
     </div>
-    @if($ket != '')
+    <div class="form-group col-lg-12">
+        <label for="lokasi">No.Los</label>
+        <input
+            readonly
+            value="{{$ket->no_alamat}}"
+            name="lokasi"
+            class="form-control"
+            id="lokasi">
+    </div>
+    @if($ket->lok_tempat != NULL)
     <div class="form-group col-lg-12">
         <label for="ket">Kode Sebelumnya</label>
         <input
             readonly
-            value="{{$ket}}"
+            value="{{$ket->lok_tempat}}"
             name="ket"
             class="form-control"
             id="ket">
