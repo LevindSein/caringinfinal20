@@ -1041,7 +1041,16 @@ class TagihanController extends Controller
             else{
                 $suggest = $tagihan->awal_listrik;
             }
-            return view('tagihan.listrik',['dataset' => $tagihan, 'suggest' => $suggest]);
+
+            $ket = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
+            if($ket != NULL){
+                $ket = $ket->lok_tempat;
+            }
+            else{
+                $ket = '';
+            }
+
+            return view('tagihan.listrik',['dataset' => $tagihan, 'suggest' => $suggest, 'ket' => $ket]);
         }
     }
 
@@ -1101,7 +1110,16 @@ class TagihanController extends Controller
             else{
                 $suggest = $tagihan->awal_airbersih;
             }
-            return view('tagihan.airbersih',['dataset' => $tagihan, 'suggest' => $suggest]);
+            
+            $ket = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
+            if($ket != NULL){
+                $ket = $ket->lok_tempat;
+            }
+            else{
+                $ket = '';
+            }
+
+            return view('tagihan.airbersih',['dataset' => $tagihan, 'suggest' => $suggest, 'ket' => $ket]);
         }
     }
 

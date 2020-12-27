@@ -102,15 +102,27 @@ class Tagihan extends Model
 
     public static function fasilitas($id,$fas){
         try{
-            $data = DB::table('tagihan')
-            ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
-            ->where([
-                ['tagihan.kd_kontrol',$id],
-                ['tagihan.stt_lunas',0],
-                ['tempat_usaha.trf_'.$fas,'!=',NULL]
-            ])
-            ->select(DB::raw("SUM(sel_$fas) as selisih"))
-            ->get();
+            if($fas == 'diskon'){
+                $data = DB::table('tagihan')
+                ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                ->where([
+                    ['tagihan.kd_kontrol',$id],
+                    ['tagihan.stt_lunas',0]
+                ])
+                ->select(DB::raw("SUM(sel_tagihan) as selisih"))
+                ->get();
+            }
+            else{
+                $data = DB::table('tagihan')
+                ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                ->where([
+                    ['tagihan.kd_kontrol',$id],
+                    ['tagihan.stt_lunas',0]
+                ])
+                ->select(DB::raw("SUM(sel_$fas) as selisih"))
+                ->get();
+            }
+            
             return $data[0]->selisih;
         }
         catch(\Exception $e){

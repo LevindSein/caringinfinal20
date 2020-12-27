@@ -1,3 +1,4 @@
+<?php use App\Models\Tagihan; ?>
 @extends('tempatusaha.index')
 @section('body')
 <title>Pengguna Fasilitas | BP3C</title>
@@ -36,7 +37,7 @@
         <tbody class="table-bordered">
         @foreach($dataset as $data)
         <?php 
-        $tagihan = Tagihan::fasilitas($data->id,$fas);
+        $tagihan = Tagihan::fasilitas($data->kd_kontrol,$fas);
         ?>
             <td class="text-center"
                     <?php if($data->stt_cicil==0){ ?> style="color:green;" <?php } ?>
@@ -52,28 +53,28 @@
                 </td>
                 <td class="text-left">{{$data->pengguna}}</td>
                 <td class="text-center">
-                    @if($data->dis_listrik == 1)
+                    @if($data->dis_listrik !== NULL)
                     <i class="fas fa-check"></i>
                     @else
                     <i class="fas fa-times"></i>
                     @endif
                 </td>
                 <td class="text-center">
-                    @if($data->dis_airbersih == 1)
+                    @if($data->dis_airbersih !== NULL)
                     <i class="fas fa-check"></i>
                     @else
                     <i class="fas fa-times"></i>
                     @endif
                 </td>
                 <td class="text-center">
-                    @if($data->dis_keamananipk == 1)
+                    @if($data->dis_keamananipk !== NULL)
                     <i class="fas fa-check"></i>
                     @else
                     <i class="fas fa-times"></i>
                     @endif
                 </td>
                 <td class="text-center">
-                    @if($data->dis_kebersihan == 1)
+                    @if($data->dis_kebersihan !== NULL)
                     <i class="fas fa-check"></i>
                     @else
                     <i class="fas fa-times"></i>
@@ -84,9 +85,9 @@
                 <td class="text-left">{{$data->bentuk_usaha}}</td>
                 <td class="text-center">
                     @if($data->stt_tempat == 1)
-                        &#10004;
+                    <i class="fas fa-check"></i>
                     @elseif($data->stt_tempat == 2)
-                        &#10060;
+                    <i class="fas fa-times"></i>
                     @else
                         &nbsp;
                     @endif

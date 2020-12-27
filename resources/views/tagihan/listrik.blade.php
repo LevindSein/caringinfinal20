@@ -15,6 +15,17 @@
             class="form-control"
             id="nama">
     </div>
+    @if($ket != '')
+    <div class="form-group col-lg-12">
+        <label for="ket">Kode Sebelumnya</label>
+        <input
+            readonly
+            value="{{$ket}}"
+            name="ket"
+            class="form-control"
+            id="ket">
+    </div>
+    @endif
     <div class="form-group col-lg-12">
         <label for="daya">Daya Listrik <span style="color:red;">*</span></label>
         <input
