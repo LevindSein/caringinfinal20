@@ -192,7 +192,7 @@ $(document).ready(function () {
 				if(data.success)
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
-                    ajax_print('/kasir/bayar/periode' + kode_kontrol);
+                    // ajax_print('/kasir/bayar/periode' + kode_kontrol);
 					$('#tabelKasir').DataTable().ajax.reload(function(){}, false);
 				}
                 $('#myRincian').modal('hide');

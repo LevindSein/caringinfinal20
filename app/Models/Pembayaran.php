@@ -34,8 +34,10 @@ class Pembayaran extends Model
         'sel_airkotor',
         'byr_lain',
         'sel_lain',
+        'sub_tagihan',
         'diskon',
-        'total',
+        'ttl_tagihan',
+        'realisasi',
         'sel_tagihan',
         'updated_at',
         'created_at'

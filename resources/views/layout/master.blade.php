@@ -150,10 +150,10 @@
                 </li>
 
                 <!-- Nav Item - Data -->
-                <li class="nav-item {{ (request()->is('data*')) ? 'active' : '' }}">
-                    <a class="nav-link" href="{{url('data')}}">
+                <li class="nav-item {{ (request()->is('datausaha*')) ? 'active' : '' }}">
+                    <a class="nav-link" href="{{url('datausaha')}}">
                         <i class="fa fa-list"></i>
-                        <span>Data</span></a>
+                        <span>Data Usaha</span></a>
                 </li>
                 <!-- Divider -->
                 <hr class="sidebar-divider">

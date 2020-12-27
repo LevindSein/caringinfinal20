@@ -9,6 +9,11 @@ use App\Models\IndoDate;
 
 class PemakaianController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('pemakaian');
+    }
+
     public function index(){
         return view('pemakaian.index',[
             'dataset'=>Pemakaian::data()

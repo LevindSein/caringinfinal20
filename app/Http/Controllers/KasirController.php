@@ -268,8 +268,10 @@ class KasirController extends Controller
                     $selisih = $selisih - $pembayaran->byr_lain;
                 }
 
+                $pembayaran->sub_tagihan = $d->sub_tagihan;
                 $pembayaran->diskon = $d->dis_tagihan;
-                $pembayaran->total = $total;
+                $pembayaran->ttl_tagihan = $d->ttl_tagihan;
+                $pembayaran->realisasi = $total;
                 $pembayaran->sel_tagihan = $selisih;
                 $pembayaran->save();
 
@@ -450,67 +452,6 @@ class KasirController extends Controller
     }
 
     public function bayar($kontrol){
-        // $time = date("d/m/Y H:i:s", time());
-        // $blnSekarang = date("Y-m", time());
-        // $blnLalu = strtotime($blnSekarang);
-        // $blnPakai = date("Y-m", strtotime("-2 month", $blnLalu)); //-1 month seharusnya
-        // $blnTagihan = Kasir::indoBln($blnSekarang);
-
-        // $tagihan = Tagihan::where([['id_tempat',$id],['stt_lunas',0],['bln_pakai',$blnPakai]])
-        // ->select(
-        //     'nama as pengguna',
-        //     'kd_kontrol as kontrol',
-        //     'awal_airbersih as awalAir',
-        //     'akhir_airbersih as akhirAir',
-        //     'pakai_airbersih as pakaiAir',
-        //     'awal_listrik as awalListrik',
-        //     'akhir_listrik as akhirListrik',
-        //     'pakai_listrik as pakaiListrik',
-        //     'sel_listrik as listrik', 
-        //     'sel_airbersih as airbersih', 
-        //     'sel_keamananipk as keamananipk',
-        //     'sel_kebersihan as kebersihan',
-        //     'sel_airkotor as airkotor',
-        //     'sel_lain as lain')
-        // ->first();
-
-        // $tunggakan = Tagihan::where([['id_tempat',$id],['stt_lunas',0],['bln_pakai','<',$blnPakai]])
-        // ->select(
-        //     DB::raw('SUM(sel_tagihan) as tunggakan'),
-        //     DB::raw('SUM(den_tagihan) as denda'))
-        // ->get();
-
-        // $total = Tagihan::where([['id_tempat',$id],['stt_lunas',0]])
-        // ->select(DB::raw('SUM(sel_lain) as lain'),DB::raw('SUM(sel_tagihan) as total'))
-        // ->get();
-
-        // $awalListrik = number_format($tagihan->awalListrik);
-        // $akhirListrik = number_format($tagihan->akhirListrik);
-        // $pakaiListrik = number_format($tagihan->pakaiListrik);
-        // $listrik = number_format($tagihan->listrik);
-        
-        // $awalAir = number_format($tagihan->awalAir);
-        // $akhirAir = number_format($tagihan->akhirAir);
-        // $pakaiAir = number_format($tagihan->pakaiAir);
-        // $airbersih = number_format($tagihan->airbersih);
-
-        // $keamananipk = number_format($tagihan->keamananipk);
-
-        // $kebersihan = number_format($tagihan->kebersihan);
-
-        // $airkotor = number_format($tagihan->airkotor);
-
-        // $pengguna = $tagihan->pengguna;
-        // $kontrol = $tagihan->kontrol;
-
-        // $denda = number_format($tunggakan[0]->denda);
-        // $tunggakan = number_format($tunggakan[0]->tunggakan - $tagihan->lain);
-        // $lain = number_format($total[0]->lain);
-
-        // $total = number_format($total[0]->total);
-
-        // $kasir = Session::get('username');
-
         // $profile = CapabilityProfile::load("POS-5890");
         // $connector = new RawbtPrintConnector();
         // $printer = new Printer($connector,$profile);
@@ -624,60 +565,42 @@ class KasirController extends Controller
         //             new StrukLarge("Denda", '', '', '', $denda, 'denda'),
         //             new StrukLarge("Lain Lain", '', '', '', $lain, 'lain'),
         //         );
-    
         //         // Content
-        //         $printer->text("\n\n");
-        //         $printer->text("                           BADAN PENGELOLA PUSAT PERDAGANGAN CARINGIN                            \n");
-        //         $printer->text("                                 KEMITRAAN KOPPAS INDUK BANDUNG                                  \n");
-        //         $printer->text("                                        SEGI PEMBAYARAN                                          \n");
-        //         $printer->text("=================================================================================================\n");
-        //         $printer->text(new StrukLarge("Pengguna : ".$pengguna, '', '', '', "Kasir   : ".$kasir, 'header'));
-        //         $printer->text(new StrukLarge("Kontrol  : ".$kontrol, '', '', '', "Tagihan : ".$blnTagihan, 'header'));
-        //         $printer->text("--- FASILITAS --------------- AWAL ------------- AKHIR ------------- PAKAI ----------- JUMLAH ---\n");
-        //         foreach ($items as $item) {
-        //             $printer -> text($item);
-        //         }
-        //         $printer->text("-------------------------------------------------------------------------------------------------\n");
-        //         $printer->text(new StrukLarge("Total Pembayaran", '', '', '', "Rp. ".$total, 'total'));
-        //         $printer->text("-------------------------------------------------------------------------------------------------\n");
-        //         $printer->text(new StrukLarge("Dibayar pada ".$time." - Total pembayaran telah termasuk PPN", '', '', '', '', 'footer')."\n");
-                
-        //         // // Content
-        //         // $printer->text("\n ------------------------------------------ \n");
-        //         // $printer->text("|             BADAN  PENGELOLA             |\n");
-        //         // $printer->text("|        PUSAT PERDAGANGAN CARINGIN        |\n");
-        //         // $printer->text("|             BUKTI PEMBAYARAN             |\n");
-        //         // $printer->text(" ---------------- DES 2020 ---------------- \n");
-        //         // $printer->text("| Pedagang : BTN                           |\n");
-        //         // $printer->text("| Kontrol  : A-1-001                       |\n");
-        //         // $printer->text("| Kasir    : Demo Kasir                    |\n");
-        //         // $printer->text("| -- FASILITAS ------------------ HARGA -- |\n");
-        //         // $printer->text("| 1. Listrik                    11,000,000 |\n");
-        //         // $printer->text("|      + Daya       10,300                 |\n");
-        //         // $printer->text("|        Awal      655,583                 |\n");
-        //         // $printer->text("|        Akhir     656,683                 |\n");
-        //         // $printer->text("|        Pakai       1,100                 |\n");
-        //         // $printer->text("| 2. Air Bersih                 11,000,000 |\n");
-        //         // $printer->text("|      + Awal       23,541                 |\n");
-        //         // $printer->text("|        Akhir      23,662                 |\n");
-        //         // $printer->text("|        Pakai         121                 |\n");
-        //         // $printer->text("| 3. Keamanan IPK               11,000,000 |\n");
-        //         // $printer->text("| 4. Kebersihan                 11,000,000 |\n");
-        //         // $printer->text("| 5. Air Kotor                  11,000,000 |\n");
-        //         // $printer->text("| 6. Tunggakan                  11,000,000 |\n");
-        //         // $printer->text("| 7. Denda                      11,000,000 |\n");
-        //         // $printer->text("| 8. Lain - Lain                11,000,000 |\n");
-        //         // $printer->text(" ------------------------------------------ \n");
-        //         // $printer->text("| TOTAL                     Rp. 11,000,000 |\n");
-        //         // $printer->text(" ------------------------------------------ \n");
-        //         // $printer->text("        No.Faktur : 00167/2020/12/12        \n");
-        //         // $printer->text("      Dibayar pada 12/12/2020 14:42:55      \n");
-        //         // $printer->text("    Total pembayaran sudah termasuk PPN.    \n");
-        //         // $printer->text("    Struk ini merupakan bukti pembayaran    \n");
-        //         // $printer->text("         yang sah, Harap disimpan.          \n");
+        //         $printer->text("\n ------------------------------------------ \n");
+        //         $printer->text("|             BADAN  PENGELOLA             |\n");
+        //         $printer->text("|        PUSAT PERDAGANGAN CARINGIN        |\n");
+        //         $printer->text("|             BUKTI PEMBAYARAN             |\n");
+        //         $printer->text(" ---------------- DES 2020 ---------------- \n");
+        //         $printer->text("| Pedagang : BTN                           |\n");
+        //         $printer->text("| Kontrol  : A-1-001                       |\n");
+        //         $printer->text("| Kasir    : Demo Kasir                    |\n");
+        //         $printer->text("| -- FASILITAS ------------------ HARGA -- |\n");
+        //         $printer->text("| 1. Listrik                    11,000,000 |\n");
+        //         $printer->text("|      + Daya       10,300                 |\n");
+        //         $printer->text("|        Awal      655,583                 |\n");
+        //         $printer->text("|        Akhir     656,683                 |\n");
+        //         $printer->text("|        Pakai       1,100                 |\n");
+        //         $printer->text("| 2. Air Bersih                 11,000,000 |\n");
+        //         $printer->text("|      + Awal       23,541                 |\n");
+        //         $printer->text("|        Akhir      23,662                 |\n");
+        //         $printer->text("|        Pakai         121                 |\n");
+        //         $printer->text("| 3. Keamanan IPK               11,000,000 |\n");
+        //         $printer->text("| 4. Kebersihan                 11,000,000 |\n");
+        //         $printer->text("| 5. Air Kotor                  11,000,000 |\n");
+        //         $printer->text("| 6. Tunggakan                  11,000,000 |\n");
+        //         $printer->text("| 7. Denda                      11,000,000 |\n");
+        //         $printer->text("| 8. Lain - Lain                11,000,000 |\n");
+        //         $printer->text(" ------------------------------------------ \n");
+        //         $printer->text("| TOTAL                     Rp. 11,000,000 |\n");
+        //         $printer->text(" ------------------------------------------ \n");
+        //         $printer->text("        No.Faktur : 00167/2020/12/12        \n");
+        //         $printer->text("      Dibayar pada 12/12/2020 14:42:55      \n");
+        //         $printer->text("    Total pembayaran sudah termasuk PPN.    \n");
+        //         $printer->text("    Struk ini merupakan bukti pembayaran    \n");
+        //         $printer->text("         yang sah, Harap disimpan.          \n");
         //     }
         // } catch (Exception $e) {
-        //     return redirect()->route('kasirindex','now')->with('error','Kesalahan Sistem');
+        //     return redirect()->route('kasir.index');
         // } finally {
         //     $printer->close();
         // }
@@ -791,8 +714,10 @@ class KasirController extends Controller
                     $selisih = $selisih - $pembayaran->byr_lain;
                 }
 
+                $pembayaran->sub_tagihan = $d->sub_tagihan;
                 $pembayaran->diskon = $d->dis_tagihan;
-                $pembayaran->total = $total;
+                $pembayaran->ttl_tagihan = $d->ttl_tagihan;
+                $pembayaran->realisasi = $total;
                 $pembayaran->sel_tagihan = $selisih;
                 $pembayaran->save();
 

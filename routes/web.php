@@ -9,6 +9,8 @@ use App\Http\Controllers\PedagangController;
 use App\Http\Controllers\TempatController;
 use App\Http\Controllers\TagihanController;
 use App\Http\Controllers\PemakaianController;
+use App\Http\Controllers\PendapatanController;
+use App\Http\Controllers\DataUsahaController;
 use App\Http\Controllers\TarifController;
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\HariLiburController;
@@ -99,6 +101,19 @@ Route::middleware('ceklogin:tagihan')->group(function (){
 Route::middleware('ceklogin:pemakaian')->group(function(){
     Route::get('rekap/pemakaian', [PemakaianController::class, 'index']);
     Route::get('rekap/pemakaian/{fasilitas}/{bulan}',[PemakaianController::class, 'fasilitas']);
+});
+
+Route::middleware('ceklogin:pendapatan')->group(function(){
+    Route::get('rekap/pendapatan/tahunan', [PendapatanController::class, 'tahunan']);
+    Route::get('rekap/pendapatan/bulanan', [PendapatanController::class, 'bulanan']);
+    Route::resource('rekap/pendapatan', PendapatanController::class);
+});
+
+Route::middleware('ceklogin:datausaha')->group(function(){
+    Route::get('datausaha/penghapusan', [DataUsahaController::class, 'penghapusan']);
+    Route::get('datausaha/bongkaran', [DataUsahaController::class, 'bongkaran']);
+    Route::get('datausaha/tunggakan', [DataUsahaController::class, 'tunggakan']);
+    Route::resource('datausaha', DataUsahaController::class);
 });
 
 Route::middleware('ceklogin:tarif')->group(function(){

@@ -191,6 +191,42 @@ class CekLogin
                 }
             }
 
+            if($page == 'pendapatan'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','admin','manajer');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
+            if($page == 'datausaha'){
+                $explode = explode('-',Session::get('login'));
+                $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
+                $roles = array('master','admin','manajer');
+                if($validator != NULL){
+                    if(in_array($explode[1],$roles)){
+                        return $next($request);
+                    }
+                    else{
+                        abort(403);
+                    }
+                }
+                else{
+                    Session::flush();
+                    return redirect()->route('login')->with('info','Silahkan Login Terlebih Dahulu');
+                }
+            }
+
             if($page == 'tarif'){
                 $explode = explode('-',Session::get('login'));
                 $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
