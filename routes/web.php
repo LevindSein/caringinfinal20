@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PedagangController;
 use App\Http\Controllers\TempatController;
 use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\PemakaianController;
 use App\Http\Controllers\TarifController;
 use App\Http\Controllers\AlatController;
 use App\Http\Controllers\HariLiburController;
@@ -93,6 +94,11 @@ Route::middleware('ceklogin:tagihan')->group(function (){
     Route::post('tagihan/update', [TagihanController::class, 'update']);
     Route::get('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
     Route::resource('tagihan', TagihanController::class);
+});
+
+Route::middleware('ceklogin:pemakaian')->group(function(){
+    Route::get('rekap/pemakaian', [PemakaianController::class, 'index']);
+    Route::get('rekap/pemakaian/{fasilitas}/{bulan}',[PemakaianController::class, 'fasilitas']);
 });
 
 Route::middleware('ceklogin:tarif')->group(function(){

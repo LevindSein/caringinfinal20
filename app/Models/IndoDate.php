@@ -46,4 +46,23 @@ class IndoDate extends Model
         $pecahkan = explode('-', $date);
         return $tanggal[ (int)$pecahkan[1] ] . $separator . $pecahkan[0];
     }
+
+    public static function bulanB($date,$separator){
+        $tanggal = array (
+            1 =>   'JANUARI',
+            'FEBRUARI',
+            'MARET',
+            'APRIL',
+            'MEI',
+            'JUNI',
+            'JULI',
+            'AGUSTUS',
+            'SEPTEMBER',
+            'OKTOBER',
+            'NOVEMBER',
+            'DESEMBER'
+        );
+        $pecahkan = explode('-', $date);
+        return $tanggal[ (int)$pecahkan[1] ] . $separator . $pecahkan[0];
+    }
 }
