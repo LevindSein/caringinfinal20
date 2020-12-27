@@ -48,10 +48,19 @@ class TagihanController extends Controller
             $time     = strtotime($sekarang);
             $periode  = date("Y-m", strtotime("+1 month", $time));
         }
+        
+        if(Session::get('role') == 'admin')
+            $wherein = Session::get('otoritas')[0]->blok;
 
         if($request->ajax())
         {
-            $data = Tagihan::where('bln_tagihan',$periode);
+            if(Session::get('role') == 'admin'){
+                $wherein = Session::get('otoritas')[0]->blok;
+                $data = Tagihan::where('bln_tagihan',$periode)->whereIn('blok',$wherein);
+            }
+            else{
+                $data = Tagihan::where('bln_tagihan',$periode);
+            }
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->stt_publish === 0){
@@ -310,17 +319,34 @@ class TagihanController extends Controller
                 ->make(true);
         }
 
-        return view('tagihan.index',[
-            'periode'       => IndoDate::bulan($periode,' '),
-            'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-            'blok'          => Blok::select('nama')->get(),
-            'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
-                                ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
-                                ->count(),
-            'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
-                                ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
-                                ->count(),
-        ]);
+        if(Session::get('role') == 'admin'){
+            return view('tagihan.index',[
+                'periode'       => IndoDate::bulan($periode,' '),
+                'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
+                'blok'          => Blok::select('nama')->get(),
+                'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->whereIn('tagihan.blok',$wherein)
+                                    ->count(),
+                'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->whereIn('tagihan.blok',$wherein)
+                                    ->count(),
+            ]);
+        }
+        else{
+            return view('tagihan.index',[
+                'periode'       => IndoDate::bulan($periode,' '),
+                'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
+                'blok'          => Blok::select('nama')->get(),
+                'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->count(),
+                'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->count(),
+            ]);
+        }
     }
 
     public function periode(Request $request){
@@ -329,9 +355,18 @@ class TagihanController extends Controller
         Session::put('thn_periode',$request->tahun);
         Session::put('periode', $periode);
         
+        if(Session::get('role') == 'admin')
+            $wherein = Session::get('otoritas')[0]->blok;
+        
         if($request->ajax())
         {
-            $data = Tagihan::where('bln_tagihan',Session::get('periode'));
+            if(Session::get('role') == 'admin'){
+                $wherein = Session::get('otoritas')[0]->blok;
+                $data = Tagihan::where('bln_tagihan',Session::get('periode'))->whereIn('blok',$wherein);;
+            }
+            else{
+                $data = Tagihan::where('bln_tagihan',Session::get('periode'));
+            }
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->stt_publish === 0){
@@ -590,17 +625,34 @@ class TagihanController extends Controller
                 ->make(true);
         }
 
-        return view('tagihan.periode',[
-            'periode'       => IndoDate::bulan($periode,' '),
-            'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-            'blok'          => Blok::select('nama')->get(),
-            'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
-                                ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
-                                ->count(),
-            'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
-                                ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
-                                ->count(),
-        ]);
+        if(Session::get('role') == 'admin'){
+            return view('tagihan.periode',[
+                'periode'       => IndoDate::bulan($periode,' '),
+                'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
+                'blok'          => Blok::select('nama')->get(),
+                'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->whereIn('tagihan.blok',$wherein)
+                                    ->count(),
+                'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->whereIn('tagihan.blok',$wherein)
+                                    ->count(),
+            ]);
+        }
+        else{
+            return view('tagihan.periode',[
+                'periode'       => IndoDate::bulan($periode,' '),
+                'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
+                'blok'          => Blok::select('nama')->get(),
+                'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->count(),
+                'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->count(),
+            ]);
+        }
     }
 
     /**
@@ -965,7 +1017,13 @@ class TagihanController extends Controller
     }
 
     public function listrik(Request $request){
-        $tagihan = Tagihan::where([['stt_listrik',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
+        if(Session::get('role') == 'admin'){
+            $wherein = Session::get('otoritas')[0]->blok;
+            $tagihan = Tagihan::where([['stt_listrik',0],['stt_publish',0]])->whereIn('blok',$wherein)->orderBy('kd_kontrol','asc')->first();
+        }
+        else{
+            $tagihan = Tagihan::where([['stt_listrik',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
+        }
 
         if($tagihan == NULL){
             return redirect()->route('tagihan.index');
@@ -1019,7 +1077,13 @@ class TagihanController extends Controller
     }
     
     public function airbersih(){
-        $tagihan = Tagihan::where([['stt_airbersih',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
+        if(Session::get('role') == 'admin'){
+            $wherein = Session::get('otoritas')[0]->blok;
+            $tagihan = Tagihan::where([['stt_airbersih',0],['stt_publish',0]])->whereIn('blok',$wherein)->orderBy('kd_kontrol','asc')->first();
+        }
+        else{
+            $tagihan = Tagihan::where([['stt_airbersih',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
+        }
 
         if($tagihan == NULL){
             return redirect()->route('tagihan.index');
@@ -1612,7 +1676,7 @@ class TagihanController extends Controller
                 return response()->json(['success' => 'Data Tagihan Ditambah.']);
             }
             catch(\Exception $e){
-                return response()->json(['errors' => $e]);
+                return response()->json(['errors' => 'Data Gagal Ditambah.']);
             }
         }
     }

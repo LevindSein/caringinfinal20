@@ -1,0 +1,11 @@
+0 = blok array
+1 = pedagang
+2 = tempatusaha
+3 = tagihan
+4 = blok
+5 = pemakaian
+6 = pendapatan
+7 = datausaha
+8 = alatmeter
+9 = tarif 
+10 = harilibur

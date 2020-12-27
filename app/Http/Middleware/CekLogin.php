@@ -53,6 +53,13 @@ class CekLogin
                 if($user->role === 'kasir') {
                     return redirect()->route('kasir.index');
                 }
+
+                if($user->role === 'admin') {
+                    if($user->otoritas != NULL){
+                        Session::put('otoritas',json_decode($user->otoritas));
+                    }
+                    return redirect()->route('dashboard')->with('success','Selamat Datang');
+                }
             }catch(\Exception $e){
                 return redirect()->route('login')->with('error','Username atau Password Salah');
             }
@@ -62,7 +69,7 @@ class CekLogin
             if($page == 'dashboard'){
                 $explode = explode('-',Session::get('login'));
                 $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
-                $roles = array('master','manajer');
+                $roles = array('master','manajer','admin');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
                         return $next($request);
@@ -101,7 +108,12 @@ class CekLogin
                 $roles = array('master','admin');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[1]->pedagang)
+                            return $next($request);
+                        else if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -119,7 +131,12 @@ class CekLogin
                 $roles = array('master','admin','manajer');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[2]->tempatusaha)
+                            return $next($request);
+                        else if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -161,7 +178,12 @@ class CekLogin
                     }
 
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[3]->tagihan)
+                            return $next($request);
+                        else if(Session::get('role') == 'master')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -179,7 +201,12 @@ class CekLogin
                 $roles = array('master','admin','manajer');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[5]->pemakaian)
+                            return $next($request);
+                        else if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -197,7 +224,12 @@ class CekLogin
                 $roles = array('master','admin','manajer');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[6]->pendapatan)
+                            return $next($request);
+                        else if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -215,7 +247,12 @@ class CekLogin
                 $roles = array('master','admin','manajer');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[7]->datausaha)
+                            return $next($request);
+                        else if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -233,7 +270,12 @@ class CekLogin
                 $roles = array('master','admin');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[9]->tarif)
+                            return $next($request);
+                        else if(Session::get('role') == 'master')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -251,7 +293,12 @@ class CekLogin
                 $roles = array('master','admin');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[8]->alatmeter)
+                            return $next($request);
+                        else if(Session::get('role') == 'master')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -269,7 +316,12 @@ class CekLogin
                 $roles = array('master','admin');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[10]->harilibur)
+                            return $next($request);
+                        else if(Session::get('role') == 'master')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);
@@ -287,7 +339,12 @@ class CekLogin
                 $roles = array('master','admin');
                 if($validator != NULL){
                     if(in_array($explode[1],$roles)){
-                        return $next($request);
+                        if(Session::get('role') == 'admin' && Session::get('otoritas')[4]->blok)
+                            return $next($request);
+                        else if(Session::get('role') == 'master')
+                            return $next($request);
+                        else
+                            abort(403);
                     }
                     else{
                         abort(403);

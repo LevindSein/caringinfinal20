@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 use App\Models\TarifListrik;
 use App\Models\TarifAirBersih;
@@ -121,6 +122,8 @@ class Tagihan extends Model
         $tarif = TarifListrik::find(1);
         $tagihan = Tagihan::find($id);
 
+        $tagihan->via_tambah  = Session::get('username');
+        
         $batas_rekmin = round(18 * $daya /1000);
         $pakai_listrik = $akhir - $awal;
 
@@ -223,6 +226,8 @@ class Tagihan extends Model
     public static function airbersih($awal,$akhir,$id){
         $tarif = TarifAirBersih::find(1);
         $tagihan = Tagihan::find($id);
+
+        $tagihan->via_tambah  = Session::get('username');
 
         $pakai_airbersih = $akhir - $awal;
         if($pakai_airbersih > 10){
