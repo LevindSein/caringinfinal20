@@ -178,6 +178,8 @@
     </div>
 </div>
 
+<input type="hidden" id="bln_periode" value="{{Session::get('bln_periode')}}" />
+<input type="hidden" id="thn_periode" value="{{Session::get('thn_periode')}}" />
 <div
     class="modal fade"
     id="myModal"
@@ -732,5 +734,5 @@
 
 @section('js')
 <!-- Tambah Content pada Body JS -->
-<script src="{{asset('js/tagihan.js')}}"></script>
+<script src="{{asset('js/tagihan-periode.js')}}"></script>
 @endsection
