@@ -80,6 +80,7 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 });
 
 Route::middleware('ceklogin:tagihan')->group(function (){
+    Route::post('tagihan/tambah', [TagihanController::class, 'tambah']);
     Route::get('tagihan/publish', [TagihanController::class, 'publish']);
     Route::post('tagihan/publish', [TagihanController::class, 'publishStore']);
     Route::get('tagihan/listrik', [TagihanController::class, 'listrik'])->name('listrik');

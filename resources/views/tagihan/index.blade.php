@@ -93,6 +93,19 @@
                             type="submit">
                             <i class="fas fa-fw fa-dollar-sign fa-sm text-gray-500"></i> Pembayaran
                         </a>
+                        @if(Session::get('sync') == 'off')
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-header">Tagihan:</div>
+                        <button 
+                            id="tambah_manual"
+                            class="dropdown-item" 
+                            href="#" 
+                            data-toggle="modal" 
+                            data-target="#myManual"
+                            type="submit">
+                            <i class="fas fa-fw fa-plus fa-sm text-gray-500"></i> Manual
+                        </button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -457,17 +470,19 @@
                             <input type="hidden" name="stt_airkotor" id="stt_airkotor" val="" />
                             <div class="form-group col-lg-12">
                                 <label for="airkotor">Air Kotor <span style="color:red;">*</span></label>
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                    </div>
+                                    <input
+                                        autocomplete="off"
+                                        type="text" 
+                                        pattern="^[\d,]+$"
+                                        name="airkotor"
+                                        class="form-control"
+                                        id="airkotor"
+                                        aria-describedby="inputGroupPrepend">
                                 </div>
-                                <input
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="airkotor"
-                                    class="form-control"
-                                    id="airkotor"
-                                    aria-describedby="inputGroupPrepend">
                             </div>
                             <hr>
                         </div>
@@ -476,17 +491,19 @@
                             <input type="hidden" name="stt_lain" id="stt_lain" val="" />
                             <div class="form-group col-lg-12">
                                 <label for="lain">Lain - Lain <span style="color:red;">*</span></label>
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                    </div>
+                                    <input
+                                        autocomplete="off"
+                                        type="text" 
+                                        pattern="^[\d,]+$"
+                                        name="lain"
+                                        class="form-control"
+                                        id="lain"
+                                        aria-describedby="inputGroupPrepend">
                                 </div>
-                                <input
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="lain"
-                                    class="form-control"
-                                    id="lain"
-                                    aria-describedby="inputGroupPrepend">
                             </div>
                             <hr>
                         </div>
@@ -495,6 +512,209 @@
                 <div class="modal-footer">
                     <input type="hidden" name="hidden_id" id="hidden_id" />
                     <input type="submit" class="btn btn-primary btn-sm" name="action_btn" id="action_btn" value="Edit" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div
+    class="modal fade"
+    id="myManual"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit_tagihan">Tambah Tagihan Manual</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form class="user" id="form_manual" method="POST">
+            @csrf
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="form-group col-lg-12">
+                            <label for="kontrol">Kontrol</label>
+                            <div class="form-group">
+                                <select class="kontrol_manual form-control" name="kontrol_manual" id="kontrol_manual" required></select>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label for="pengguna_manual">Pengguna </label>
+                            <div class="form-group">
+                                <select class="pengguna_manual form-control" name="pengguna_manual" id="pengguna_manual" required></select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group col-lg-12">
+                            <label for="dayaListrik_manual">Daya Listrik</label>
+                            <input
+                                autocomplete="off"
+                                type="text" 
+                                pattern="^[\d,]+$"
+                                name="dayaListrik_manual"
+                                class="form-control"
+                                id="dayaListrik_manual">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label for="awalListrik_manual">Stand Awal Listrik</label>
+                            <input
+                                autocomplete="off"
+                                type="text" 
+                                pattern="^[\d,]+$"
+                                name="awalListrik_manual"
+                                class="form-control"
+                                id="awalListrik_manual">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label for="akhirListrik_manual">Stand Akhir Listrik</label>
+                            <input
+                                autocomplete="off"
+                                type="text" 
+                                pattern="^[\d,]+$"
+                                name="akhirListrik_manual"
+                                class="form-control"
+                                id="akhirListrik_manual">
+                        </div>
+                        <hr>
+                        <div class="form-group col-lg-12">
+                            <label for="awalAir">Stand Awal Air</label>
+                            <input
+                                autocomplete="off"
+                                type="text" 
+                                pattern="^[\d,]+$"
+                                name="awalAir_manual"
+                                class="form-control"
+                                id="awalAir_manual">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label for="akhirAir">Stand Akhir Air</label>
+                            <input
+                                autocomplete="off"
+                                type="text" 
+                                pattern="^[\d,]+$"
+                                name="akhirAir_manual"
+                                class="form-control"
+                                id="akhirAir_manual">
+                        </div>
+                        <hr>
+                        
+                        <div class="form-group col-lg-12">
+                            <label for="keamananipk_manual">Keamanan & IPK</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input 
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="keamananipk_manual"
+                                    class="form-control"
+                                    id="keamananipk_manual"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-10">
+                            <label for="dis_keamananipk_manual">Diskon Keamanan & IPK</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="dis_keamananipk_manual"
+                                    class="form-control"
+                                    id="dis_keamananipk_manual"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class="form-group col-lg-12">
+                            <label for="kebersihan_manual">Kebersihan</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="kebersihan_manual"
+                                    class="form-control"
+                                    id="kebersihan_manual"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-10">
+                            <label for="dis_kebersihan_manual">Diskon Kebersihan</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="dis_kebersihan_manual"
+                                    class="form-control"
+                                    id="dis_kebersihan_manual"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class="form-group col-lg-12">
+                            <label for="airkotor_manual">Air Kotor</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="airkotor_manual"
+                                    class="form-control"
+                                    id="airkotor_manual"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class="form-group col-lg-12">
+                            <label for="lain_manual">Lain - Lain</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
+                                </div>
+                                <input
+                                    autocomplete="off"
+                                    type="text" 
+                                    pattern="^[\d,]+$"
+                                    name="lain_manual"
+                                    class="form-control"
+                                    id="lain_manual"
+                                    aria-describedby="inputGroupPrepend">
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="stt_listrik_manual" name="stt_listrik_manual" value="" />
+                    <input type="hidden" id="stt_airbersih_manual" name="stt_airbersih_manual" value="" />
+                    <input type="hidden" id="stt_keamananipk_manual" name="stt_keamananipk_manual" value="" />
+                    <input type="hidden" id="stt_kebersihan_manual" name="stt_kebersihan_manual" value="" />
+                    <input type="hidden" id="stt_airkotor_manual" name="stt_airkotor_manual" value="" />
+                    <input type="hidden" id="stt_lain_manual" name="stt_lain_manual" value="" />
+                    <input type="submit" id="action_btn_manual" class="btn btn-primary btn-sm" value="Tambah Tagihan" />
                 </div>
             </form>
         </div>
