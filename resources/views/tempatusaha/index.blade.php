@@ -1,4 +1,4 @@
-@extends(Session::get('role') == 'master' ? 'layout.master' : (Session::get('role') == 'admin' ? 'layout.admin' : 'layout.manajer'))
+@extends('layout.master')
 @section('head')
 <!-- Tambah Content Pada Head -->
 @endsection
@@ -17,6 +17,7 @@
                     class="btn btn-sm btn-info"><b><i class="fas fa-fw fa-home fa-sm text-white"></i></b>
                 </a>
                 &nbsp;
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin')
                 <button 
                     type="button"
                     name="add_tempat"
@@ -24,6 +25,7 @@
                     class="btn btn-sm btn-success"><b>
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Tempat Usaha</b></button>
                 &nbsp;
+                @endif
                 <a 
                     href="{{url('tempatusaha/rekap')}}" 
                     type="submit"

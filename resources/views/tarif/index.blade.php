@@ -1,4 +1,4 @@
-@extends( Session::get('role') == 'master' ? 'layout.master' : 'layout.admin')
+@extends('layout.master')
 @section('head')
 <!-- Tambah Content Pada Head -->
 @endsection

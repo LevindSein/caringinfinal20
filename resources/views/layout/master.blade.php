@@ -55,51 +55,70 @@
                 <a
                     class="sidebar-brand d-flex align-items-center justify-content-center"
                     href="#">
-                    <div class="sidebar-brand-text mx-3">MASTER</div>
+                    <div class="sidebar-brand-text mx-3">
+                    @if(Session::get('role') == 'master')
+                    MASTER
+                    @elseif(Session::get('role') == 'manajer')
+                    MANAJER
+                    @elseif(Session::get('role') == 'admin')
+                    ADMIN
+                    @else
+                    WHO ARE YOU ?
+                    @endif
+                    </div>
                 </a>
 
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
 
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item {{ (request()->is('dashboard*')) ? 'active' : '' }}"  >
                     <a class="nav-link" href="{{url('dashboard')}}">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
-
                 <!-- Divider -->
                 <hr class="sidebar-divider">
+                @endif
 
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Sumber Daya
                 </div>
 
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin')
                 <!-- Nav Item - Pedagang -->
                 <li class="nav-item {{ (request()->is('pedagang*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{route('pedagang.index')}}">
                         <i class="fas fa-fw fa-users"></i>
                         <span>Pedagang</span></a>
                 </li>
+                @endif
 
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('role') == 'admin')
                 <!-- Nav Item - Tempat Usaha -->
                 <li class="nav-item {{ (request()->is('tempatusaha*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{url('tempatusaha')}}">
                         <i class="fas fa-fw fa-store"></i>
                         <span>Tempat Usaha</span></a>
                 </li>
+                @endif
 
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin')
                 <!-- Nav Item - Tagihan -->
                 <li class="nav-item {{ (request()->is('tagihan*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{url('tagihan')}}">
                         <i class="fas fa-fw fa-plus"></i>
                         <span>Tagihan</span></a>
                 </li>
-
+                @endif
                 <!-- Divider -->
                 <hr class="sidebar-divider">
+                @endif
 
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('role') == 'admin')
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Report
@@ -136,10 +155,11 @@
                         <i class="fa fa-list"></i>
                         <span>Data</span></a>
                 </li>
-
                 <!-- Divider -->
                 <hr class="sidebar-divider">
+                @endif
 
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin')
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Others
@@ -171,6 +191,7 @@
                     </div>
                 </li>
                 
+                @if(Session::get('role') == 'master')
                 <!-- Nav Item - User -->
                 <li class="nav-item {{ (request()->is('user*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{url('user')}}">
@@ -184,9 +205,10 @@
                         <i class="fas fa-history"></i>
                         <span>Riwayat Login</span></a>
                 </li>
-
+                @endif
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
+                @endif
 
             </ul>
             <!-- End of Sidebar -->

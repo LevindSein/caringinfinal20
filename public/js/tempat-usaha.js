@@ -42,6 +42,44 @@ $(document).ready(function(){
         ]
     });
 
+    $('#tabelTempat1').DataTable({
+		processing: true,
+		serverSide: true,
+		ajax: {
+			url: "/tempatusaha",
+            cache:false,
+		},
+		columns: [
+			{ data: 'kd_kontrol', name: 'kd_kontrol', class : 'text-center' },
+			{ data: 'no_alamat', name: 'no_alamat', class : 'text-center'},
+			{ data: 'pengguna', name: 'pengguna', class : 'text-center' },
+			{ data: 'lok_tempat', name: 'lok_tempat', class : 'text-center' },
+			{ data: 'jml_alamat', name: 'jml_alamat', class : 'text-center' },
+			{ data: 'bentuk_usaha', name: 'bentuk_usaha', class : 'text-center' },
+			{ data: 'kodeListrik', name: 'kodeListrik', class : 'text-center' },
+			{ data: 'dis_listrik', name: 'dis_listrik', class : 'text-center' },
+			{ data: 'kodeAir', name: 'kodeAir', class : 'text-center' },
+			{ data: 'dis_airbersih', name: 'dis_airbersih', class : 'text-center' },
+			{ data: 'trfKeamananIpk', name: 'trfKeamananIpk', class : 'text-center' },
+			{ data: 'dis_keamananipk', name: 'dis_keamananipk', class : 'text-center' },
+			{ data: 'trfKebersihan', name: 'trfKebersihan', class : 'text-center' },
+			{ data: 'dis_kebersihan', name: 'dis_kebersihan', class : 'text-center' },
+			{ data: 'trfArkot', name: 'trfArkot', class : 'text-center' },
+			{ data: 'trfLain', name: 'trfLain', class : 'text-center' },
+			{ data: 'stt_tempat', name: 'stt_tempat', class : 'text-center' },
+			{ data: 'ket_tempat', name: 'ket_tempat', class : 'text-center' },
+			{ data: 'pemilik', name: 'pemilik', class : 'text-center' }
+        ],
+        stateSave: true,
+        scrollX: true,
+        deferRender: true,
+        pageLength: 8,
+        fixedColumns:   {
+            "leftColumns": 3,
+            "rightColumns": 1,
+        }
+    });
+
     $('#tabelRekap').DataTable({
         "processing": true,
         "bProcessing": true,

@@ -1,4 +1,4 @@
-@extends(Session::get('role') == 'master' ? 'layout.master' : 'layout.manajer')
+@extends('layout.master')
 @section('content')
 <title>Dashboard | BP3C</title>
 <div class = "container-fluid">
