@@ -1,0 +1,96 @@
+A-1 :
+Air
+	A-1-034
+Listrik
+
+A-2 :
+Air
+Listrik
+
+B-1 :
+Air
+Listrik
+
+B-2 :
+Air
+	B-2-039 ?
+Listrik
+
+B-3 :
+Listrik
+
+B-4 :
+Air
+Listrik
+
+C-1 :
+Air
+Listrik
+
+D-1 :
+Air
+Listrik
+
+E-0 :
+Air
+Listrik
+
+E-1 :
+Air
+Listrik
+
+E-2 :
+Air
+Listrik
+
+E-3 :
+Air
+Listrik
+
+E-4 :
+Air
+Listrik
+
+E-5 :
+Air
+Llistrik
+
+E-6 :
+Listrik
+
+E-7 :
+Listrik
+
+E-8 :
+Listrik
+
+E-9:
+Air
+Listrik
+
+E-10:
+Air
+Listrik
+
+F-0 :
+
+F-1 :
+Air
+
+Gardu :
+Air
+
+H-1 :
+Air
+
+H-2 :
+Air
+
+M-1 :
+Air
+
+POM :
+Air
+
+WC :
+Air

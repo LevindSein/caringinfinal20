@@ -51,7 +51,7 @@ class Sinkronisasi extends Model
         $tgl_expired = $expired;
 
         $periode = Session::get('sync');
-        $tempat = TempatUsaha::select('kd_kontrol','id')->orderBy('kd_kontrol','asc')->get();
+        $tempat = TempatUsaha::select('kd_kontrol','id')->where('stt_tempat',1)->orderBy('kd_kontrol','asc')->get();
         foreach($tempat as $t){
             if($periode >= date("Y-m-d",time())){
                 $tagihan = Tagihan::where([['kd_kontrol',$t->kd_kontrol],['tgl_tagihan',$periode]])->select('id')->first();

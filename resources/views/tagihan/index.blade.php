@@ -331,7 +331,6 @@
                         <div class="form-group col-lg-12">
                             <label for="pengguna">Pengguna </label>
                             <input
-                                readonly
                                 required
                                 name="pengguna"
                                 class="form-control"

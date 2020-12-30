@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 use Validator;
 use Exception;
@@ -20,6 +21,7 @@ use App\Models\HariLibur;
 use App\Models\Sinkronisasi;
 use App\Models\IndoDate;
 use App\Models\Blok;
+use App\Models\Review;
 
 class TagihanController extends Controller
 {
@@ -714,6 +716,10 @@ class TagihanController extends Controller
     {
         try{
             $id = $request->hidden_id;
+
+            $tagihan = Tagihan::find($id);
+            $tagihan->nama = $request->pengguna;
+            $tagihan->save();
             
             if($request->stt_listrik == 'ok'){
                 $daya = $request->dayaListrik;
@@ -1030,17 +1036,32 @@ class TagihanController extends Controller
         }
         else{
             $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_listrik',1]])->orderBy('id','desc')->limit(3)->get();
+            
+            $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
+            if($tempat != NULL){
+                $meter = AlatListrik::find($tempat->id_meteran_listrik);
+                if($meter != NULL)
+                    $awal = $meter->akhir;
+                else
+                    $awal = $tagihan->awal_listrik;
+            }
+            else{
+                $awal = $tagihan->awal_listrik;
+            }
+
             if($suggest != NULL){
                 $saran = 0;
                 foreach($suggest as $sug){
                     $saran = $saran + $sug->pakai_listrik;
                 }
                 $suggest = round($saran / 3);
-                $suggest = $suggest + $tagihan->awal_listrik;
+                $suggest = $suggest + $awal;
             }
             else{
-                $suggest = $tagihan->awal_listrik;
+                $suggest = $awal;
             }
+
+            $tagihan['awal_listrik'] = $awal;
 
             $ket = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
             if($ket != NULL){
@@ -1076,6 +1097,10 @@ class TagihanController extends Controller
             }
         }
 
+        $tagihan = Tagihan::find($request->hidden_id);
+        $tagihan->ket = $request->laporan;
+        $tagihan->save();
+
         $nama = Tagihan::find($request->hidden_id);
         $nama->nama = $request->nama;
         $nama->save();
@@ -1099,17 +1124,32 @@ class TagihanController extends Controller
         }
         else{
             $suggest = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_airbersih',1]])->orderBy('id','desc')->limit(3)->get();
+            
+            $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
+            if($tempat != NULL){
+                $meter = AlatAir::find($tempat->id_meteran_air);
+                if($meter != NULL)
+                    $awal = $meter->akhir;
+                else
+                    $awal = $tagihan->awal_airbersih;
+            }
+            else{
+                $awal = $tagihan->awal_airbersih;
+            }
+
             if($suggest != NULL){
                 $saran = 0;
                 foreach($suggest as $sug){
                     $saran = $saran + $sug->pakai_airbersih;
                 }
                 $suggest = round($saran / 3);
-                $suggest = $suggest + $tagihan->awal_airbersih;
+                $suggest = $suggest + $awal;
             }
             else{
-                $suggest = $tagihan->awal_airbersih;
+                $suggest = $awal;
             }
+
+            $tagihan['awal_airbersih'] = $awal;
             
             $ket = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
             if($ket != NULL){
@@ -1140,6 +1180,10 @@ class TagihanController extends Controller
                 $meter->save();
             }
         }
+
+        $tagihan = Tagihan::find($request->hidden_id);
+        $tagihan->ket = $request->laporan;
+        $tagihan->save();
 
         $nama = Tagihan::find($request->hidden_id);
         $nama->nama = $request->nama;
@@ -1207,8 +1251,20 @@ class TagihanController extends Controller
     }
 
     public function publish(){
-        $dataset = Tagihan::where('stt_publish',0)->get();
-        return view('tagihan.publish',['dataset' => $dataset]);
+        $dataset = Tagihan::where('stt_publish',0)
+        ->orderBy('kd_kontrol','asc')
+        ->get();
+
+        $reviewer = Review::where('review',date('Y-m',time()))->orderBy('id','desc')->first();
+        if($reviewer != NULL){
+            $oleh = $reviewer->reviewer;
+            $pada = $reviewer->created_at;
+        }
+        else{
+            $oleh = '';
+            $pada = '';
+        }
+        return view('tagihan.publish',['dataset' => $dataset, 'reviewer' => $oleh, 'pada' => $pada]);
     }
 
     public function publishStore(Request $request){
@@ -1223,6 +1279,48 @@ class TagihanController extends Controller
             }
             catch(\Exception $e){
                 return response()->json(['errors' => 'Oops! Publish Gagal']);
+            }
+        }
+    }
+
+    public function review(Request $request){
+        if($request->ajax()){
+            try{
+                $review = new Review;
+                $review->review = date('Y-m',time());
+                $review->reviewer = Session::get('username');
+
+                // $dataset = Tagihan::where('stt_publish',0)->orderBy('kd_kontrol','asc')->get();
+                // foreach($dataset as $d){
+                //     if($request->review == 'on'){
+                //         $hasil = 1;
+                //     }
+                //     else{
+                //         $hasil = 0;
+                //     }
+                //     $d->review = $hasil;
+                //     $d->save();
+                // }
+
+                $reviews = $request->review;
+                foreach($reviews as $re){
+                    $check = explode(',',$re);
+                    $tagihan = Tagihan::find($check[0]);
+                    if($check[1] == 'on'){
+                        $hasil = 1;
+                    }
+                    else{
+                        $hasil = 0;
+                    }
+                    $tagihan->review = $hasil;
+                    $tagihan->save();
+                }
+
+                $review->save();
+                return response()->json(['success' => 'Review Sukses']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => 'Oops! Review Gagal']);
             }
         }
     }

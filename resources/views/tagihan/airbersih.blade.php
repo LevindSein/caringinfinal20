@@ -60,6 +60,10 @@
             class="form-control"
             id="akhir">
     </div>
+    <div class="form-group col-lg-12">
+        <label for="laporan">Laporan (optional)</label>
+        <textarea autocomplete="off" name="laporan" class="form-control" id="laporan">{{$dataset->ket}}</textarea>
+    </div>
     <input type="hidden" name="hidden_id" id="hidden_id" value="{{$dataset->id}}">
     <input type="hidden" name="kd_kontrol" id="kd_kontrol" value="{{$dataset->kd_kontrol}}">
     <div class="form-group col-lg-12">

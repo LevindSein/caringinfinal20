@@ -96,6 +96,7 @@ class Tagihan extends Model
         'stt_publish',
         'warna_airbersih',
         'warna_listrik',
+        'review',
         'updated_at',
         'created_at'
     ];
