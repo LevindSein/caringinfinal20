@@ -53,7 +53,6 @@
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <div class="table-responsive ">
-                    <form method="POST">
                         <table
                             class="table"
                             id="tabelPublish"
@@ -62,7 +61,9 @@
                             style="font-size:0.75rem;">
                             <thead>
                                 <tr>
-                                    <th colspan="2">
+                                    <th colspan="2"></th>
+                                    <th colspan="15">Halaman ini berfungsi untuk melakukan verifikasi tagihan yang akan di publish. Harap pastikan dan apabila terdapat kesalahan, lakukan edit data sebelum publish dilakukan</th>
+                                    <th colspan="3">
                                         <button
                                             id="publish"
                                             type="submit"
@@ -70,21 +71,6 @@
                                             <i class="fas fa-fw fa-paper-plane fa-sm text-white-50"></i> PUBLISH NOW</b>
                                         </button>
                                     </th>
-                                    <th colspan="15">Halaman ini berfungsi untuk melakukan verifikasi tagihan yang akan di publish. Harap pastikan dan apabila terdapat kesalahan, lakukan edit data sebelum publish dilakukan</th>
-                                    <th colspan="2">
-                                        <button
-                                            disabled
-                                            id="review"
-                                            type="submit"
-                                            class="review btn btn-success"><b>
-                                            <i class="fas fa-fw fa-check fa-sm text-white-50"></i> Submit Review</b>
-                                        </button>
-                                    </th>
-                                    @if($reviewer != '')
-                                    <th>Terakhir di Review<br>{{$reviewer}}<br>{{$pada}}</th>
-                                    @else
-                                    <th>Belum Direview</th>
-                                    @endif
                                 </tr>
                                 <tr>
                                     <th rowspan="2">Kontrol</th>
@@ -115,100 +101,7 @@
                                     <th class="kebersihan">Total</th>
                                 </tr>
                             </thead>
-                            <?php use Illuminate\Support\Facades\DB; use App\Models\Tagihan; ?>
-                            <tbody>
-                                @foreach($dataset as $d)
-                                <?php 
-                                $warna = max($d->warna_listrik, $d->warna_airbersih);
-                                ?>
-                                <tr>
-                                    @if($warna == 1 || $warna == 2)
-                                    <td style="color:#f6c23e;font-size:14px;" class="text-center listrik-hover">{{$d->kd_kontrol}}</td>
-                                    <td style="color:#f6c23e;" class="text-left listrik-hover"><span>{{substr($d->nama,0,13)}}</span></td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->daya_listrik)}}</td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->awal_listrik)}}</td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->akhir_listrik)}}</td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->pakai_listrik)}}</td>
-                                    <td style="color:#f6c23e;font-size:14px;" class="listrik-hover"><b>{{number_format($d->ttl_listrik)}}</b></td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->awal_airbersih)}}</td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->akhir_airbersih)}}</td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->pakai_airbersih)}}</td>
-                                    <td style="color:#f6c23e;font-size:14px;" class="listrik-hover"><b>{{number_format($d->ttl_airbersih)}}</b></td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->dis_keamananipk)}}</td>
-                                    <td style="color:#f6c23e;font-size:14px;" class="listrik-hover"><b>{{number_format($d->ttl_keamananipk)}}</b></td>
-                                    <td style="color:#f6c23e;" class="listrik-hover">{{number_format($d->dis_kebersihan)}}</td>
-                                    <td style="color:#f6c23e;font-size:14px;" class="listrik-hover"><b>{{number_format($d->ttl_kebersihan)}}</b></td>
-                                    <td style="color:#f6c23e;font-size:14px;" class="listrik-hover"><b>{{number_format($d->ttl_airkotor)}}</b></td>
-                                    <td style="color:#f6c23e;font-size:14px;" class="listrik-hover"><b>{{number_format($d->ttl_lain)}}</b></td>
-                                    <td style="color:#f6c23e;font-size:14px;" class="listrik-hover"><b>{{number_format($d->ttl_tagihan)}}</b></td>
-                                    <td style="white-space:normal;" class="text-left">{{$d->ket}}</td>
-                                    <td class="text-center">
-                                        @if($d->review == 1)
-                                        <input type="checkbox" name="review[]" checked value="{{$d->id.',on'}}"/>
-                                        @else
-                                        <input type="checkbox" name="review[]" value="{{$d->id.',off'}}"/>
-                                        @endif
-                                    </td>
-                                    @elseif($warna == 3)
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;" class="text-center">{{$d->kd_kontrol}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);" class="text-left"><span>{{substr($d->nama,0,13)}}</span></td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->daya_listrik)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->awal_listrik)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->akhir_listrik)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->pakai_listrik)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;"><b>{{number_format($d->ttl_listrik)}}</b></td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->awal_airbersih)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->akhir_airbersih)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->pakai_airbersih)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;"><b>{{number_format($d->ttl_airbersih)}}</b></td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->dis_keamananipk)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;"><b>{{number_format($d->ttl_keamananipk)}}</b></td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">{{number_format($d->dis_kebersihan)}}</td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;"><b>{{number_format($d->ttl_kebersihan)}}</b></td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;"><b>{{number_format($d->ttl_airkotor)}}</b></td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;"><b>{{number_format($d->ttl_lain)}}</b></td>
-                                    <td style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);font-size:14px;"><b>{{number_format($d->ttl_tagihan)}}</b></td>
-                                    <td style="white-space:normal;" class="text-left">{{$d->ket}}</td>
-                                    <td class="text-center">
-                                        @if($d->review == 1)
-                                        <input type="checkbox" name="review[]" checked value="{{$d->id.',on'}}"/>
-                                        @else
-                                        <input type="checkbox" name="review[]" value="{{$d->id.',off'}}"/>
-                                        @endif
-                                    </td>
-                                    @else
-                                    <td style="font-size:14px;" class="text-center">{{$d->kd_kontrol}}</td>
-                                    <td class="text-left">{{substr($d->nama,0,13)}}</td>
-                                    <td>{{number_format($d->daya_listrik)}}</td>
-                                    <td>{{number_format($d->awal_listrik)}}</td>
-                                    <td>{{number_format($d->akhir_listrik)}}</td>
-                                    <td>{{number_format($d->pakai_listrik)}}</td>
-                                    <td style="font-size:14px;"><b>{{number_format($d->ttl_listrik)}}</b></td>
-                                    <td>{{number_format($d->awal_airbersih)}}</td>
-                                    <td>{{number_format($d->akhir_airbersih)}}</td>
-                                    <td>{{number_format($d->pakai_airbersih)}}</td>
-                                    <td style="font-size:14px;"><b>{{number_format($d->ttl_airbersih)}}</b></td>
-                                    <td>{{number_format($d->dis_keamananipk)}}</td>
-                                    <td style="font-size:14px;"><b>{{number_format($d->ttl_keamananipk)}}</b></td>
-                                    <td>{{number_format($d->dis_kebersihan)}}</td>
-                                    <td style="font-size:14px;"><b>{{number_format($d->ttl_kebersihan)}}</b></td>
-                                    <td style="font-size:14px;"><b>{{number_format($d->ttl_airkotor)}}</b></td>
-                                    <td style="font-size:14px;"><b>{{number_format($d->ttl_lain)}}</b></td>
-                                    <td style="font-size:14px;"><b>{{number_format($d->ttl_tagihan)}}</b></td>
-                                    <td style="white-space:normal;" class="text-left">{{$d->ket}}</td>
-                                    <td class="text-center">
-                                        @if($d->review == 1)
-                                        <input type="checkbox" name="review[]" checked value="{{$d->id.',on'}}"/>
-                                        @else
-                                        <input type="checkbox" name="review[]" value="{{$d->id.',off'}}"/>
-                                        @endif
-                                    </td>
-                                    @endif
-                                </tr>
-                                @endforeach
-                            </tbody>
                         </table>
-                    </form>
                     </div>
                 </div>
             </div>    

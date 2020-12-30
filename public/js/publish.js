@@ -1,5 +1,35 @@
 $(document).ready(function () {
     $('#tabelPublish').DataTable({
+        processing: true,
+		serverSide: true,
+		ajax: {
+			url: "/tagihan/publish",
+            cache:false,
+		},
+		columns: [
+            { data: 'kd_kontrol'     , name: 'kd_kontrol'     , class : 'text-center' },
+            { data: 'nama'     , name: 'nama'     , class : 'text-center' },
+            { data: 'daya_listrik'     , name: 'daya_listrik'     , class : 'text-center' },
+            { data: 'awal_listrik'     , name: 'awal_listrik'     , class : 'text-center' },
+            { data: 'akhir_listrik'     , name: 'akhir_listrik'     , class : 'text-center' },
+            { data: 'pakai_listrik'     , name: 'pakai_listrik'     , class : 'text-center' },
+            { data: 'ttl_listrik'     , name: 'ttl_listrik'     , class : 'text-center' },
+            { data: 'awal_airbersih'     , name: 'awal_airbersih'     , class : 'text-center' },
+            { data: 'akhir_airbersih'     , name: 'akhir_airbersih'     , class : 'text-center' },
+            { data: 'pakai_airbersih'     , name: 'pakai_airbersih'     , class : 'text-center' },
+            { data: 'ttl_airbersih'     , name: 'ttl_airbersih'     , class : 'text-center' },
+            { data: 'dis_keamananipk'     , name: 'dis_keamananipk'     , class : 'text-center' },
+            { data: 'ttl_keamananipk'     , name: 'ttl_keamananipk'     , class : 'text-center' },
+            { data: 'dis_kebersihan'     , name: 'dis_kebersihan'     , class : 'text-center' },
+            { data: 'ttl_kebersihan'     , name: 'ttl_kebersihan'     , class : 'text-center' },
+            { data: 'ttl_airkotor'     , name: 'ttl_airkotor'     , class : 'text-center' },
+            { data: 'ttl_lain'     , name: 'ttl_lain'     , class : 'text-center' },
+            { data: 'ttl_tagihan'     , name: 'ttl_tagihan'     , class : 'text-center' },
+            { data: 'ket'     , name: 'ket'     , class : 'text-center' },
+            { data: 'verifikasi'     , name: 'verifikasi'     , class : 'text-center' },
+        ],
+        stateSave: true,
+        pageLength: 100,
         "iDisplayLength": -1,
         "bPaginate": true,
         "iCookieDuration": 60,
@@ -62,6 +92,30 @@ $(document).ready(function () {
                 location.reload();
             }
 		});
+    });
+
+    $(document).on('click', '.verification', function(){
+        id = $(this).attr('id');
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+		$.ajax({
+			url :"/tagihan/review/"+id,
+            cache:false,
+			method:"POST",
+			dataType:"json",
+			success:function(data)
+			{
+                if(data.errors){
+                    alert(data.errors);
+                }
+                if(data.success){
+                    $('#tabelPublish').DataTable().ajax.reload(function(){}, false);
+                }
+            }
+        });
     });
 
     $(document).on('click', '#review', function(){

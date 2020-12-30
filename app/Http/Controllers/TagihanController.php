@@ -21,7 +21,6 @@ use App\Models\HariLibur;
 use App\Models\Sinkronisasi;
 use App\Models\IndoDate;
 use App\Models\Blok;
-use App\Models\Review;
 
 class TagihanController extends Controller
 {
@@ -1250,21 +1249,227 @@ class TagihanController extends Controller
         $tagihan->save();
     }
 
-    public function publish(){
-        $dataset = Tagihan::where('stt_publish',0)
-        ->orderBy('kd_kontrol','asc')
-        ->get();
-
-        $reviewer = Review::where('review',date('Y-m',time()))->orderBy('id','desc')->first();
-        if($reviewer != NULL){
-            $oleh = $reviewer->reviewer;
-            $pada = $reviewer->created_at;
+    public function publish(Request $request){
+        if($request->ajax()){
+            $data = Tagihan::where('stt_publish',0)->orderBy('kd_kontrol','asc');
+            return DataTables::of($data)
+                ->editColumn('kd_kontrol', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = $data->kd_kontrol;
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('nama', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = substr($data->nama,0,13);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('daya_listrik', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->daya_listrik);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('awal_listrik', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->awal_listrik);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('akhir_listrik', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->akhir_listrik);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('pakai_listrik', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->pakai_listrik);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('ttl_listrik', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->ttl_listrik);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                    else
+                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                })
+                ->editColumn('awal_airbersih', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->awal_airbersih);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('akhir_airbersih', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->akhir_airbersih);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('pakai_airbersih', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->pakai_airbersih);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('ttl_airbersih', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->ttl_airbersih);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                    else
+                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                })
+                ->editColumn('dis_keamananipk', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->dis_keamananipk);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('ttl_keamananipk', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->ttl_keamananipk);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                    else
+                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                })
+                ->editColumn('dis_kebersihan', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->dis_kebersihan);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;" class="listrik-hover";">'.$hasil.'</span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;background-color:rgba(255, 169, 189, 0.2);">'.$hasil.'</span>';
+                    else
+                        return '<span>'.$hasil.'</span>';
+                })
+                ->editColumn('ttl_kebersihan', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->ttl_kebersihan);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                    else
+                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                })
+                ->editColumn('ttl_airkotor', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->ttl_airkotor);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                    else
+                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                })
+                ->editColumn('ttl_lain', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->ttl_lain);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                    else
+                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                })
+                ->editColumn('ttl_tagihan', function ($data) {
+                    $warna = max($data->warna_airbersih,$data->warna_listrik);
+                    $hasil = number_format($data->ttl_tagihan);
+                    if($warna == 1 || $warna == 2)
+                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                    else if($warna == 3)
+                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                    else
+                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                })
+                ->editColumn('ket', function ($data) {
+                    return '<span style="white-space:normal;">'.$data->ket.'</span>';
+                })
+                ->addColumn('verifikasi', function($data){
+                    if($data->review === 0){
+                        $button = '<button type="button" title="Verifikasi" name="verifikasi" id="'.$data->id.'" class="verification btn btn-sm btn-danger">checking</button><br><label>'.$data->reviewer.'</label>';
+                    }
+                    else{
+                        $button = '<button type="button" title="Verifikasi" name="verifikasi" id="'.$data->id.'" class="verification btn btn-sm btn-success">verified</button><br><label>'.$data->reviewer.'</label>';
+                    }
+                    return $button;
+                })
+                ->rawColumns([
+                    'kd_kontrol',
+                    'nama',
+                    'verifikasi',
+                    'ket',
+                    'daya_listrik',
+                    'awal_listrik',
+                    'akhir_listrik',
+                    'pakai_listrik',
+                    'ttl_listrik',
+                    'awal_airbersih',
+                    'akhir_airbersih',
+                    'pakai_airbersih',
+                    'ttl_airbersih',
+                    'dis_keamananipk',
+                    'ttl_keamananipk',
+                    'dis_kebersihan',
+                    'ttl_kebersihan',
+                    'ttl_airkotor',
+                    'ttl_lain',
+                    'ttl_tagihan',
+                ])
+                ->make(true);
         }
-        else{
-            $oleh = '';
-            $pada = '';
-        }
-        return view('tagihan.publish',['dataset' => $dataset, 'reviewer' => $oleh, 'pada' => $pada]);
+        return view('tagihan.publish');
     }
 
     public function publishStore(Request $request){
@@ -1283,40 +1488,20 @@ class TagihanController extends Controller
         }
     }
 
-    public function review(Request $request){
+    public function review(Request $request,$id){
         if($request->ajax()){
             try{
-                $review = new Review;
-                $review->review = date('Y-m',time());
-                $review->reviewer = Session::get('username');
-
-                // $dataset = Tagihan::where('stt_publish',0)->orderBy('kd_kontrol','asc')->get();
-                // foreach($dataset as $d){
-                //     if($request->review == 'on'){
-                //         $hasil = 1;
-                //     }
-                //     else{
-                //         $hasil = 0;
-                //     }
-                //     $d->review = $hasil;
-                //     $d->save();
-                // }
-
-                $reviews = $request->review;
-                foreach($reviews as $re){
-                    $check = explode(',',$re);
-                    $tagihan = Tagihan::find($check[0]);
-                    if($check[1] == 'on'){
-                        $hasil = 1;
-                    }
-                    else{
-                        $hasil = 0;
-                    }
-                    $tagihan->review = $hasil;
-                    $tagihan->save();
+                $tagihan = Tagihan::find($id);
+                $review = $tagihan->review;
+                if($review === 1){
+                    $hasil = 0;
                 }
-
-                $review->save();
+                else if($review === 0){
+                    $hasil = 1;
+                }
+                $tagihan->review = $hasil;
+                $tagihan->reviewer = Session::get('username');
+                $tagihan->save();
                 return response()->json(['success' => 'Review Sukses']);
             }
             catch(\Exception $e){
