@@ -153,7 +153,7 @@
                     <?php if($pengguna == 0){$pengguna = 1;} ?>
                     <h8 class="font-weight-bold">Aktif
                         <span class="float-right">
-                        {{number_format($penggunaAktif)}} Unit - {{($penggunaAktif / $pengguna) * 100}}%
+                        {{number_format($penggunaAktif)}} Unit - {{round(($penggunaAktif / $pengguna) * 100)}}%
                         </span>
                     </h8>
                     <div class="progress mb-4">
@@ -167,11 +167,11 @@
                     </div>
                     <h8 class="font-weight-bold">Non-Aktif
                         <span class="float-right">
-                        {{number_format($penggunaNonAktif)}} Unit - {{($penggunaNonAktif / $pengguna) * 100}}%</span>
+                        {{number_format($penggunaNonAktif)}} Unit - {{round(($penggunaNonAktif / $pengguna) * 100)}}%</span>
                     </h8>
                     <div class="progress mb-4">
                         <div
-                            class="progress-bar bg-success"
+                            class="progress-bar bg-danger"
                             role="progressbar"
                             style="width: {{($penggunaNonAktif / $pengguna) * 100}}%"
                             aria-valuenow="20"

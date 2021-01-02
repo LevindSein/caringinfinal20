@@ -796,6 +796,7 @@ class TagihanController extends Controller
                 $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
                 if($tempat != NULL){
                     $tempat->dis_keamananipk = $diskon;
+                    $tagihan->jml_alamat = $tempat->jml_alamat;
                     $tempat->save();
                 }
 
@@ -825,6 +826,7 @@ class TagihanController extends Controller
                 $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
                 if($tempat != NULL){
                     $tempat->dis_kebersihan = $diskon;
+                    $tagihan->jml_alamat = $tempat->jml_alamat;
                     $tempat->save();
                 }
 

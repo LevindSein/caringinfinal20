@@ -33,7 +33,7 @@ class DashboardController extends Controller
             'selKebersihan'=>Dashboard::selKebersihan($tahun),
             'pengguna'=>TempatUsaha::count(),
             'penggunaAktif'=>TempatUsaha::where('stt_tempat',1)->count(),
-            'penggunaNonAktif'=>TempatUsaha::where('stt_tempat',0)->count(),
+            'penggunaNonAktif'=>TempatUsaha::where('stt_tempat',2)->count(),
             'penggunaAirBersih'=>TempatUsaha::where('trf_airbersih',1)->count(),
             'penggunaListrik'=>TempatUsaha::where('trf_listrik',1)->count(),
             'penggunaKeamananIpk'=>TempatUsaha::whereNotNull('trf_keamananipk')->count(),
