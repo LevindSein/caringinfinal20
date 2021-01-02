@@ -6,6 +6,10 @@
         <link rel="stylesheet" href="{{asset('css/style-pemakaian.css')}}" media="all"/>
         <link rel="icon" href="{{asset('img/logo.png')}}">
     </head>
+    <style type="text/css">
+    table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    </style>
     <body onload="window.print()">
         @for($i=1;$i<=2;$i++)
         @if($i == 1)
@@ -57,7 +61,6 @@
         <h2 style="text-align:center;page-break-before:always">RINCIAN PEMAKAIAN AIR BERSIH<br>{{$bln}}</h2>
         @foreach($rincian as $data)
         <div>
-            <br>
             <h3>{{$data[0]}}</h3>
             <main>
                 <table class="tg">
@@ -76,7 +79,7 @@
                         <th class="tg-r8fv">Realisasi</th>
                         <th class="tg-r8fv">Selisih</th>
                     </tr>
-                    <?php $no = 1; ?>
+                    <?php $no = 1; $x = 1; ?>
                     @foreach($data[1] as $d)
                     <tr>
                         <td class="tg-cegc">{{$no}}</td>
@@ -93,7 +96,7 @@
                         <td class="tg-g25h">{{number_format($d->realisasi)}}</td>
                         <td class="tg-g25h">{{number_format($d->selisih)}}</td>
                     </tr>
-                    <?php $no++; ?>
+                    <?php $no++; $x++; ?>
                     @endforeach
                     @foreach($data[2] as $d)
                     <tr>
@@ -110,6 +113,7 @@
                     @endforeach
                 </table>
             </main>
+            <div style="page-break-after:always"></div>
         </div>
         @endforeach
         @endif

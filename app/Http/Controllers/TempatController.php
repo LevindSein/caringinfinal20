@@ -46,7 +46,7 @@ class TempatController extends Controller
                     return '<span style="white-space:normal;">'.$data->no_alamat.'</span>';
                 })
                 ->editColumn('stt_tempat', function ($data) {
-                    if($data->stt_tempat == 0) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    if($data->stt_tempat == 2) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
                     else return '<span class="text-center"><i class="fas fa-check fa-sm"></i></span>';
                 })
                 ->editColumn('dis_airbersih', function ($data) {

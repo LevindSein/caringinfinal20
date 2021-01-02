@@ -409,7 +409,7 @@ $(document).ready(function(){
                 
                 $('#usaha').val(data.result.bentuk_usaha);
 
-                if(data.result.stt_tempat == 0){
+                if(data.result.stt_tempat == 2){
                     $("#myStatus2").prop("checked", true);
                     $('#ketStatus').show();
                     $('#ket_tempat').val(data.result.ket_tempat);

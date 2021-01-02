@@ -45,9 +45,12 @@ class PemakaianController extends Controller
 
         if($fasilitas == 'keamananipk'){
             $rekap = Pemakaian::rekapKeamananIpk($bulan);
+            
+            $time = strtotime($bulan);
+            $bln = date("Y-m", strtotime("+1 month", $time));
 
             return view('pemakaian.keamananipk',[
-                'bln'=>IndoDate::bulanB($bulan,' '),
+                'bln'=>IndoDate::bulanB($bln,' '),
                 'rekap'=>$rekap,
                 'ttlRekap'=>Pemakaian::ttlRekapKeamananIpk($rekap),
                 'rincian'=>Pemakaian::rincianKeamananIpk($bulan),
@@ -56,9 +59,12 @@ class PemakaianController extends Controller
 
         if($fasilitas == 'kebersihan'){
             $rekap = Pemakaian::rekapKebersihan($bulan);
+            
+            $time = strtotime($bulan);
+            $bln = date("Y-m", strtotime("+1 month", $time));
 
             return view('pemakaian.kebersihan',[
-                'bln'=>IndoDate::bulanB($bulan,' '),
+                'bln'=>IndoDate::bulanB($bln,' '),
                 'rekap'=>$rekap,
                 'ttlRekap'=>Pemakaian::ttlRekapKebersihan($rekap),
                 'rincian'=>Pemakaian::rincianKebersihan($bulan),

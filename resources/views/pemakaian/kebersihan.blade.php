@@ -6,21 +6,23 @@
         <link rel="stylesheet" href="{{asset('css/style-pemakaian1.css')}}" media="all"/>
         <link rel="icon" href="{{asset('img/logo.png')}}">
     </head>
+    <style type="text/css">
+    table { page-break-inside:auto }
+    tr    { page-break-inside:avoid; page-break-after:auto }
+    </style>
     <body onload="window.print()">  
         @for($i=1;$i<=2;$i++)
         @if($i == 1)
-        <h2 style="text-align:center;">REKAP PEMAKAIAN KEBERSIHAN<br>{{$bln}}</h2>
+        <h2 style="text-align:center;">REKAP TAGIHAN KEBERSIHAN<br>{{$bln}}</h2>
         <main>
             <table class="tg">
                 <tr>
                     <th class="tg-r8fv">No.</th>
                     <th class="tg-r8fv">Blok</th>
                     <th class="tg-r8fv">Jumlah Los</th>
-                    <th class="tg-r8fv">Subtotal</th>
-                    <th class="tg-r8fv">Diskon</th>
                     <th class="tg-r8fv">Tagihan</th>
-                    <th class="tg-r8fv">Realisasi</th>
-                    <th class="tg-r8fv">Selisih</th>
+                    <th class="tg-r8fv">Diskon</th>
+                    <th class="tg-r8fv">Jml Hrs Bayar</th>
                 </tr>
                 <?php $no = 1; ?>
                 @foreach($rekap as $d)
@@ -31,8 +33,6 @@
                     <td class="tg-g25h">{{number_format($d->subtotal)}}</td>
                     <td class="tg-g25h">{{number_format($d->diskon)}}</td>
                     <td class="tg-g25h">{{number_format($d->tagihan)}}</td>
-                    <td class="tg-g25h">{{number_format($d->realisasi)}}</td>
-                    <td class="tg-g25h">{{number_format($d->selisih)}}</td>
                 </tr>
                 <?php $no++; ?>
                 @endforeach
@@ -42,16 +42,13 @@
                     <td class="tg-8m6k">{{number_format($ttlRekap[1])}}</td>
                     <td class="tg-8m6k">Rp. {{number_format($ttlRekap[2])}}</td>
                     <td class="tg-8m6k">Rp. {{number_format($ttlRekap[3])}}</td>
-                    <td class="tg-8m6k">Rp. {{number_format($ttlRekap[4])}}</td>
-                    <td class="tg-8m6k">Rp. {{number_format($ttlRekap[5])}}</td>
                 </tr>
             </table>
         </main>
         @else
-        <h2 style="text-align:center;page-break-before:always">RINCIAN PEMAKAIAN KEBERSIHAN<br>{{$bln}}</h2>
+        <h2 style="text-align:center;page-break-before:always">RINCIAN TAGIHAN KEBERSIHAN<br>{{$bln}}</h2>
         @foreach($rincian as $data)
         <div>
-            <br>
             <h3>{{$data[0]}}</h3>
             <main>
                 <table class="tg">
@@ -60,11 +57,9 @@
                         <th class="tg-r8fv">Kontrol</th>
                         <th class="tg-r8fv">Pengguna</th>
                         <th class="tg-r8fv">Jml Los</th>
-                        <th class="tg-r8fv">Subtotal</th>
-                        <th class="tg-r8fv">Diskon</th>
                         <th class="tg-r8fv">Tagihan</th>
-                        <th class="tg-r8fv">Realisasi</th>
-                        <th class="tg-r8fv">Selisih</th>
+                        <th class="tg-r8fv">Diskon</th>
+                        <th class="tg-r8fv">Jml Hrs Bayar</th>
                     </tr>
                     <?php $no = 1; ?>
                     @foreach($data[1] as $d)
@@ -76,8 +71,6 @@
                         <td class="tg-cegc">{{number_format($d->subtotal)}}</td>
                         <td class="tg-cegc">{{number_format($d->diskon)}}</td>
                         <td class="tg-cegc">{{number_format($d->tagihan)}}</td>
-                        <td class="tg-cegc">{{number_format($d->realisasi)}}</td>
-                        <td class="tg-cegc">{{number_format($d->selisih)}}</td>
                     </tr>
                     <?php $no++; ?>
                     @endforeach
@@ -88,8 +81,6 @@
                         <td class="tg-8m6k">{{number_format($d->subtotal)}}</td>
                         <td class="tg-8m6k">{{number_format($d->diskon)}}</td>
                         <td class="tg-8m6k">{{number_format($d->tagihan)}}</td>
-                        <td class="tg-8m6k">{{number_format($d->realisasi)}}</td>
-                        <td class="tg-8m6k">{{number_format($d->selisih)}}</td>
                     </tr>
                     @endforeach
                 </table>

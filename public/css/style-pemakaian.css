@@ -1,9 +1,8 @@
 @media print{
     @page {
-      height: 28cm;
-      width: 37cm;
-      size: landscape;
-      border: 1px solid black;
+      height: 26cm;
+      width: 38cm;
+      border: 1px solid rgb(97, 97, 97);
     }
   }
   
@@ -24,8 +23,8 @@
   
   body {
     position: relative;
-    width: 37cm;  
-    height: 28cm; 
+    width: 38cm;  
+    height: 26cm; 
     margin: auto; 
     color: #000;
     background: #FFFFFF; 
