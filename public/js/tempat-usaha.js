@@ -547,7 +547,17 @@ $(document).ready(function(){
 				}
 				if(data.success)
 				{
-					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
+                    html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
+                    
+                    var myRadio = $('input[name="radioAlatListrik"]:checked').val();
+                    if(myRadio == 'pasang_listrik'){
+                        let handle = window.open(
+                            '/tempatusaha/download/bg1',
+                            '_blank'
+                        );
+                        handle.blur();
+                        window.focus();
+                    }
 					
                     setTimeout(function(){
                         $('#myModal').modal('hide');

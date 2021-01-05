@@ -73,6 +73,7 @@ Route::middleware('ceklogin:pedagang')->group(function (){
 });
 
 Route::middleware('ceklogin:tempatusaha')->group(function (){
+    Route::get('tempatusaha/download/bg1',[TempatController::class, 'downloadBG1']);
     Route::get('tempatusaha/qr/{id}',[TempatController::class, 'qr']);
     Route::get('tempatusaha/rekap', [TempatController::class, 'rekap']);
     Route::get('tempatusaha/rekap/{blok}',[TempatController::class, 'rekapdetail']);
@@ -83,6 +84,8 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 });
 
 Route::middleware('ceklogin:tagihan')->group(function (){
+    Route::get('tagihan/pemberitahuan/{blok}', [TagihanController::class, 'pemberitahuan']);
+    Route::get('tagihan/pembayaran/{blok}', [TagihanController::class, 'pembayaran']);
     Route::get('tagihan/periode', [TagihanController::class, 'periode']);
     Route::post('tagihan/tambah', [TagihanController::class, 'tambah']);
     Route::get('tagihan/publish', [TagihanController::class, 'publish']);

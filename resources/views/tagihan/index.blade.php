@@ -245,12 +245,12 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form>
+            <form id="cetakPemberitahuan">
                 <div class="modal-body-short">
                     <div class="form-group">
                         <label for="blok">Pilih Blok</label>
                         <select class="form-control" name="blokPemberitahuan" id="blokPemberitahuan" required>
-                            <option selected="selected" hidden="hidden"  value="">Pilih Blok</option>
+                            <option selected hidden value="">Pilih Blok</option>
                             @foreach($blok as $b)
                             <option value="{{$b->nama}}">{{$b->nama}}</option>
                             @endforeach
@@ -258,7 +258,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="cetakPemberitahuan" class="btn btn-primary btn-sm">Cetak Pemberitahuan</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Cetak Pemberitahuan</button>
                 </div>
             </form>
         </div>
@@ -280,12 +280,12 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form>
+            <form id="cetakPembayaran">
                 <div class="modal-body-short">
                     <div class="form-group">
                         <label for="blok">Pilih Blok</label>
                         <select class="form-control" name="blokPembayaran" id="blokPembayaran" required>
-                            <option selected="selected" hidden="hidden"  value="">Pilih Blok</option>
+                            <option selected hidden value="">Pilih Blok</option>
                             @foreach($blok as $b)
                             <option value="{{$b->nama}}">{{$b->nama}}</option>
                             @endforeach
@@ -293,7 +293,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" id="cetakPembayaran" class="btn btn-primary btn-sm">Cetak Pembayaran</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Cetak Pembayaran</button>
                 </div>
             </form>
         </div>

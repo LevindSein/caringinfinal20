@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use DataTables;
 use Validator;
 use Exception;
@@ -13,10 +14,14 @@ use App\Models\Pedagang;
 use App\Models\AlatListrik;
 use App\Models\AlatAir;
 
+use App\Models\TarifListrik;
+use App\Models\TarifAirBersih;
 use App\Models\TarifKeamananIpk;
 use App\Models\TarifKebersihan;
 use App\Models\TarifAirKotor;
 use App\Models\TarifLain;
+
+use App\Models\IndoDate;
 
 class TempatController extends Controller
 {
@@ -529,6 +534,7 @@ class TempatController extends Controller
             //no_alamat
             $los = strtoupper($request->los);
             $tempat->no_alamat = $los;
+            $alamat = $los;
             
             //jml_alamat
             $los = explode(",",$los);
@@ -539,11 +545,15 @@ class TempatController extends Controller
             $tempat->kd_kontrol = $kode;
             
             //bentuk_usaha
-            if($request->usaha != null)
+            if($request->usaha != null){
                 $tempat->bentuk_usaha = ucwords($request->usaha);
-            else
+                $usaha = ucwords($request->usaha);
+            }
+            else{
                 $tempat->bentuk_usaha = NULL;
-            
+                $usaha = "usaha";
+            }
+
             //lok_tempat
             $lokasi = $request->lokasi;
             if($lokasi != NULL){
@@ -672,10 +682,35 @@ class TempatController extends Controller
                     $tempat->daya = $meteran->daya;
                     $meteran->stt_sedia = 1;
                     $meteran->stt_bayar = 0;
+
+                    $pDaya   = $meteran->daya;
+                    $pSeri = $meteran->nomor;
+
                     $meteran->save();
 
                     //Download Surat Perintah Bayar
                     //Download Surat Perintah Ganti / Pasang
+                    
+                    $pNama = Pedagang::find($request->pengguna);
+                    $pNama = $pNama->nama;
+
+                    $pTarif = TarifListrik::find(1);
+                    $pTarif = $pTarif->trf_pasang;
+
+                    $pPermohonan = "Sambungan Baru";
+                    $pJudul = strtoupper($pPermohonan);
+                    $pPermohonan = strtolower($pPermohonan);
+
+                    Session::put('pJudul',$pJudul);
+                    Session::put('pNama',$pNama);
+                    Session::put('pBlok',$blok);
+                    Session::put('pAlamat',$alamat);
+                    Session::put('pKontrol',$kode);
+                    Session::put('pSeri',$pSeri);
+                    Session::put('pTarif',$pTarif);
+                    Session::put('pPermohonan',"$pPermohonan dengan daya $pDaya VA");
+                    Session::put('pKeperluan',$usaha);
+                    Session::put('pFasilitas','Listrik');
                 }
 
                 //Ganti Alat
@@ -795,11 +830,45 @@ class TempatController extends Controller
             //Save Record Tempat Usaha Baru
             $tempat->save();
 
-            return response()->json(['success' => 'Data Berhasil Diupdate.']);
+            return response()->json(['success' => 'Data Berhasil Diupdate']);
         }
         catch(\Exception $e){
-            return response()->json(['errors' => 'Data Gagal Diupdate.']);
+            return response()->json(['errors' => 'Data Gagal Diupdate']);
         }
+    }
+
+    public function downloadBG1(){
+        $document = file_get_contents('rtf/BG1.rtf');
+
+        $judul = Session::get('pJudul');
+        $nama = Session::get('pNama');
+        $blok = Session::get('pBlok');
+        $alamat = Session::get('pAlamat');
+        $kontrol = Session::get('pKontrol');
+        $seri = Session::get('pSeri');
+        $tarif = "Rp. ".number_format(Session::get('pTarif'));
+        $permohonan = Session::get('pPermohonan');
+        $keperluan = Session::get('pKeperluan');
+        $fasilitas = Session::get('pFasilitas');
+        $tanggal = IndoDate::tanggal(date('Y-m-d',time()),' ');
+
+        $document = str_replace("#JUDULSURAT", $judul, $document);
+        $document = str_replace("#NAMA", $nama, $document);
+        $document = str_replace("#BLOK", $blok, $document);
+        $document = str_replace("#ALAMAT", $alamat, $document);
+        $document = str_replace("#NOKONTROL", $kontrol, $document);
+        $document = str_replace("#NOSERI", $seri, $document);
+        $document = str_replace("#TARIF", $tarif, $document);
+        $document = str_replace("#PERMOHONAN", $permohonan, $document);
+        $document = str_replace("#KEPERLUAN", $keperluan, $document);
+        $document = str_replace("#FASILITAS", $fasilitas, $document);
+        $document = str_replace("#TANGGAL", $tanggal, $document);
+
+        header("Content-type: application/msword");
+        header("Content-disposition: attachment; filename=Pemasangan Listrik $nama.doc");
+            
+        echo $document;
+        return view('tempatusaha.handle');
     }
 
     /**

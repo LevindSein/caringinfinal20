@@ -281,50 +281,44 @@ class KasirController extends Controller
 
                 if(empty($request->checkAirBersih) == FALSE){
                     $d->rea_airbersih = $d->ttl_airbersih;
-                    $d->sel_airbersih = 0;
-
                     $total = $total + $d->rea_airbersih;
-                    $selisih = $selisih - $d->rea_airbersih;
+                    $selisih = $selisih - $d->sel_airbersih;
+                    $d->sel_airbersih = 0;
                 }
 
                 if(empty($request->checkListrik) == FALSE){
                     $d->rea_listrik = $d->ttl_listrik;
-                    $d->sel_listrik = 0;
-                    
                     $total = $total + $d->rea_listrik;
-                    $selisih = $selisih - $d->rea_listrik;
+                    $selisih = $selisih - $d->sel_listrik;
+                    $d->sel_listrik = 0;
                 }
 
                 if(empty($request->checkKeamananIpk) == FALSE){
                     $d->rea_keamananipk = $d->ttl_keamananipk;
-                    $d->sel_keamananipk = 0;
-                    
                     $total = $total + $d->rea_keamananipk;
-                    $selisih = $selisih - $d->rea_keamananipk;
+                    $selisih = $selisih - $d->sel_keamananipk;
+                    $d->sel_keamananipk = 0;
                 }
 
                 if(empty($request->checkKebersihan) == FALSE){
                     $d->rea_kebersihan = $d->ttl_kebersihan;
-                    $d->sel_kebersihan = 0;
-                    
                     $total = $total + $d->rea_kebersihan;
-                    $selisih = $selisih - $d->rea_kebersihan;
+                    $selisih = $selisih - $d->sel_kebersihan;
+                    $d->sel_kebersihan = 0;
                 }
 
                 if(empty($request->checkAirKotor) == FALSE){
                     $d->rea_airkotor = $d->ttl_airkotor;
-                    $d->sel_airkotor = 0;
-                    
                     $total = $total + $d->rea_airkotor;
-                    $selisih = $selisih - $d->rea_airkotor;
+                    $selisih = $selisih - $d->sel_airkotor;
+                    $d->sel_airkotor = 0;
                 }
 
                 if(empty($request->checkLain) == FALSE){
                     $d->rea_lain = $d->ttl_lain;
-                    $d->sel_lain = 0;
-                    
                     $total = $total + $d->rea_lain;
-                    $selisih = $selisih - $d->rea_lain;
+                    $selisih = $selisih - $d->sel_lain;
+                    $d->sel_lain = 0;
                 }
 
                 

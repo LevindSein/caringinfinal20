@@ -366,6 +366,26 @@ $(document).ready(function(){
         );
     });
 
+    $('#cetakPemberitahuan').on('submit',function(e){
+        e.preventDefault();
+        if(document.getElementById("blokPemberitahuan").value != ""){
+            window.open(
+                '/tagihan/pemberitahuan/' + document.getElementById("blokPemberitahuan").value,
+                '_blank'
+            );
+        }
+    });
+
+    $('#cetakPembayaran').on('submit',function(e){
+        e.preventDefault();
+        if(document.getElementById("blokPembayaran").value != ""){
+            window.open(
+                '/tagihan/pembayaran/' + document.getElementById("blokPembayaran").value,
+                '_blank'
+            );
+        }
+    });
+
     $(document).on('click', '.sync', function(){
         $('#process').show();
         $.ajaxSetup({

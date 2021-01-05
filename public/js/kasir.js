@@ -41,6 +41,13 @@ $(document).ready(function () {
         $("#checkAirKotor").prop("checked", false).prop("disabled", true);
         $("#checkLain").prop("checked", false).prop("disabled", true);
 
+        $("#fasListrik").show();
+        $("#fasAirBersih").show();
+        $("#fasKeamananIpk").show();
+        $("#fasKebersihan").show();
+        $("#fasAirKotor").show();
+        $("#fasLain").show();
+
         $.ajax({
 			url :"/kasir/rincian/" + kontrol,
 			dataType:"json",
@@ -71,6 +78,7 @@ $(document).ready(function () {
 
                         if(tunggakan != 0){
                             $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                            $("#divTunggakan").show();
                         }
                         else{
                             $("#divTunggakan").hide();
@@ -99,6 +107,7 @@ $(document).ready(function () {
 
                         if(tunggakan != 0){
                             $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                            $("#divTunggakan").show();
                         }
                         else{
                             $("#divTunggakan").hide();
@@ -127,6 +136,7 @@ $(document).ready(function () {
 
                         if(tunggakan != 0){
                             $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                            $("#divTunggakan").show();
                         }
                         else{
                             $("#divTunggakan").hide();
@@ -155,6 +165,7 @@ $(document).ready(function () {
 
                         if(tunggakan != 0){
                             $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                            $("#divTunggakan").show();
                         }
                         else{
                             $("#divTunggakan").hide();
@@ -183,6 +194,7 @@ $(document).ready(function () {
 
                         if(tunggakan != 0){
                             $("#nominalTunggakan").html(tunggakan.toLocaleString());
+                            $("#divTunggakan").show();
                         }
                         else{
                             $("#divTunggakan").hide();
@@ -195,6 +207,32 @@ $(document).ready(function () {
                     $("#divTunggakan").show();
                     $("#nominalTunggakan").html(tunggakan.toLocaleString());
                     total = total + tunggakan;
+                    
+                    
+                    // if(Number(data.result.listrik) == 0 && Number(data.result.airbersih) == 0){
+                    //     $("#checkListrik").prop("checked", true).prop("disabled", false);
+                    //     $("#fasListrik").hide();
+                    // }
+                    // if(){
+                    //     $("#checkAirBersih").prop("checked", true).prop("disabled", false);
+                    //     $("#fasAirBersih").hide();
+                    // }
+                    // if(Number(data.result.keamananipk) == 0){
+                    //     $("#checkKeamananIpk").prop("checked", true).prop("disabled", false);
+                    //     $("#fasKeamananIpk").hide();
+                    // }
+                    // if(Number(data.result.kebersihan) == 0){
+                    //     $("#checkKebersihan").prop("checked", true).prop("disabled", false);
+                    //     $("#fasKebersihan").hide();
+                    // }
+                    // if(Number(data.result.airkotor) == 0){
+                    //     $("#checkAirKotor").prop("checked", true).prop("disabled", false);
+                    //     $("#fasAirKotor").hide();
+                    // }
+                    // if(Number(data.result.lain) == 0){
+                    //     $("#checkLain").prop("checked", true).prop("disabled", false);
+                    //     $("#fasLain").hide();
+                    // }
                 }
                 if(Number(data.result.denda) != 0){
                     $("#divDenda").show();
