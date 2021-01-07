@@ -319,4 +319,11 @@ $(document).ready(function () {
             alert("Gagal Melakukan Print");
         });
     }
+
+    window.setInterval(function(){
+        if(localStorage["update"] == "1"){
+            localStorage["update"] = "0";
+            $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
+        }
+    }, 500);
 });

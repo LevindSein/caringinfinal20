@@ -70,6 +70,8 @@ class TagihanController extends Controller
                     }
                     else{
                         $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
+                        if(Session::get('role') == 'master')
+                            $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
                     }
                     return $button;
                 })
@@ -376,6 +378,8 @@ class TagihanController extends Controller
                     }
                     else{
                         $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
+                        if(Session::get('role') == 'master')
+                            $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
                     }
                     return $button;
                 })
@@ -2308,5 +2312,26 @@ class TagihanController extends Controller
         }
 
         return view('tagihan.pembayaran',['blok' => $blok,'bulan' => $bulan, 'dataset' => $pemberitahuan]);
+    }
+
+    public function unpublish(Request $request,$id){
+        if($request->ajax()){
+            try{
+                $tagihan = Tagihan::find($id);
+                $publish = $tagihan->stt_publish;
+                if($publish === 1){
+                    $hasil = 0;
+                }
+                else if($publish === 0){
+                    $hasil = 1;
+                }
+                $tagihan->stt_publish = $hasil;
+                $tagihan->save();
+                return response()->json(['success' => 'Unpublish Sukses']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => 'Oops! Gagal Unpublish']);
+            }
+        }
     }
 }

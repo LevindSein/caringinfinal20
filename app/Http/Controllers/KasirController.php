@@ -862,7 +862,155 @@ class KasirController extends Controller
         return view('kasir.penerimaan',['tanggal' => $tanggal]);
     }
 
-    public function restore(){
+    public function restore(Request $request){
+        if($request->ajax()){
+            $data = Pembayaran::select('kd_kontrol')
+            ->groupBy('kd_kontrol')
+            ->orderBy('kd_kontrol','asc')
+            ->where('tgl_bayar',date('Y-m-d',time()));
+            return DataTables::of($data)
+                ->addColumn('action', function($data){
+                    $button = '<a type="button" title="Restore" name="restore" id="'.$data->kd_kontrol.'" class="restore btn btn-sm btn-primary">Restore</a>';
+                    return $button;
+                })
+                ->addColumn('pengguna', function($data){
+                    $pengguna = TempatUsaha::where('kd_kontrol',$data->kd_kontrol)->select('id_pengguna')->first();
+                    if($pengguna != NULL){
+                        return User::find($pengguna->id_pengguna)->nama;
+                    }
+                    else{
+                        return '(Kosong)';
+                    }
+                })
+                ->addColumn('lokasi', function($data){
+                    $lokasi = TempatUsaha::where('kd_kontrol',$data->kd_kontrol)->select('lok_tempat')->first();
+                    if($lokasi != NULL){
+                        return $lokasi->lok_tempat;
+                    }
+                    else{
+                        return '';
+                    }
+                })
+                ->addColumn('tagihan', function($data){
+                    $tagihan = Pembayaran::where([['kd_kontrol',$data->kd_kontrol],['tgl_bayar',date('Y-m-d',time())]])
+                    ->select(DB::raw('SUM(realisasi) as tagihan'))->get();
+                    if($tagihan != NULL){
+                        return number_format($tagihan[0]->tagihan);
+                    }
+                    else{
+                        return 0;
+                    }
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
         return view('kasir.restore');
+    }
+
+    public function restoreStore(Request $request, $kontrol){
+        if($request->ajax()){
+            try{
+                $pembayaran = Pembayaran::where([['kd_kontrol',$kontrol],['tgl_bayar',date('Y-m-d',time())]])->get();
+                foreach($pembayaran as $p){
+                    $tagihan = Tagihan::find($p->id_tagihan);
+                    if($p->byr_listrik == $tagihan->ttl_listrik && $p->byr_listrik !== NULL){
+                        $tagihan->rea_listrik = 0;
+                        $tagihan->sel_listrik = $tagihan->ttl_listrik;
+                        $tagihan->den_listrik = $p->byr_denlistrik;
+                        $tagihan->stt_lunas   = 0;
+                    }
+
+                    if($p->byr_airbersih == $tagihan->ttl_airbersih && $p->byr_airbersih !== NULL){
+                        $tagihan->rea_airbersih = 0;
+                        $tagihan->sel_airbersih = $tagihan->ttl_airbersih;
+                        $tagihan->den_airbersih = $p->byr_denairbersih;
+                        $tagihan->stt_lunas   = 0;
+                    }
+
+                    if($p->byr_keamananipk == $tagihan->ttl_keamananipk && $p->byr_keamananipk !== NULL){
+                        $tagihan->rea_keamananipk = 0;
+                        $tagihan->sel_keamananipk = $tagihan->ttl_keamananipk;
+                        $tagihan->stt_lunas   = 0;
+                    }
+
+                    if($p->byr_kebersihan == $tagihan->ttl_kebersihan && $p->byr_kebersihan !== NULL){
+                        $tagihan->rea_kebersihan = 0;
+                        $tagihan->sel_kebersihan = $tagihan->ttl_kebersihan;
+                        $tagihan->stt_lunas   = 0;
+                    }
+
+                    if($p->byr_airkotor == $tagihan->ttl_airkotor && $p->byr_airkotor !== NULL){
+                        $tagihan->rea_airkotor = 0;
+                        $tagihan->sel_airkotor = $tagihan->ttl_airkotor;
+                        $tagihan->stt_lunas   = 0;
+                    }
+
+                    if($p->byr_lain == $tagihan->ttl_lain && $p->byr_lain !== NULL){
+                        $tagihan->rea_lain = 0;
+                        $tagihan->sel_lain = $tagihan->ttl_lain;
+                        $tagihan->stt_lunas   = 0;
+                    }
+
+                    //Subtotal
+                    $subtotal = 
+                            $tagihan->sub_listrik     + 
+                            $tagihan->sub_airbersih   + 
+                            $tagihan->sub_keamananipk + 
+                            $tagihan->sub_kebersihan  + 
+                            $tagihan->ttl_airkotor    + 
+                            $tagihan->ttl_lain;
+                    $tagihan->sub_tagihan = $subtotal;
+
+                    //Diskon
+                    $diskon = 
+                        $tagihan->dis_listrik     + 
+                        $tagihan->dis_airbersih   + 
+                        $tagihan->dis_keamananipk + 
+                        $tagihan->dis_kebersihan;
+                    $tagihan->dis_tagihan = $diskon;
+
+                    //Denda
+                    $tagihan->den_tagihan = $tagihan->den_listrik + $tagihan->den_airbersih;
+
+                    //TOTAL
+                    $total = 
+                        $tagihan->ttl_listrik     + 
+                        $tagihan->ttl_airbersih   + 
+                        $tagihan->ttl_keamananipk + 
+                        $tagihan->ttl_kebersihan  + 
+                        $tagihan->ttl_airkotor    + 
+                        $tagihan->ttl_lain;
+                    $tagihan->ttl_tagihan = $total;
+
+                    //Realisasi
+                    $realisasi = 
+                            $tagihan->rea_listrik     + 
+                            $tagihan->rea_airbersih   + 
+                            $tagihan->rea_keamananipk + 
+                            $tagihan->rea_kebersihan  + 
+                            $tagihan->rea_airkotor    + 
+                            $tagihan->rea_lain;
+                    $tagihan->rea_tagihan = $realisasi;
+
+                    //Selisih
+                    $selisih =
+                            $tagihan->sel_listrik     + 
+                            $tagihan->sel_airbersih   + 
+                            $tagihan->sel_keamananipk + 
+                            $tagihan->sel_kebersihan  + 
+                            $tagihan->sel_airkotor    + 
+                            $tagihan->sel_lain;
+                    $tagihan->sel_tagihan = $selisih;
+                    
+                    $tagihan->save();
+
+                    $p->delete();
+                }
+                return response()->json(['success' => 'Restore Sukses']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => $e]);
+            }
+        }
     }
 }

@@ -57,6 +57,7 @@ Route::middleware('ceklogin:dashboard')->group(function () {
 
 Route::middleware('ceklogin:kasir')->group(function(){
     Route::get('kasir/restore',[KasirController::class, 'restore']);
+    Route::post('kasir/restore/{id}',[KasirController::class, 'restoreStore']);
     Route::get('kasir/penerimaan',[KasirController::class, 'penerimaan']);
     Route::get('kasir/periode',[KasirController::class, 'periode']);
     Route::get('kasir/rincian/periode/{kontrol}',[KasirController::class, 'rincianPeriode']);
@@ -87,6 +88,7 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 
 Route::middleware('ceklogin:tagihan')->group(function (){
     Route::get('tagihan/pemberitahuan/{blok}', [TagihanController::class, 'pemberitahuan']);
+    Route::post('tagihan/unpublish/{id}', [TagihanController::class, 'unpublish']);
     Route::get('tagihan/pembayaran/{blok}', [TagihanController::class, 'pembayaran']);
     Route::get('tagihan/periode', [TagihanController::class, 'periode']);
     Route::post('tagihan/tambah', [TagihanController::class, 'tambah']);

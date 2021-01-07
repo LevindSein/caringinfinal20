@@ -52,6 +52,7 @@
     <div>
         <a 
             href="{{url('kasir/restore')}}"
+            target="_blank"
             type="button"
             class="btn btn-outline-inverse-info"
             title="Restore Tagihan">
