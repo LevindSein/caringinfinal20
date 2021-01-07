@@ -17,6 +17,7 @@
     &nbsp;
     <div>
         <button
+            disabled
             id="btn-scan-qr"
             type="button"
             class="btn btn-outline-inverse-info"
@@ -25,18 +26,6 @@
         </button>
     </div>
     @endif
-    <!-- &nbsp;
-    <div>
-        <button
-            disabled
-            type="button"
-            class="btn btn-outline-inverse-info"
-            data-toggle="modal"
-            data-target="#myPenerimaan"
-            title="Cetak Penerimaan">
-            <i class="mdi mdi-printer btn-icon-append"></i>  
-        </button>
-    </div> -->
     &nbsp;
     <div>
         <a 
@@ -46,6 +35,27 @@
             data-target="#myBulanan"
             title="Bayar by Bulanan">
             <i class="mdi mdi-magnify btn-icon-append"></i>  
+        </a>
+    </div>
+    &nbsp;
+    <div>
+        <button
+            type="button"
+            class="btn btn-outline-inverse-info"
+            data-toggle="modal"
+            data-target="#myPenerimaan"
+            title="Penerimaan Harian">
+            <i class="mdi mdi-printer btn-icon-append"></i>  
+        </button>
+    </div>
+    &nbsp;
+    <div>
+        <a 
+            href="{{url('kasir/restore')}}"
+            type="button"
+            class="btn btn-outline-inverse-info"
+            title="Restore Tagihan">
+            <i class="mdi mdi-restore btn-icon-append"></i>  
         </a>
     </div>
 </div>

@@ -324,7 +324,7 @@ class TagihanController extends Controller
             return view('tagihan.index',[
                 'periode'       => IndoDate::bulan($periode,' '),
                 'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-                'blok'          => Blok::select('nama')->get(),
+                'blok'          => Blok::select('nama')->orderBy('nama')->get(),
                 'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->whereIn('tagihan.blok',$wherein)
@@ -339,7 +339,7 @@ class TagihanController extends Controller
             return view('tagihan.index',[
                 'periode'       => IndoDate::bulan($periode,' '),
                 'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-                'blok'          => Blok::select('nama')->get(),
+                'blok'          => Blok::select('nama')->orderBy('nama')->get(),
                 'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->count(),
@@ -630,7 +630,7 @@ class TagihanController extends Controller
             return view('tagihan.periode',[
                 'periode'       => IndoDate::bulan($periode,' '),
                 'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-                'blok'          => Blok::select('nama')->get(),
+                'blok'          => Blok::select('nama')->orderBy('nama')->get(),
                 'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->whereIn('tagihan.blok',$wherein)
@@ -645,7 +645,7 @@ class TagihanController extends Controller
             return view('tagihan.periode',[
                 'periode'       => IndoDate::bulan($periode,' '),
                 'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-                'blok'          => Blok::select('nama')->get(),
+                'blok'          => Blok::select('nama')->orderBy('nama')->get(),
                 'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->count(),
@@ -965,7 +965,7 @@ class TagihanController extends Controller
     }
 
     public function print(){
-        $blok = Blok::select('nama')->get();
+        $blok = Blok::select('nama')->orderBy('nama')->get();
         $dataListrik = array();
         $dataAir = array();
         $i = 0;

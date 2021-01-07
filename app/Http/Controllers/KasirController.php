@@ -275,7 +275,7 @@ class KasirController extends Controller
 
                     $total = $total + $pembayaran->byr_listrik;
                     $selisih = $selisih - $pembayaran->byr_listrik;
-                    
+
                     $pembayaran->byr_airbersih = $d->sel_airbersih;
                     $pembayaran->byr_denairbersih = $d->den_airbersih;
                     $pembayaran->sel_airbersih = 0;
@@ -854,5 +854,15 @@ class KasirController extends Controller
 
     public function bayarPeriode($kontrol){
 
+    }
+
+    public function penerimaan(Request $request){
+        $tanggal = $request->tanggal;
+        $dataset = Pembayaran::where([['tgl_bayar',$tanggal],['nama',Session::get('username')]])->get();
+        return view('kasir.penerimaan',['tanggal' => $tanggal]);
+    }
+
+    public function restore(){
+        return view('kasir.restore');
     }
 }

@@ -56,6 +56,8 @@ Route::middleware('ceklogin:dashboard')->group(function () {
 });
 
 Route::middleware('ceklogin:kasir')->group(function(){
+    Route::get('kasir/restore',[KasirController::class, 'restore']);
+    Route::get('kasir/penerimaan',[KasirController::class, 'penerimaan']);
     Route::get('kasir/periode',[KasirController::class, 'periode']);
     Route::get('kasir/rincian/periode/{kontrol}',[KasirController::class, 'rincianPeriode']);
     Route::post('kasir/periode',[KasirController::class, 'storePeriode']);
