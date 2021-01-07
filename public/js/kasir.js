@@ -40,6 +40,7 @@ $(document).ready(function () {
         $("#checkKebersihan").prop("checked", false).prop("disabled", true);
         $("#checkAirKotor").prop("checked", false).prop("disabled", true);
         $("#checkLain").prop("checked", false).prop("disabled", true);
+        $("#checkTunggakan").prop("checked", false);
 
         $("#fasListrik").show();
         $("#fasAirBersih").show();
@@ -208,31 +209,9 @@ $(document).ready(function () {
                     $("#nominalTunggakan").html(tunggakan.toLocaleString());
                     total = total + tunggakan;
                     
-                    
-                    // if(Number(data.result.listrik) == 0 && Number(data.result.airbersih) == 0){
-                    //     $("#checkListrik").prop("checked", true).prop("disabled", false);
-                    //     $("#fasListrik").hide();
-                    // }
-                    // if(){
-                    //     $("#checkAirBersih").prop("checked", true).prop("disabled", false);
-                    //     $("#fasAirBersih").hide();
-                    // }
-                    // if(Number(data.result.keamananipk) == 0){
-                    //     $("#checkKeamananIpk").prop("checked", true).prop("disabled", false);
-                    //     $("#fasKeamananIpk").hide();
-                    // }
-                    // if(Number(data.result.kebersihan) == 0){
-                    //     $("#checkKebersihan").prop("checked", true).prop("disabled", false);
-                    //     $("#fasKebersihan").hide();
-                    // }
-                    // if(Number(data.result.airkotor) == 0){
-                    //     $("#checkAirKotor").prop("checked", true).prop("disabled", false);
-                    //     $("#fasAirKotor").hide();
-                    // }
-                    // if(Number(data.result.lain) == 0){
-                    //     $("#checkLain").prop("checked", true).prop("disabled", false);
-                    //     $("#fasLain").hide();
-                    // }
+                    if(Number(data.result.listrik) == 0 && Number(data.result.airbersih) == 0 && Number(data.result.keamananipk) == 0 && Number(data.result.kebersihan) == 0 && Number(data.result.airkotor) == 0 && Number(data.result.lain) == 0){
+                        $("#checkTunggakan").prop("checked", true);
+                    }
                 }
                 if(Number(data.result.denda) != 0){
                     $("#divDenda").show();

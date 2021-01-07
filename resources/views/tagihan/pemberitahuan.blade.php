@@ -8,6 +8,7 @@
     </head>
     <body onload="window.print()">
         @foreach($dataset as $d)
+            @if($d['total'] != 0 || $d['total'] != NULL)
             <?php $i = 1; ?>
             <div class="row" style="page-break-after:always">
                 <table class="tg" style="undefined;table-layout: fixed; width: 450px">
@@ -70,7 +71,7 @@
                         <td class="tg-0r15"></td>
                         <td class="tg-tb31"></td>
                         <td class="tg-tb31">Pakai</td>
-                        <td class="tg-7jip">{{number_format($d['daya_listrik'])}}</td>
+                        <td class="tg-7jip">{{number_format($d['pakai_listrik'])}}</td>
                         <td class="tg-7jiy"></td>
                     </tr>
                     <?php $i++; ?>
@@ -281,6 +282,7 @@
                 </tbody>
                 </table>
             </div>
+        @endif
         @endforeach
     </body>
 </html>

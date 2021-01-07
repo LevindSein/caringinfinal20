@@ -1,0 +1,58 @@
+@media print {
+    @page {
+      width: 13cm;
+      height: 14cm;
+      /* padding: 10px; */
+      padding-top: 1.25cm;
+      padding-bottom: 1cm;
+      margin-left: 1.5cm;
+      margin-right: 1.5cm;
+    }
+  }
+  
+  body {
+    position: relative;
+    height: 14cm;
+    width: 13cm;
+  }
+  
+  .row {
+    display: flex; /* equal height of the children */
+  }
+  
+  .col {
+    flex: 1; /* additionally, equal width */
+    padding: 1em;
+    border: solid;
+  }
+  
+  .tg  {border-collapse:collapse;border-spacing:0;}
+  .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:16px;
+    overflow:hidden;padding:2px 13px;word-break:normal;}
+  .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:16px;
+    font-weight:normal;overflow:hidden;padding:2px 13px;word-break:normal;}
+  .tg .tg-ey1n{border-right:none; border-color:black;font-size:16px;font-weight:bold;text-align:left;vertical-align:top}
+  .tg .tg-tb39{border-left:none; border-top:none; border-bottom:none; border-color:black;font-family:Arial, Helvetica, sans-serif !important;font-size:14px;text-align:left;
+    vertical-align:middle}
+  .tg .tg-tb31{border-left:none; border-right:none; border-top:none; border-bottom:none; border-color:black;font-family:Arial, Helvetica, sans-serif !important;;font-size:16px;text-align:left;
+   vertical-align:middle}
+  .tg .tg-0r18{border-color:black;font-size:16px;text-align:center;vertical-align:top}
+  .tg .tg-0r15{border-right:none; border-top:none; border-bottom:none; border-color:black;font-size:16px;text-align:center;vertical-align:top}
+  .tg .tg-0r89{border-top:none; border-bottom:none; border-color:black;font-size:16px;text-align:center;vertical-align:top}
+  .tg .tg-0r16{border-right:none; border-top:none; border-color:black;font-size:16px;text-align:center;vertical-align:top}
+  .tg .tg-gmla{border-color:black;font-size:17px;text-align:center;vertical-align:top}
+  .tg .tg-zd5i{border-right:none; border-top:none; border-bottom:none; border-color:black;font-size:16px;text-align:left;vertical-align:top}
+  .tg .tg-zd55{border-top:none; border-color:black;font-size:16px;text-align:center;vertical-align:top}
+  .tg .tg-zd57{border-top:none; border-color:black;font-size:16px;text-align:left;vertical-align:top}
+  .tg .tg-umgj{border-right:none; border-color:black;font-size:16px;font-weight:bold;text-align:left;vertical-align:top}
+  .tg .tg-95y4{border-left:none; border-color:black;font-family:Arial, Helvetica, sans-serif !important;;font-size:16px;font-weight:bold;
+    text-align:center;vertical-align:middle}
+  .tg .tg-7jiy{border-left:none; border-top:none; border-bottom:none; border-color:black;font-family:Arial, Helvetica, sans-serif !important;;font-size:16px;text-align:right;
+    vertical-align:middle}
+  .tg .tg-7jip{border-right:none; border-left:none; border-top:none; border-bottom:none; border-color:black;font-family:Arial, Helvetica, sans-serif !important;;font-size:16px;text-align:right;
+    vertical-align:middle}
+  .tg .tg-7jit{border-left:none; border-right:none; border-top:none; border-bottom:none; border-color:black;font-family:Arial, Helvetica, sans-serif !important;;font-size:16px;text-align:right;
+    vertical-align:middle}
+  .tg .tg-yz93{border-color:black;text-align:right;vertical-align:middle}
+  .tg .tg-q23v{border-left:none; border-color:black;font-family:Arial, Helvetica, sans-serif !important;;font-size:16px;font-weight:bold;
+    text-align:right;vertical-align:middle}

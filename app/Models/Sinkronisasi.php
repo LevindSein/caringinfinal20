@@ -23,7 +23,7 @@ class Sinkronisasi extends Model
 {
     use HasFactory;
     protected $table = 'sinkronisasi';
-    protected $fillable = ['id','sinkron','updated_at','created_at'];
+    protected $fillable = ['id','sinkron','faktur','surat','updated_at','created_at'];
 
     public static function sinkron(){
         $sync = new Sinkronisasi;

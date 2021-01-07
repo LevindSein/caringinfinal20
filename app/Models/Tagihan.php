@@ -22,6 +22,7 @@ class Tagihan extends Model
     protected $table ='tagihan';
     protected $fillable = [
         'id',
+        'no_faktur',
         'nama',
         'blok',
         'kd_kontrol',

@@ -97,6 +97,12 @@
                 <div class="modal-body">
                     @csrf
                     <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap:wrap;">
+                        <input
+                            hidden
+                            type="checkbox"
+                            name="checkTunggakan"
+                            id="checkTunggakan"
+                            value="tunggakan">
                         <div>
                             <div>
                                 <input
