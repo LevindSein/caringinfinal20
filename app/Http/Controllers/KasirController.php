@@ -468,7 +468,7 @@ class KasirController extends Controller
                 DB::raw('SUM(den_tagihan) as denda'))
             ->get();
             
-            $data['tunggakan']     = $data1[0]->tunggakan;
+            $data['tunggakan']     = $data1[0]->tunggakan - $data1[0]->denda;
             $data['denda']         = $data1[0]->denda;
 
             $data['tlistrik'] = $data1[0]->listrik;
