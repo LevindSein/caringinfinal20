@@ -207,6 +207,7 @@ class KasirController extends Controller
                 $pembayaran->tgl_bayar = $tanggal;
                 $pembayaran->bln_bayar = $bulan;
                 $pembayaran->thn_bayar = $tahun;
+                $pembayaran->tgl_tagihan = $d->tgl_tagihan;
                 $pembayaran->via_bayar = 'kasir';
                 $pembayaran->id_kasir = Session::get('userId');
                 $pembayaran->nama = Session::get('username');
@@ -714,6 +715,7 @@ class KasirController extends Controller
                 $pembayaran->tgl_bayar = $tanggal;
                 $pembayaran->bln_bayar = $bulan;
                 $pembayaran->thn_bayar = $tahun;
+                $pembayaran->tgl_tagihan = $d->tgl_tagihan;
                 $pembayaran->via_bayar = 'kasir';
                 $pembayaran->id_kasir = Session::get('userId');
                 $pembayaran->nama = Session::get('username');
@@ -858,8 +860,125 @@ class KasirController extends Controller
 
     public function penerimaan(Request $request){
         $tanggal = $request->tanggal;
-        $dataset = Pembayaran::where([['tgl_bayar',$tanggal],['nama',Session::get('username')]])->get();
-        return view('kasir.penerimaan',['tanggal' => $tanggal]);
+        $cetak   = IndoDate::tanggal(date('Y-m-d',time()),' ');
+
+        $dataset     = Pembayaran::where('tgl_bayar',$tanggal)->select('blok')->groupBy('blok')->orderBy('blok','asc')->get();
+        $rekap       = array();
+        $i           = 0;
+        $rek         = 0;
+        $listrik     = 0;
+        $denlistrik  = 0;
+        $airbersih   = 0;
+        $denairbersih= 0;
+        $keamananipk = 0;
+        $kebersihan  = 0;
+        $airkotor    = 0;
+        $lain        = 0;
+        $jumlah      = 0;
+        $diskon      = 0;
+        
+        $rin         = array();
+
+        foreach($dataset as $d){
+            $rekap[$i]['blok'] = $d->blok;
+            $rekap[$i]['rek']  = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['nama',Session::get('username')]])->count();
+            $setor = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['nama',Session::get('username')]])
+            ->select(
+                DB::raw('SUM(byr_listrik)      as listrik'),
+                DB::raw('SUM(byr_denlistrik)   as denlistrik'),
+                DB::raw('SUM(byr_airbersih)    as airbersih'),
+                DB::raw('SUM(byr_denairbersih) as denairbersih'),
+                DB::raw('SUM(byr_keamananipk)  as keamananipk'),
+                DB::raw('SUM(byr_kebersihan)   as kebersihan'),
+                DB::raw('SUM(byr_airkotor)     as airkotor'),
+                DB::raw('SUM(byr_lain)         as lain'),
+                DB::raw('SUM(realisasi)        as jumlah'),
+                DB::raw('SUM(diskon)           as diskon'))
+            ->get();
+            $rekap[$i]['listrik']     = $setor[0]->listrik;
+            $rekap[$i]['denlistrik']  = $setor[0]->denlistrik;
+            $rekap[$i]['airbersih']   = $setor[0]->airbersih;
+            $rekap[$i]['denairbersih']= $setor[0]->denairbersih;
+            $rekap[$i]['keamananipk'] = $setor[0]->keamananipk;
+            $rekap[$i]['kebersihan']  = $setor[0]->kebersihan;
+            $rekap[$i]['airkotor']    = $setor[0]->airkotor;
+            $rekap[$i]['lain']        = $setor[0]->lain;
+            $rekap[$i]['diskon']      = $setor[0]->diskon;
+            $rekap[$i]['jumlah']      = $setor[0]->jumlah;
+            $rek         = $rek         + $rekap[$i]['rek'];
+            $listrik     = $listrik     + $rekap[$i]['listrik'];
+            $denlistrik  = $denlistrik  + $rekap[$i]['denlistrik'];
+            $airbersih   = $airbersih   + $rekap[$i]['airbersih'];
+            $denairbersih= $denairbersih+ $rekap[$i]['denairbersih'];
+            $keamananipk = $keamananipk + $rekap[$i]['keamananipk'];
+            $kebersihan  = $kebersihan  + $rekap[$i]['kebersihan'];
+            $airkotor    = $airkotor    + $rekap[$i]['airkotor'];
+            $lain        = $lain        + $rekap[$i]['lain'];
+            $diskon      = $diskon      + $rekap[$i]['diskon'];
+            $jumlah      = $jumlah      + $rekap[$i]['jumlah'];
+
+            $rincian = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['nama',Session::get('username')]])->orderBy('kd_kontrol','asc')->get();
+            $j = 0;
+            $rlistrik     = 0;
+            $rdenlistrik  = 0;
+            $rairbersih   = 0;
+            $rdenairbersih= 0;
+            $rkeamananipk = 0;
+            $rkebersihan  = 0;
+            $rairkotor    = 0;
+            $rlain        = 0;
+            $rjumlah      = 0;
+            $rdiskon      = 0;
+            foreach($rincian as $r){
+                $rin[$i][$j]['rek']  = date("m/Y", strtotime($r->tgl_tagihan));
+                $rin[$i][$j]['kode']  = $r->kd_kontrol;
+                $rin[$i][$j]['pengguna']  = $r->pengguna;
+                $rin[$i][$j]['listrik']  = $r->byr_listrik;
+                $rin[$i][$j]['denlistrik']  = $r->byr_denlistrik;
+                $rin[$i][$j]['airbersih']  = $r->byr_airbersih;
+                $rin[$i][$j]['denairbersih']  = $r->byr_denairbersih;
+                $rin[$i][$j]['keamananipk']  = $r->byr_keamananipk;
+                $rin[$i][$j]['kebersihan']  = $r->byr_kebersihan;
+                $rin[$i][$j]['airkotor']  = $r->byr_airkotor;
+                $rin[$i][$j]['lain']  = $r->byr_lain;
+                $rin[$i][$j]['jumlah']  = $r->realisasi;
+                $rin[$i][$j]['diskon']  = $r->diskon;
+
+                $rlistrik     = $rlistrik     + $rin[$i][$j]['listrik'];
+                $rdenlistrik  = $rdenlistrik  + $rin[$i][$j]['denlistrik'];
+                $rairbersih   = $rairbersih   + $rin[$i][$j]['airbersih'];
+                $rdenairbersih= $rdenairbersih+ $rin[$i][$j]['denairbersih'];
+                $rkeamananipk = $rkeamananipk + $rin[$i][$j]['keamananipk'];
+                $rkebersihan  = $rkebersihan  + $rin[$i][$j]['kebersihan'];
+                $rairkotor    = $rairkotor    + $rin[$i][$j]['airkotor'];
+                $rlain        = $rlain        + $rin[$i][$j]['lain'];
+                $rdiskon      = $rdiskon      + $rin[$i][$j]['diskon'];
+                $rjumlah      = $rjumlah      + $rin[$i][$j]['jumlah'];
+
+                $j++;
+            }
+
+            $i++;
+        }
+        $t_rekap['rek']          = $rek;
+        $t_rekap['listrik']      = $listrik;
+        $t_rekap['denlistrik']   = $denlistrik;
+        $t_rekap['airbersih']    = $airbersih;
+        $t_rekap['denairbersih'] = $denairbersih;
+        $t_rekap['keamananipk']  = $keamananipk;
+        $t_rekap['kebersihan']   = $kebersihan;
+        $t_rekap['airkotor']     = $airkotor;
+        $t_rekap['lain']         = $lain;
+        $t_rekap['diskon']       = $diskon;
+        $t_rekap['jumlah']       = $jumlah;
+
+        return view('kasir.penerimaan',[
+            'tanggal'   => IndoDate::tanggal($tanggal,' '), 
+            'cetak'     => $cetak,
+            'rekap'     => $rekap,
+            't_rekap'   => $t_rekap,
+            'rincian'   => $rin
+        ]);
     }
 
     public function restore(Request $request){

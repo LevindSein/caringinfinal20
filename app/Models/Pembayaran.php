@@ -13,6 +13,7 @@ class Pembayaran extends Model
         'tgl_bayar',
         'bln_bayar',
         'thn_bayar',
+        'tgl_tagihan',
         'via_bayar',
         'id_kasir',
         'nama',
