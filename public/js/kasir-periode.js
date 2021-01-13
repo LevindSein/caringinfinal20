@@ -206,25 +206,25 @@ $(document).ready(function () {
 		});
     });
 
-    $('#myModal').on('shown.bs.modal', function () {
-        $('#kode').trigger('focus');
-    });
+    // $('#myModal').on('shown.bs.modal', function () {
+    //     $('#kode').trigger('focus');
+    // });
 
-    $('#kode').on('keypress', function (event) {
-        var regex = new RegExp("^[0-9]+$");
-        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-        if (!regex.test(key)) {
-        event.preventDefault();
-        return false;
-        }
-    });
+    // $('#kode').on('keypress', function (event) {
+    //     var regex = new RegExp("^[0-9]+$");
+    //     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    //     if (!regex.test(key)) {
+    //     event.preventDefault();
+    //     return false;
+    //     }
+    // });
 
     //Print Via Bluetooth atau USB
     function pc_print(data){
         var socket = new WebSocket("ws://127.0.0.1:40213/");
         socket.bufferType = "arraybuffer";
         socket.onerror = function(error) {  
-            alert("Transaksi Berhasil Tanpa Print Struk");
+            console.log("Transaksi Berhasil Tanpa Print Struk");
         };			
         socket.onopen = function() {
             socket.send(data);

@@ -17,7 +17,7 @@
     &nbsp;
     <div>
         <button
-            disabled
+            hidden
             id="btn-scan-qr"
             type="button"
             class="btn btn-outline-inverse-info"
@@ -81,6 +81,7 @@
                     <th style="text-align:center;"><b>Pengguna</b></th>
                     <th style="text-align:center;"><b>Ket</b></th>
                     <th style="text-align:center;"><b>Action</b></th>
+                    <th style="text-align:center;"><b>Prabayar</b></th>
                 </tr>
             </thead>
         </table>
@@ -284,45 +285,6 @@
                 <div class="modal-footer">
                     <input hidden id="tempatId" name="tempatId"/>
                     <input type="submit" id="printStruk" class="btn btn-primary btn-sm" value="Bayar Sekarang"/>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div
-    class="modal fade"
-    id="myModal"
-    tabIndex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Cari Transaksi</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <form class="user" action="{{url('kasir/cari/transaksi')}}" method="GET">
-                <div class="modal-body-short">
-                    <div class="form-group col-lg-12">
-                        <br>
-                        <input
-                            required
-                            autocomplete="off"
-                            type="text"
-                            style="text-transform:uppercase;"
-                            name="kode"
-                            maxlength="10"
-                            class="form-control"
-                            id="kode"
-                            placeholder="Masukkan 10 Digit">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm">Cari</button>
                 </div>
             </form>
         </div>

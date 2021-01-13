@@ -56,11 +56,26 @@ Route::middleware('ceklogin:dashboard')->group(function () {
 });
 
 Route::middleware('ceklogin:kasir')->group(function(){
+    Route::post('kasir/harian/{val}',[KasirController::class, 'harianval']);
+
+    Route::get('kasir/settings',[KasirController::class, 'settings']);
+
+    Route::get('kasir/harian',[KasirController::class, 'harian'])->name('kasir.harian');
+    Route::get('kasir/mode/{mode}',[KasirController::class, 'mode']);
+
+    Route::get('kasir/sisa',[KasirController::class, 'getsisa']);
+    Route::get('kasir/selesai',[KasirController::class, 'getselesai']);
+    Route::get('kasir/prabayar',[KasirController::class, 'getprabayar']);
+    Route::post('kasir/prabayar/{kontrol}',[KasirController::class, 'prabayar']);
+    
     Route::get('kasir/restore',[KasirController::class, 'restore']);
     Route::post('kasir/restore/{id}',[KasirController::class, 'restoreStore']);
+    
     Route::get('kasir/penerimaan',[KasirController::class, 'penerimaan']);
+    
     Route::get('kasir/periode',[KasirController::class, 'periode']);
     Route::get('kasir/rincian/periode/{kontrol}',[KasirController::class, 'rincianPeriode']);
+    
     Route::post('kasir/periode',[KasirController::class, 'storePeriode']);
     Route::post('kasir/bayar/periode/{kontrol}',[KasirController::class, 'bayarPeriode']);
 
@@ -89,6 +104,7 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 Route::middleware('ceklogin:tagihan')->group(function (){
     Route::get('tagihan/pemberitahuan/{blok}', [TagihanController::class, 'pemberitahuan']);
     Route::post('tagihan/unpublish/{id}', [TagihanController::class, 'unpublish']);
+    Route::post('tagihan/publishing/{id}', [TagihanController::class, 'publishing']);
     Route::get('tagihan/pembayaran/{blok}', [TagihanController::class, 'pembayaran']);
     Route::get('tagihan/periode', [TagihanController::class, 'periode']);
     Route::post('tagihan/tambah', [TagihanController::class, 'tambah']);

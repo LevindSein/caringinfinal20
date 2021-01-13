@@ -51,6 +51,7 @@ class CekLogin
                 }
                 
                 if($user->role === 'kasir') {
+                    Session::put('mode','bulanan');
                     return redirect()->route('kasir.index');
                 }
 

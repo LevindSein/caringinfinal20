@@ -667,6 +667,54 @@ $(document).ready(function(){
             cache: true
         }
     });
+
+    $(document).on('click', '.unpublish', function(){
+        id = $(this).attr('id');
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+		$.ajax({
+			url :"/tagihan/unpublish/"+id,
+            cache:false,
+			method:"POST",
+			dataType:"json",
+			success:function(data)
+			{
+                if(data.errors){
+                    alert(data.errors);
+                }
+                if(data.success){
+                    $('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '.publishing', function(){
+        id = $(this).attr('id');
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+		$.ajax({
+			url :"/tagihan/publishing/"+id,
+            cache:false,
+			method:"POST",
+			dataType:"json",
+			success:function(data)
+			{
+                if(data.errors){
+                    alert(data.errors);
+                }
+                if(data.success){
+                    $('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
+                }
+            }
+        });
+    });
     
     document
         .getElementById('awalListrik_manual')

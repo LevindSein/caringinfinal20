@@ -68,6 +68,7 @@ class TagihanController extends Controller
                     if($data->stt_publish === 0){
                         $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
                         $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
@@ -376,6 +377,7 @@ class TagihanController extends Controller
                     if($data->stt_publish === 0){
                         $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
                         $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
@@ -2234,6 +2236,27 @@ class TagihanController extends Controller
     }
 
     public function unpublish(Request $request,$id){
+        if($request->ajax()){
+            try{
+                $tagihan = Tagihan::find($id);
+                $publish = $tagihan->stt_publish;
+                if($publish === 1){
+                    $hasil = 0;
+                }
+                else if($publish === 0){
+                    $hasil = 1;
+                }
+                $tagihan->stt_publish = $hasil;
+                $tagihan->save();
+                return response()->json(['success' => 'Unpublish Sukses']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => 'Oops! Gagal Unpublish']);
+            }
+        }
+    }
+
+    public function publishing(Request $request,$id){
         if($request->ajax()){
             try{
                 $tagihan = Tagihan::find($id);

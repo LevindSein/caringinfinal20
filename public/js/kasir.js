@@ -12,13 +12,14 @@ $(document).ready(function () {
 			{ data: 'tagihan', name: 'tagihan', class : 'text-center', width: '25%' },
 			{ data: 'pengguna', name: 'pengguna', class : 'text-center', width: '20%' },
 			{ data: 'lokasi', name: 'lokasi', class : 'text-center', width: '20%', orderable: false },
-			{ data: 'action', name: 'action', class : 'text-center', width: '10%', orderable: false, searchable: false },
+			{ data: 'action', name: 'action', class : 'text-center', width: '5%', orderable: false, searchable: false },
+			{ data: 'prabayar', name: 'prabayar', class : 'text-center', width: '5%', orderable: false, searchable: false },
         ],
         pageLength: 3,
         stateSave: true,
         scrollX: true,
         deferRender: true,
-        dom : "r<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        // dom : "r<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         responsive : true,
     }).columns.adjust().draw();
 
@@ -276,25 +277,52 @@ $(document).ready(function () {
 		});
     });
 
-    $('#myModal').on('shown.bs.modal', function () {
-        $('#kode').trigger('focus');
+    $(document).on('click', '.prabayar', function(){
+        var kontrol = $(this).attr('id');
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+		$.ajax({
+			url :"/kasir/prabayar/"+kontrol,
+            cache:false,
+			method:"POST",
+			dataType:"json",
+			success:function(data)
+			{
+                if(data.errors){
+                    alert(data.errors);
+                }
+                if(data.success){
+                    $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
+                }
+            },
+            error:function(data){
+                console.log(data);
+            }
+        });
     });
 
-    $('#kode').on('keypress', function (event) {
-        var regex = new RegExp("^[0-9]+$");
-        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-        if (!regex.test(key)) {
-        event.preventDefault();
-        return false;
-        }
-    });
+    // $('#myModal').on('shown.bs.modal', function () {
+    //     $('#kode').trigger('focus');
+    // });
+
+    // $('#kode').on('keypress', function (event) {
+    //     var regex = new RegExp("^[0-9]+$");
+    //     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    //     if (!regex.test(key)) {
+    //     event.preventDefault();
+    //     return false;
+    //     }
+    // });
 
     //Print Via Bluetooth atau USB
     function pc_print(data){
         var socket = new WebSocket("ws://127.0.0.1:40213/");
         socket.bufferType = "arraybuffer";
         socket.onerror = function(error) {  
-            alert("Transaksi Berhasil Tanpa Print Struk");
+            console.log("Transaksi Berhasil Tanpa Print Struk");
         };			
         socket.onopen = function() {
             socket.send(data);

@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>Penerimaan Kasir</title>
         <link rel="stylesheet" href="{{asset('css/penerimaan.css')}}" media="all"/>
+        <link rel="icon" href="{{asset('img/logo.png')}}">
     </head>
 
     <body onload="window.print()">
@@ -82,13 +83,6 @@
                         <td class="tg-r8fx"><b>{{number_format($t_rekap['diskon'])}}</b></td>
                     </tr>
                 </table>
-                <div id="notices">
-                    <div style="text-align:right;">
-                        <b>Bandung, {{$cetak}}</b>
-                    </div>
-                    <br><br><br><br><br>
-                    <div class="notice" style="text-align:right;">{{Session::get('username')}}</div>
-                </div>
             </main>
         </div>
         <div style="page-break-before:always">
@@ -104,10 +98,10 @@
                 </div>
             </header>
             <main>
-            @foreach($rincian as $d)
                 <table class="tg">
                     <thead>
                         <tr>
+                            <th class="tg-r8fv" rowspan="3">No</th>
                             <th class="tg-r8fv" rowspan="3">Rek</th>
                             <th class="tg-r8fv" rowspan="3">Kontrol</th>
                             <th class="tg-r8fv" rowspan="3">Nama</th>
@@ -144,10 +138,12 @@
                     $lain = 0;
                     $jumlah = 0;
                     $diskon = 0;
+                    $i = 1;
                     ?>
-                    @foreach($d as $r)
+                    @foreach($rincian as $r)
                         <tr>
-                            <td class="tg-r8fz"><b>{{$r['rek']}}</b></td>
+                            <td class="tg-r8fz">{{$i}}</td>
+                            <td class="tg-r8fz">{{$r['rek']}}</td>
                             <td class="tg-r8fz">{{$r['kode']}}</td>
                             <td class="tg-r8fy">{{substr($r['pengguna'],0,13)}}</td>
                             <td class="tg-r8fx">{{number_format($r['listrik'])}}</td>
@@ -172,6 +168,7 @@
                         $lain = $lain + $r['lain'];
                         $jumlah = $jumlah + $r['jumlah'];
                         $diskon = $diskon + $r['diskon'];
+                        $i++;
                         ?>
                     @endforeach
                     </tbody>
@@ -179,7 +176,7 @@
                         <td class="tg-g255" colspan="13" style="height:1px"></td>
                     </tr>
                     <tr>
-                        <td class="tg-r8fz" colspan="3"><b>Total<b></td>
+                        <td class="tg-r8fz" colspan="4"><b>Total<b></td>
                         <td class="tg-r8fx"><b>{{number_format($listrik)}}</b></td>
                         <td class="tg-r8fx"><b>{{number_format($airbersih)}}</b></td>
                         <td class="tg-r8fx"><b>{{number_format($keamananipk)}}</b></td>
@@ -192,8 +189,6 @@
                         <td class="tg-r8fx"><b>{{number_format($diskon)}}</b></td>
                     </tr>
                 </table>
-                <br>
-            @endforeach
                 <div id="notices">
                     <div style="text-align:right;">
                         <b>Bandung, {{$cetak}}</b>

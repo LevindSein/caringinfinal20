@@ -11,8 +11,9 @@
         <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
         
 		<link rel="stylesheet" href="{{asset('vendors/mdi/css/materialdesignicons.min.css')}}">
+        <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="{{asset('vendors/base/vendor.bundle.base.css')}}">
-		<link rel="stylesheet" href="{{asset('css/style.min.css')}}">
+		<link rel="stylesheet" href="{{asset('css/style.css')}}">
         <link rel="icon" href="{{asset('img/logo.png')}}">
 
         <!-- Custom styles for this page -->
@@ -45,10 +46,41 @@
 										<img src="{{asset('img/icon_user.png')}}" alt="profile"/>
 									</a>
 									<div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-										<!-- <a class="dropdown-item">
-											<i class="mdi mdi-settings text-primary"></i>
-											Settings
-										</a> -->
+                                        @if(Session::get('mode') == 'harian')
+                                        <a class="dropdown-item"
+                                            href="{{url('kasir/mode/bulanan')}}">
+											<i class="mdi mdi-sync text-primary"></i>
+											Mode Bulanan
+										</a>
+                                        @else
+                                        <a class="dropdown-item"
+                                            href="{{url('kasir/mode/harian')}}">
+											<i class="mdi mdi-sync text-primary"></i>
+											Mode Harian
+										</a>
+                                        <hr>
+                                        <a class="dropdown-item"
+                                            href="{{url('kasir/sisa')}}">
+											<i class="mdi mdi-book-minus text-primary"></i>
+											Rekap Sisa
+										</a>
+                                        <a class="dropdown-item"
+                                            href="{{url('kasir/selesai')}}">
+											<i class="mdi mdi-book-plus text-primary"></i>
+											Rekap Selesai
+										</a>
+                                        <a class="dropdown-item"
+                                            href="{{url('kasir/prabayar')}}">
+											<i class="mdi mdi-wallet text-primary"></i>
+											Prabayar
+										</a>
+                                        @endif
+                                        <hr>
+                                        <a class="dropdown-item"
+                                            href="{{url('kasir/settings')}}">
+                                            <i class="mdi mdi-settings text-primary"></i>
+                                            Settings
+                                        </a>
                                         <a 
                                             class="dropdown-item"
                                             data-toggle="modal"

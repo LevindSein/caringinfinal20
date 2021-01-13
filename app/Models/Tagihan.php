@@ -33,6 +33,7 @@ class Tagihan extends Model
         'tgl_expired',
         'stt_lunas',
         'stt_bayar',
+        'stt_prabayar',
         'awal_airbersih',
         'akhir_airbersih',
         'pakai_airbersih',
@@ -199,6 +200,7 @@ class Tagihan extends Model
         }
         
         $total = $tagihan->sub_listrik - $diskon; 
+        $tagihan->dis_listrik = $diskon;
         $tagihan->ttl_listrik = $total + ($total * ($tarif->trf_ppn / 100)) + $tagihan->den_listrik;
         $tagihan->sel_listrik = $tagihan->ttl_listrik - $tagihan->rea_listrik;
         
@@ -327,6 +329,7 @@ class Tagihan extends Model
         }
 
         $total = $tagihan->sub_airbersih - $diskon; 
+        $tagihan->dis_airbersih = $diskon;
         $tagihan->ttl_airbersih = $total + ($total * ($tarif->trf_ppn / 100)) + $tagihan->den_airbersih;
         $tagihan->sel_airbersih = $tagihan->ttl_airbersih - $tagihan->rea_airbersih;
         
