@@ -1062,6 +1062,53 @@ class KasirController extends Controller
         ]);
     }
 
+    public function harianpendapatan(Request $request){
+        $tanggal = $request->tgl_pendapatan;
+        Session::put('harian', $tanggal);
+        $tanggal = IndoDate::tanggal($tanggal,' ');
+        $agent = new Agent();
+        if($agent->isDesktop()){
+            $platform = 'desktop';
+        }
+        else{
+            $platform = 'mobile';
+        }
+        if($request->ajax()){
+            $data = Harian::where('tgl_bayar',Session::get('harian'))->orderBy('id','desc');
+            return DataTables::of($data)
+                ->addColumn('action', function($data){
+                    $button  = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;;font-size:12px"></i></a>';
+                    $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;font-size:12px"></i></a>';
+                    return $button;
+                })
+                ->editColumn('keamanan_los',function($data){
+                    return number_format($data->keamanan_los);
+                })
+                ->editColumn('kebersihan_los',function($data){
+                    return number_format($data->kebersihan_los);
+                })
+                ->editColumn('kebersihan_pos',function($data){
+                    return number_format($data->kebersihan_pos);
+                })
+                ->editColumn('kebersihan_lebih_pos',function($data){
+                    return number_format($data->kebersihan_lebih_pos);
+                })
+                ->editColumn('abonemen',function($data){
+                    return number_format($data->abonemen);
+                })
+                ->editColumn('total',function($data){
+                    return number_format($data->total);
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('kasir.harian-old',[
+            'platform' => $platform,
+            'tanggal'  => $tanggal
+        ]);
+    }
+
     public function harianval(Request $request, $val){
         if($request->ajax()){
             try{
@@ -1072,6 +1119,8 @@ class KasirController extends Controller
                     $data->bln_bayar = date('Y-m',time());
                     $data->thn_bayar = date('Y',time());
                     $data->nama = ucwords($request->nama);
+                    $data->id_kasir = Session::get('userId');
+                    $data->kasir = Session::get('username');
 
                     $total = 0;
 
@@ -1140,10 +1189,9 @@ class KasirController extends Controller
                 if($val == 'edit'){
                     $data = Harian::find($request->hidden_id);
 
-                    $data->tgl_bayar = date('Y-m-d',time());
-                    $data->bln_bayar = date('Y-m',time());
-                    $data->thn_bayar = date('Y',time());
                     $data->nama = ucwords($request->nama);
+                    $data->id_kasir = Session::get('userId');
+                    $data->kasir = Session::get('username');
 
                     $total = 0;
 
@@ -1215,6 +1263,61 @@ class KasirController extends Controller
                 return response()->json(['errors' => 'Data Gagal Ditambah']);
             }
         }
+    }
+
+    public function harianpenerimaan(Request $request){
+        $tanggal = $request->tgl_penerimaan;
+        $tgl = $tanggal;
+        $tanggal = IndoDate::tanggal($tanggal, ' ');
+        $cetak = IndoDate::tanggal(date('Y-m-d',time()),' ');
+
+        $dataset = Harian::where([['tgl_bayar',$tgl],['id_kasir',Session::get('userId')]])->get();
+
+        return view('kasir.harian-penerimaan',[
+            'dataset' => $dataset,
+            'cetak'   => $cetak,
+            'tanggal' => $tanggal,
+        ]);
+    }
+
+    public function getutama(Request $request){
+        $tanggal = $request->tgl_utama;
+        $tgl = $tanggal;
+        $tanggal = IndoDate::tanggal($tanggal, ' ');
+        $cetak = IndoDate::tanggal(date('Y-m-d',time()),' ');
+
+        $data  = User::where('role','kasir')->get();
+        $i = 0;
+        $dataset = array();
+        foreach($data as $d){
+            $dataset[$i]['nama'] = $d->nama;
+
+            $harian = Harian::where([['tgl_bayar',$tgl],['id_kasir',$d->id]])->get();
+            $har_total  = 0;
+            foreach($harian as $t){
+                $har_total = $har_total + $t->total;
+            }
+            $hari = $har_total;
+
+            $bulanan = Pembayaran::where([['tgl_bayar',$tgl],['id_kasir',$d->id]])->get();
+            $bul_total  = 0;
+            foreach($bulanan as $b){
+                $bul_total = $bul_total + $b->realisasi;
+            }
+            $bulan = $bul_total;
+
+            $dataset[$i]['bulanan'] = $bulan;
+            $dataset[$i]['harian'] = $hari;
+            $dataset[$i]['jumlah'] = $bulan + $hari;
+
+            $i++;
+        }
+
+        return view('kasir.utama',[
+            'dataset' => $dataset,
+            'cetak'   => $cetak,
+            'tanggal' => $tanggal,
+        ]);
     }
 
     public function getsisa(){

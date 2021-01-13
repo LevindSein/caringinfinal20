@@ -77,6 +77,12 @@
                                         @endif
                                         <hr>
                                         <a class="dropdown-item"
+                                            data-toggle="modal"
+                                            data-target="#myUtama">
+											<i class="mdi mdi-database text-primary"></i>
+											Rekap Utama
+										</a>
+                                        <a class="dropdown-item"
                                             href="{{url('kasir/settings')}}">
                                             <i class="mdi mdi-settings text-primary"></i>
                                             Settings
@@ -120,6 +126,42 @@
 			</div>
         </div>
         
+        <div
+            class="modal fade"
+            id="myUtama"
+            tabIndex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pencarian Rekap</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form class="user" action="{{url('kasir/utama')}}" target="_blank" method="GET">
+                        <div class="modal-body-short">
+                            <div class="form-group col-lg-12">
+                                <br>
+                                <input
+                                    required
+                                    placeholder="Masukkan Tanggal Rekap" class="form-control" type="text" onfocus="(this.type='date')"
+                                    autocomplete="off"
+                                    type="date"
+                                    name="tgl_utama"
+                                    id="tgl_utama">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div
             class="modal fade"
             id="logoutModal"

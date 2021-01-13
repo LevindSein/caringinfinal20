@@ -22,6 +22,8 @@ class Harian extends Model
         'abonemen',
         'ket',
         'total',
+        'id_kasir',
+        'kasir',
         'updated_at',
         'created_at'];
 }

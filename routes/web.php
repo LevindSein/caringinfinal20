@@ -60,9 +60,13 @@ Route::middleware('ceklogin:kasir')->group(function(){
 
     Route::get('kasir/settings',[KasirController::class, 'settings']);
 
+    Route::get('kasir/harian/pendapatan',[KasirController::class, 'harianpendapatan']);
+    Route::get('kasir/harian/penerimaan',[KasirController::class, 'harianpenerimaan']);
+
     Route::get('kasir/harian',[KasirController::class, 'harian'])->name('kasir.harian');
     Route::get('kasir/mode/{mode}',[KasirController::class, 'mode']);
 
+    Route::get('kasir/utama',[KasirController::class, 'getutama']);
     Route::get('kasir/sisa',[KasirController::class, 'getsisa']);
     Route::get('kasir/selesai',[KasirController::class, 'getselesai']);
     Route::get('kasir/prabayar',[KasirController::class, 'getprabayar']);
