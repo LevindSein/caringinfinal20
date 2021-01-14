@@ -70,7 +70,7 @@
                 </button>
             </div>
             <form class="user" id="form_rincian" method="POST">
-                <div class="modal-body">
+                <div class="modal-body-short">
                     @csrf
                     <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap:wrap;">
                         <div>

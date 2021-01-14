@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Rekap Utama | Kasir</title>
+        <title>Rekap Pendapatan | Kasir</title>
         <link rel="stylesheet" href="{{asset('css/penerimaan.css')}}" media="all"/>
         <link rel="icon" href="{{asset('img/logo.png')}}">
     </head>
@@ -10,7 +10,7 @@
     <body onload="window.print()">
         <div>
             <header class="clearfix">
-                <h2 style="text-align:center;">Rekap Penerimaan Utama</h2>
+                <h2 style="text-align:center;">Rekap Pendapatan</h2>
                 <div id="project">
                     <div>
                         <span>Nama Perekap</span>:

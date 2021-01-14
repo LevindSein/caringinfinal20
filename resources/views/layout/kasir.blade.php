@@ -13,7 +13,7 @@
 		<link rel="stylesheet" href="{{asset('vendors/mdi/css/materialdesignicons.min.css')}}">
         <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="{{asset('vendors/base/vendor.bundle.base.css')}}">
-		<link rel="stylesheet" href="{{asset('css/style.css')}}">
+		<link rel="stylesheet" href="{{asset('css/style.min.css')}}">
         <link rel="icon" href="{{asset('img/logo.png')}}">
 
         <!-- Custom styles for this page -->
@@ -80,7 +80,7 @@
                                             data-toggle="modal"
                                             data-target="#myUtama">
 											<i class="mdi mdi-database text-primary"></i>
-											Rekap Utama
+											Rekap Pendapatan
 										</a>
                                         <a class="dropdown-item"
                                             href="{{url('kasir/settings')}}">
@@ -177,7 +177,7 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Pilih "Logout" di bawah ini jika anda siap untuk mengakhiri sesi anda saat ini.</div>
+                    <div class="modal-body-short">Pilih "Logout" di bawah ini jika anda siap untuk mengakhiri sesi anda saat ini.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <a class="btn btn-primary" href="{{url('logout')}}">Logout</a>
