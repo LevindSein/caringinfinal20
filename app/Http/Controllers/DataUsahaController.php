@@ -28,9 +28,9 @@ class DataUsahaController extends Controller
         if($request->ajax()){
             $data = Tagihan::select('bln_tagihan')->groupBy('bln_tagihan')->orderBy('bln_tagihan','desc');
             return DataTables::of($data)
-            ->addColumn('sub_listrik', function($data){
+            ->addColumn('ttl_listrik', function($data){
                 $tagihan = Tagihan::where('bln_tagihan',$data->bln_tagihan)
-                ->select(DB::raw('SUM(sub_listrik) as tagihan'))->get();
+                ->select(DB::raw('SUM(ttl_listrik) as tagihan'))->get();
                 if($tagihan != NULL){
                     return number_format($tagihan[0]->tagihan);
                 }
@@ -68,9 +68,9 @@ class DataUsahaController extends Controller
                     return 0;
                 }
             })
-            ->addColumn('sub_airbersih', function($data){
+            ->addColumn('ttl_airbersih', function($data){
                 $tagihan = Tagihan::where('bln_tagihan',$data->bln_tagihan)
-                ->select(DB::raw('SUM(sub_airbersih) as tagihan'))->get();
+                ->select(DB::raw('SUM(ttl_airbersih) as tagihan'))->get();
                 if($tagihan != NULL){
                     return number_format($tagihan[0]->tagihan);
                 }
@@ -108,9 +108,9 @@ class DataUsahaController extends Controller
                     return 0;
                 }
             })
-            ->addColumn('sub_keamananipk', function($data){
+            ->addColumn('ttl_keamananipk', function($data){
                 $tagihan = Tagihan::where('bln_tagihan',$data->bln_tagihan)
-                ->select(DB::raw('SUM(sub_keamananipk) as tagihan'))->get();
+                ->select(DB::raw('SUM(ttl_keamananipk) as tagihan'))->get();
                 if($tagihan != NULL){
                     return number_format($tagihan[0]->tagihan);
                 }
@@ -148,9 +148,9 @@ class DataUsahaController extends Controller
                     return 0;
                 }
             })
-            ->addColumn('sub_kebersihan', function($data){
+            ->addColumn('ttl_kebersihan', function($data){
                 $tagihan = Tagihan::where('bln_tagihan',$data->bln_tagihan)
-                ->select(DB::raw('SUM(sub_kebersihan) as tagihan'))->get();
+                ->select(DB::raw('SUM(ttl_kebersihan) as tagihan'))->get();
                 if($tagihan != NULL){
                     return number_format($tagihan[0]->tagihan);
                 }
@@ -248,9 +248,9 @@ class DataUsahaController extends Controller
                     return 0;
                 }
             })
-            ->addColumn('sub_tagihan', function($data){
+            ->addColumn('ttl_tagihan', function($data){
                 $tagihan = Tagihan::where('bln_tagihan',$data->bln_tagihan)
-                ->select(DB::raw('SUM(sub_tagihan) as tagihan'))->get();
+                ->select(DB::raw('SUM(ttl_tagihan) as tagihan'))->get();
                 if($tagihan != NULL){
                     return number_format($tagihan[0]->tagihan);
                 }

@@ -60,7 +60,7 @@ class KasirController extends Controller
             $data = Tagihan::select('kd_kontrol')
             ->groupBy('kd_kontrol')
             ->orderBy('kd_kontrol','asc')
-            ->where([['stt_lunas',0],['stt_publish',1]]);
+            ->where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0]]);
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     $button = '<a type="button" title="Bayar" name="bayar" id="'.$data->kd_kontrol.'" class="bayar btn btn-sm btn-warning">Bayar</a>';
@@ -141,7 +141,7 @@ class KasirController extends Controller
             $data = Tagihan::select('kd_kontrol')
             ->groupBy('kd_kontrol')
             ->orderBy('kd_kontrol','asc')
-            ->where([['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')]]);
+            ->where([['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')],['ttl_tagihan','!=',0]]);
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     $button = '<a type="button" title="Bayar" name="bayar" id="'.$data->kd_kontrol.'" class="bayar btn btn-sm btn-warning">Bayar</a>';
@@ -202,15 +202,9 @@ class KasirController extends Controller
         $bulan = date("Y-m", time());
         Session::put('periode',$bulan);
 
-        $agent = new Agent();
-        if($agent->isDesktop()){
-            Session::put('printer','desktop');
-        }
-
         if($request->ajax()){
-            //Periode ini -----------------------------------------
-
             $dataset = array();
+            //Periode ini -----------------------------------------
             $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')]])->first();
             $dataset['listrik'] = 0;
             $dataset['airbersih'] = 0;
@@ -333,10 +327,15 @@ class KasirController extends Controller
     {
         $bayar = '';
         $tagihan = '';
+        $data = array();
+
+        $data['kd_kontrol'] = $request->tempatId;
+
         try{
             if($request->totalTagihan == 0){
                 return response()->json(['errors' => 'Transaksi 0 Tidak Dapat Dilakukan']);
             }
+
             //Pembayaran Kontan
             $id = $request->tempatId;
             $tagihan = Tagihan::where([['kd_kontrol',$id],['stt_lunas',0],['stt_publish',1]])->get();
@@ -476,9 +475,13 @@ class KasirController extends Controller
 
                 Tagihan::totalTagihan($d->id);
             }
-            return response()->json(['success' => 'Transaksi Berhasil']);
+
+            $data['status'] = 'success';
+
+            return response()->json(['result' => $data]);
         } catch(\Exception $e){
-            return response()->json(['errors' => 'Transaksi Gagal']);
+            $data['status'] = 'error';
+            return response()->json(['result' => $data]);
         }
     }
 
@@ -1327,11 +1330,147 @@ class KasirController extends Controller
     }
 
     public function getsisa(){
-        return view('kasir.sisa');
+        $bulan = IndoDate::bulan(date('Y-m',time()),' ');
+        $data = Tagihan::where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0]])->select('kd_kontrol')->groupBy('kd_kontrol')->orderBy('kd_kontrol','asc')->get();
+        $dataset = array();
+        $i = 0;
+        foreach($data as $d){
+            $dataset[$i]['kd_kontrol'] = $d->kd_kontrol;
+            $tagihan = Tagihan::where([['kd_kontrol',$d->kd_kontrol],['stt_lunas',0],['stt_publish',1]])
+            ->select(
+                DB::raw('SUM(sel_tagihan) as tagihan'),
+                DB::raw('SUM(sel_listrik) as listrik'),
+                DB::raw('SUM(sel_airbersih) as airbersih'),
+                DB::raw('SUM(sel_keamananipk) as keamananipk'),
+                DB::raw('SUM(sel_kebersihan) as kebersihan'),
+                DB::raw('SUM(sel_airkotor) as airkotor'),
+                DB::raw('SUM(sel_lain) as lain'),
+                )
+            ->get();
+            if($tagihan != NULL){
+                $listrik = $tagihan[0]->listrik;
+                $airbersih = $tagihan[0]->airbersih;
+                $keamananipk = $tagihan[0]->keamananipk;
+                $kebersihan = $tagihan[0]->kebersihan;
+                $airkotor = $tagihan[0]->airkotor;
+                $lain = $tagihan[0]->lain;
+                $total = $tagihan[0]->tagihan;
+            }
+            else{
+                $listrik = 0;
+                $airbersih = 0;
+                $keamananipk = 0;
+                $kebersihan = 0;
+                $airkotor = 0;
+                $lain = 0;
+                $total = 0;
+            }
+            $dataset[$i]['listrik'] = $listrik;
+            $dataset[$i]['airbersih'] = $airbersih;
+            $dataset[$i]['keamananipk'] = $keamananipk;
+            $dataset[$i]['kebersihan'] = $kebersihan;
+            $dataset[$i]['airkotor'] = $airkotor;
+            $dataset[$i]['lain'] = $lain;
+            $dataset[$i]['total'] = $total;
+
+            $tempat = TempatUsaha::where('kd_kontrol', $d->kd_kontrol)->first();
+            if($tempat != NULL){
+                $lokasi = $tempat->lok_tempat;
+                $los = $tempat->no_alamat;
+            }
+            else{
+                $lokasi = '';
+                $los = '';
+            }
+            $dataset[$i]['lokasi'] = $lokasi;
+            $dataset[$i]['los'] = $los;
+
+            $pengguna = TempatUsaha::where('kd_kontrol',$d->kd_kontrol)->select('id_pengguna')->first();
+            if($pengguna != NULL){
+                $pengguna = User::find($pengguna->id_pengguna)->nama;
+            }
+            else{
+                $pengguna = '';
+            }
+            $dataset[$i]['pengguna'] = $pengguna;
+            $i++;
+        }
+        return view('kasir.sisa',[
+            'dataset' => $dataset,
+            'bulan' => $bulan,
+        ]);
     }
 
     public function getselesai(){
-        return view('kasir.selesai');
+        $bulan = IndoDate::bulan(date('Y-m',time()),' ');
+        $data = Pembayaran::where('bln_bayar',date('Y-m',time()))->select('kd_kontrol')->groupBy('kd_kontrol')->orderBy('kd_kontrol','asc')->get();
+        $dataset = array();
+        $i = 0;
+        foreach($data as $d){
+            $dataset[$i]['kd_kontrol'] = $d->kd_kontrol;
+            $tagihan = Pembayaran::where([['kd_kontrol',$d->kd_kontrol],['bln_bayar',date('Y-m',time())]])
+            ->select(
+                DB::raw('SUM(realisasi) as tagihan'),
+                DB::raw('SUM(byr_listrik) as listrik'),
+                DB::raw('SUM(byr_airbersih) as airbersih'),
+                DB::raw('SUM(byr_keamananipk) as keamananipk'),
+                DB::raw('SUM(byr_kebersihan) as kebersihan'),
+                DB::raw('SUM(byr_airkotor) as airkotor'),
+                DB::raw('SUM(byr_lain) as lain'),
+                )
+            ->get();
+            if($tagihan != NULL){
+                $listrik = $tagihan[0]->listrik;
+                $airbersih = $tagihan[0]->airbersih;
+                $keamananipk = $tagihan[0]->keamananipk;
+                $kebersihan = $tagihan[0]->kebersihan;
+                $airkotor = $tagihan[0]->airkotor;
+                $lain = $tagihan[0]->lain;
+                $total = $tagihan[0]->tagihan;
+            }
+            else{
+                $listrik = 0;
+                $airbersih = 0;
+                $keamananipk = 0;
+                $kebersihan = 0;
+                $airkotor = 0;
+                $lain = 0;
+                $total = 0;
+            }
+            $dataset[$i]['listrik'] = $listrik;
+            $dataset[$i]['airbersih'] = $airbersih;
+            $dataset[$i]['keamananipk'] = $keamananipk;
+            $dataset[$i]['kebersihan'] = $kebersihan;
+            $dataset[$i]['airkotor'] = $airkotor;
+            $dataset[$i]['lain'] = $lain;
+            $dataset[$i]['total'] = $total;
+
+            $tempat = TempatUsaha::where('kd_kontrol', $d->kd_kontrol)->first();
+            if($tempat != NULL){
+                $lokasi = $tempat->lok_tempat;
+                $los = $tempat->no_alamat;
+            }
+            else{
+                $lokasi = '';
+                $los = '';
+            }
+            $dataset[$i]['lokasi'] = $lokasi;
+            $dataset[$i]['los'] = $los;
+
+            $pengguna = TempatUsaha::where('kd_kontrol',$d->kd_kontrol)->select('id_pengguna')->first();
+            if($pengguna != NULL){
+                $pengguna = User::find($pengguna->id_pengguna)->nama;
+            }
+            else{
+                $pengguna = '';
+            }
+            $dataset[$i]['pengguna'] = $pengguna;
+            $i++;
+        }
+        return view('kasir.selesai',[
+            'dataset' => $dataset,
+            'bulan' => $bulan,
+        ]);
     }
 
     public function getprabayar(){
@@ -1383,6 +1522,29 @@ class KasirController extends Controller
             return response()->json(['status' => 'Transaksi Berhasil, Gagal Print Struk']);
         }finally{
             $printer->close();
+        }
+    }
+
+    public function printer(Request $request){
+        if($request->ajax()){
+            try{
+                if(Session::get('printer') == 'panda'){
+                    Session::put('printer','androidpos');
+                }
+                else{
+                    Session::put('printer','panda');
+                }
+
+                $agent = new Agent();
+                if($agent->isDesktop()){
+                    Session::put('printer','desktop');
+                }
+
+                return response()->json(['success' => Session::get('printer')]);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => $e]);
+            }
         }
     }
 }

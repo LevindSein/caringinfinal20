@@ -67,6 +67,16 @@
     </div>
     <canvas hidden="" id="qr-canvas"></canvas>
 </div>
+@if($platform == 'mobile')
+<div class="form-group d-flex align-items-center justify-content-center">
+    <div class="col-lg-4 ">
+        <select class="btn btn-inverse-dark" style="width:100%" name="printer" id="printer">
+            <option <?php if(Session::get('printer') == 'panda') { ?> selected <?php } ?> value="panda">Panda Printer Mobile 80mm</option>
+            <option <?php if(Session::get('printer') == 'androidpos') { ?> selected <?php } ?> value="androidpos">Android Pos Printer 50mm</option>
+        </select>
+    </div>
+</div>
+@endif
 <div class="row">
     <div class="table-responsive">
         <table 

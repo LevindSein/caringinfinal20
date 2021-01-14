@@ -56,6 +56,8 @@ Route::middleware('ceklogin:dashboard')->group(function () {
 });
 
 Route::middleware('ceklogin:kasir')->group(function(){
+    Route::post('kasir/printer',[KasirController::class, 'printer']);
+
     Route::post('kasir/harian/{val}',[KasirController::class, 'harianval']);
 
     Route::get('kasir/settings',[KasirController::class, 'settings']);

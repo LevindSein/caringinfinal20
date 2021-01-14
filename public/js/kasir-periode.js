@@ -272,8 +272,8 @@ $(document).ready(function () {
 				if(data.success)
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
-					$('#tabelKasir').DataTable().ajax.reload(function(){}, false);
 				}
+                $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
                 $('#myRincian').modal('hide');
                 $('#form_result').html(html);
                 $("#success-alert,#error-alert,#info-alert,#warning-alert")

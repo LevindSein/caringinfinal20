@@ -60,11 +60,13 @@
 										</a>
                                         <hr>
                                         <a class="dropdown-item"
+                                            target="_blank"
                                             href="{{url('kasir/sisa')}}">
 											<i class="mdi mdi-book-minus text-primary"></i>
 											Rekap Sisa
 										</a>
                                         <a class="dropdown-item"
+                                            target="_blank"
                                             href="{{url('kasir/selesai')}}">
 											<i class="mdi mdi-book-plus text-primary"></i>
 											Rekap Selesai

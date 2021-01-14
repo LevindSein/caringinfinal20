@@ -52,6 +52,12 @@ class CekLogin
                 
                 if($user->role === 'kasir') {
                     Session::put('mode','bulanan');
+                    if($agent->isDesktop()){
+                        Session::put('printer','desktop');
+                    }
+                    else{
+                        Session::put('printer','androidpos');
+                    }
                     return redirect()->route('kasir.index');
                 }
 

@@ -310,16 +310,16 @@ $(document).ready(function () {
 			success:function(data)
 			{
 				var html = '';
-				if(data.errors)
+				if(data.result.status == 'error')
 				{
-                    html = '<div class="alert alert-danger" id="error-alert"> <strong>Oops ! </strong>' + data.errors + '</div>';
+                    html = '<div class="alert alert-danger" id="error-alert"> <strong>Oops ! </strong> Transaksi Gagal</div>';
 				}
-				if(data.success)
+				if(data.result.status == 'success')
 				{
-                    html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
-                    ajax_print('/kasir/bayar/' + kode_kontrol);
-					$('#tabelKasir').DataTable().ajax.reload(function(){}, false);
+                    html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>Transaksi Berhasil</div>';
+                    ajax_print('/kasir/bayar/' + data);
 				}
+                $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
                 $('#myRincian').modal('hide');
                 $('#form_result').html(html);
                 $("#success-alert,#error-alert,#info-alert,#warning-alert")
@@ -327,7 +327,7 @@ $(document).ready(function () {
                     .slideUp(2000, function () {
                         $("#success-alert,#error-alert").slideUp(1000);
                 });
-			}
+            }
 		});
     });
 
@@ -350,6 +350,32 @@ $(document).ready(function () {
                 }
                 if(data.success){
                     $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
+                }
+            },
+            error:function(data){
+                console.log(data);
+            }
+        });
+    });
+
+    $(document).on('change', '#printer', function() {
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+			url :"/kasir/printer",
+            cache:false,
+			method:"POST",
+			dataType:"json",
+			success:function(data)
+			{
+                if(data.errors){
+                    console.log(data.errors);
+                }
+                if(data.success){
+                    console.log(data.success);
                 }
             },
             error:function(data){
