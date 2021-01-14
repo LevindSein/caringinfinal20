@@ -551,17 +551,19 @@ class KasirController extends Controller
                 'sel_kebersihan',
                 'sel_airkotor',
                 'sel_lain',
-                'den_tagihan',
+                'den_listrik',
+                'den_airbersih',
             )
             ->first();
 
-            $data['listrik']     = $dataset->sel_listrik;
-            $data['airbersih']   = $dataset->sel_airbersih;
-            $data['keamananipk'] = $dataset->sel_keamananipk;
-            $data['kebersihan']  = $dataset->sel_kebersihan;
-            $data['airkotor']    = $dataset->sel_airkotor;
-            $data['denda']       = $dataset->den_tagihan;
-            $data['lain']        = $dataset->sel_lain;
+            $data['listrik']      = $dataset->sel_listrik - $dataset->den_listrik;
+            $data['denlistrik']   = $dataset->den_listrik;
+            $data['airbersih']    = $dataset->sel_airbersih - $dataset->den_airbersih;
+            $data['denairbersih'] = $dataset->den_airbersih;
+            $data['keamananipk']  = $dataset->sel_keamananipk;
+            $data['kebersihan']   = $dataset->sel_kebersihan;
+            $data['airkotor']     = $dataset->sel_airkotor;
+            $data['lain']         = $dataset->sel_lain;
 
             return response()->json(['result' => $data]);
         }
@@ -572,6 +574,9 @@ class KasirController extends Controller
         $bayar = '';
         $tagihan = '';
         try{
+            if($request->totalTagihan == 0){
+                return response()->json(['errors' => 'Transaksi 0 Tidak Dapat Dilakukan']);
+            }
             //Pembayaran Kontan
             $id = $request->tempatId;
             $tagihan = Tagihan::where([['kd_kontrol',$id],['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')]])->get();

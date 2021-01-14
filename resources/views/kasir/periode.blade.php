@@ -150,77 +150,104 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="form-group col-lg-12" id="divListrik">
-                        <div class="justify-content-between" id="testListrik" style="display:flex;flex-wrap:wrap;">
-                            <div>
-                                <span id="listrik">Listrik</span>
-                            </div>
-                            <div>
-                                <span id="nominalListrik"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-12" id="divAirBersih">
-                        <div class="justify-content-between" id="testAirBersih" style="display:flex;flex-wrap:wrap;">
-                            <div>
-                                <span id="airbersih">Air Bersih</span>
-                            </div>
-                            <div>
-                                <span id="nominalAirBersih"></span>
+                    <div id="fasListrik">
+                        <div class="form-group col-lg-12" id="divListrik">
+                            <div class="justify-content-between" id="testListrik" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="listrik">Listrik</span>
+                                </div>
+                                <div>
+                                    <span id="nominalListrik"></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group col-lg-12" id="divKeamananIpk">
-                        <div class="justify-content-between" id="testKeamananIpk" style="display:flex;flex-wrap:wrap;">
-                            <div>
-                                <span id="keamananipk">Keamanan & IPK</span>
-                            </div>
-                            <div>
-                                <span id="nominalKeamananIpk"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-12" id="divKebersihan">
-                        <div class="justify-content-between" id="testKebersihan" style="display:flex;flex-wrap:wrap;">
-                            <div>
-                                <span id="kebersihan">Kebersihan</span>
-                            </div>
-                            <div>
-                                <span id="nominalKebersihan"></span>
+                        <div class="form-group col-lg-12" id="dendivListrik">
+                            <div class="justify-content-between" id="dentestListrik" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="denlistrik">Denda Listrik</span>
+                                </div>
+                                <div>
+                                    <span id="dennominalListrik"></span>
+                                </div>
                             </div>
                         </div>
+                        <hr>
                     </div>
-                    <div class="form-group col-lg-12" id="divAirKotor">
-                        <div class="justify-content-between" id="testAirKotor" style="display:flex;flex-wrap:wrap;">
-                            <div>
-                                <span id="airkotor">Air Kotor</span>
-                            </div>
-                            <div>
-                                <span id="nominalAirKotor"></span>
+                    <div id="fasAirBersih">
+                        <div class="form-group col-lg-12" id="divAirBersih">
+                            <div class="justify-content-between" id="testAirBersih" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="airbersih">Air Bersih</span>
+                                </div>
+                                <div>
+                                    <span id="nominalAirBersih"></span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group col-lg-12" id="divDenda">
-                        <div class="justify-content-between" id="testDenda" style="display:flex;flex-wrap:wrap;">
-                            <div>
-                                <span id="denda">Denda</span>
-                            </div>
-                            <div>
-                                <span id="nominalDenda"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-12" id="divLain">
-                        <div class="justify-content-between" id="testLain" style="display:flex;flex-wrap:wrap;">
-                            <div>
-                                <span id="lain">Lain - Lain</span>
-                            </div>
-                            <div>
-                                <span id="nominalLain"></span>
+                        <div class="form-group col-lg-12" id="dendivAirBersih">
+                            <div class="justify-content-between" id="dentestAirBersih" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="denairbersih">Denda Air Bersih</span>
+                                </div>
+                                <div>
+                                    <span id="dennominalAirBersih"></span>
+                                </div>
                             </div>
                         </div>
+                        <hr>
                     </div>
-                    <hr>
+                    <div id="fasKeamananIpk">
+                        <div class="form-group col-lg-12" id="divKeamananIpk">
+                            <div class="justify-content-between" id="testKeamananIpk" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="keamananipk">Keamanan IPK</span>
+                                </div>
+                                <div>
+                                    <span id="nominalKeamananIpk"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div id="fasKebersihan">
+                        <div class="form-group col-lg-12" id="divKebersihan">
+                            <div class="justify-content-between" id="testKebersihan" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="kebersihan">Kebersihan</span>
+                                </div>
+                                <div>
+                                    <span id="nominalKebersihan"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div id="fasAirKotor">
+                        <div class="form-group col-lg-12" id="divAirKotor">
+                            <div class="justify-content-between" id="testAirKotor" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="airkotor">Air Kotor</span>
+                                </div>
+                                <div>
+                                    <span id="nominalAirKotor"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div id="fasLain">
+                        <div class="form-group col-lg-12" id="divLain">
+                            <div class="justify-content-between" id="testLain" style="display:flex;flex-wrap:wrap;">
+                                <div>
+                                    <span id="lain">Lain - Lain</span>
+                                </div>
+                                <div>
+                                    <span id="nominalLain"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
                     <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
                         <div>
                             <span style="color:#3f6ad8;"><strong>Total</strong></span>
@@ -232,6 +259,7 @@
                 </div>
                 <div class="modal-footer">
                     <input hidden id="tempatId" name="tempatId"/>
+                    <input hidden id="totalTagihan" name="totalTagihan"/>
                     <input type="submit" id="printStruk" class="btn btn-primary btn-sm" value="Bayar Sekarang"/>
                 </div>
             </form>
