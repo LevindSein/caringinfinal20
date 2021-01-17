@@ -42,46 +42,45 @@ class CronDenda extends Command
      */
     public function handle()
     {
-        $sekarang = date('Y-m-d',time());
-        $denda    = date('Y-m-15',time());
-        if($sekarang >= $denda){
-            try{
-                $tagihan = Tagihan::where([['stt_lunas',0],['stt_prabayar',1]])->get();
-                foreach($tagihan as $t){
-                    $expired = $t->tgl_expired;
-                    $expired = date('Y-m-d',strtotime($expired . "+1 days"));
+        try{
+            $dataset = Tagihan::where([['stt_lunas',0],['bln_tagihan','<=',date('Y-m',time())]])->get();
 
-                    if(date('Y-m-d',time()) > $expired){
-                        if($t->stt_lunas === 0){
-                            $t->stt_prabayar = 0;
-                            $t->save();
+            foreach($dataset as $t){
+                $sekarang = date('Y-m-d',time());
+                $denda    = $t->tgl_expired;
+                if($sekarang >= $denda){
+                    if($t->stt_prabayar === 1){
+                        $expired = $t->tgl_expired;
+                        $expired = date('Y-m-d',strtotime($expired . "+1 days"));
+
+                        if(date('Y-m-d',time()) > $expired){
+                            if($t->stt_lunas === 0){
+                                $t->stt_prabayar = 0;
+                                $t->save();
+                            }
                         }
                     }
-                }
 
-                $tagihan = Tagihan::where([['stt_lunas',0],['stt_prabayar',0]])->get();
-                
-                foreach($tagihan as $t){    
-                    $airbersih = TarifAirBersih::first();
+                    if($t->stt_prabayar === 0){
+                        $airbersih = TarifAirBersih::first();
 
-                    $listrik = TarifListrik::first();
+                        $listrik = TarifListrik::first();
 
-                    $date1 = $t->tgl_expired;
-                    $date2 = date('Y-m-d',time());
-                    
-                    $ts1 = strtotime($date1);
-                    $ts2 = strtotime($date2);
-                    
-                    $year1 = date('Y', $ts1);
-                    $year2 = date('Y', $ts2);
-                    
-                    $month1 = date('m', $ts1);
-                    $month2 = date('m', $ts2);
-                    
-                    $day1 = date('d', $ts1);
-                    $day2 = date('d', $ts2);
-                    
-                    if($t->stt_denda <= 4){
+                        $date1 = $t->tgl_expired;
+                        $date2 = date('Y-m-d',time());
+                        
+                        $ts1 = strtotime($date1);
+                        $ts2 = strtotime($date2);
+                        
+                        $year1 = date('Y', $ts1);
+                        $year2 = date('Y', $ts2);
+                        
+                        $month1 = date('m', $ts1);
+                        $month2 = date('m', $ts2);
+                        
+                        $day1 = date('d', $ts1);
+                        $day2 = date('d', $ts2);
+
                         if($day2 - $day1 > 0){
                             $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
                             if($diff == 0 || $diff == 1 || $diff == 2 || $diff == 3){
@@ -146,11 +145,11 @@ class CronDenda extends Command
                         }
                     }
                 }
-                // \Log::info('Denda Fine');
             }
-            catch(\Exception $e){
-                \Log::info($e);
-            }
+            \Log::info('Denda Fine');
+        }
+        catch(\Exception $e){
+            \Log::info($e);
         }
     }
 }

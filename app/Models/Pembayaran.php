@@ -40,6 +40,7 @@ class Pembayaran extends Model
         'ttl_tagihan',
         'realisasi',
         'sel_tagihan',
+        'stt_denda',
         'updated_at',
         'created_at'
     ];

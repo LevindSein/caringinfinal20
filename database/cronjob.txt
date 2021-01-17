@@ -1,0 +1,3 @@
+Cron Job
+
+/usr/local/bin/php /home/u1108647/demo_laravel/artisan schedule:run >> /dev/null 2>&1

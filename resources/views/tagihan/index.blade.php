@@ -22,15 +22,6 @@
                     <i class="fas fa-fw fa-home fa-sm text-white"></i></b>
                 </a>
                 &nbsp;
-                @if(Session::get('sync') != 'off')
-                <button 
-                    type="submit"
-                    title="Sinkronisasi"
-                    class="sync btn btn-sm btn-danger"><b>
-                    <i class="fas fa-fw fa-sync-alt fa-sm text-white-50"></i> Tagihan</b></span>
-                </button>
-                &nbsp;
-                @else
                 <a
                     href="{{url('tagihan/listrik')}}"
                     type="submit"
@@ -45,7 +36,6 @@
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Air Bersih </b> <span class="badge badge-pill badge-light">{{$air_badge}}</span>
                 </a>
                 &nbsp;
-                @endif
                 <div class="dropdown no-arrow" style="display:inline-block">
                     <a 
                         class="dropdown-toggle btn btn-sm btn-success" 

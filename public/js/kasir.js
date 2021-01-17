@@ -23,7 +23,6 @@ $(document).ready(function () {
         responsive : true,
     }).columns.adjust().draw();
 
-    var kode_kontrol = '';
     $(document).on('click', '.bayar', function(){
         kontrol = $(this).attr('id');
         $('#form_rincian')[0].reset();
@@ -61,14 +60,17 @@ $(document).ready(function () {
                     $("#divListrik").hide();
                 else
                     $("#divListrik").show();
+
                 if(tunglistrik == 0)
                     $("#tungdivListrik").hide();
                 else
                     $("#tungdivListrik").show();
+
                 if(denlistrik == 0)
                     $("#dendivListrik").hide();
                 else
                     $("#dendivListrik").show();
+
                 if(listrik == 0 && tunglistrik == 0 && denlistrik == 0){
                     $("#fasListrik").hide();
                     $("#checkListrik").prop("checked", false).prop("disabled", true);
@@ -77,15 +79,40 @@ $(document).ready(function () {
                     $("#fasListrik").show();
                     $("#checkListrik").prop("checked", true).prop("disabled", false);
                 }
+                
+                $("#taglistrik").val(data.result.listrik);
+                $("#tagtunglistrik").val(data.result.tunglistrik);
+                $("#tagdenlistrik").val(data.result.denlistrik);
+                
+                $("#tagdylistrik").val(data.result.dylistrik);
+                $("#tagawlistrik").val(data.result.awlistrik);
+                $("#tagaklistrik").val(data.result.aklistrik);
+                $("#tagpklistrik").val(data.result.pklistrik);
 
                 $('#checkListrik').click(function() {
                     if(!$(this).is(':checked')){
                         total = total - listrik - tunglistrik - denlistrik;
                         $("#fasListrik").hide();
+
+                        $("#taglistrik").val(0);
+                        $("#tagtunglistrik").val(0);
+                        $("#tagdenlistrik").val(0);
+                        $("#tagdylistrik").val(0);
+                        $("#tagawlistrik").val(0);
+                        $("#tagaklistrik").val(0);
+                        $("#tagpklistrik").val(0);
                     }
                     else{
                         total = total + listrik + tunglistrik + denlistrik;
                         $("#fasListrik").show();
+
+                        $("#taglistrik").val(data.result.listrik);
+                        $("#tagtunglistrik").val(data.result.tunglistrik);
+                        $("#tagdenlistrik").val(data.result.denlistrik);
+                        $("#tagdylistrik").val(data.result.dylistrik);
+                        $("#tagawlistrik").val(data.result.awlistrik);
+                        $("#tagaklistrik").val(data.result.aklistrik);
+                        $("#tagpklistrik").val(data.result.pklistrik);
                     }
                     $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     $("#totalTagihan").val(total);
@@ -124,15 +151,38 @@ $(document).ready(function () {
                     $("#fasAirBersih").show();
                     $("#checkAirBersih").prop("checked", true).prop("disabled", false);
                 }
+                
+                $("#tagairbersih").val(data.result.airbersih);
+                $("#tagtungairbersih").val(data.result.tungairbersih);
+                $("#tagdenairbersih").val(data.result.denairbersih);
+
+                $("#tagawairbersih").val(data.result.awairbersih);
+                $("#tagakairbersih").val(data.result.akairbersih);
+                $("#tagpkairbersih").val(data.result.pkairbersih);
 
                 $('#checkAirBersih').click(function() {
                     if(!$(this).is(':checked')){
                         total = total - airbersih - tungairbersih - denairbersih;
                         $("#fasAirBersih").hide();
+                        
+                        $("#tagairbersih").val(0);
+                        $("#tagtungairbersih").val(0);
+                        $("#tagdenairbersih").val(0);
+                        $("#tagawairbersih").val(0);
+                        $("#tagakairbersih").val(0);
+                        $("#tagpkairbersih").val(0);
                     }
                     else{
                         total = total + airbersih + tungairbersih + denairbersih;
                         $("#fasAirBersih").show();
+                                
+                        $("#tagairbersih").val(data.result.airbersih);
+                        $("#tagtungairbersih").val(data.result.tungairbersih);
+                        $("#tagdenairbersih").val(data.result.denairbersih);
+
+                        $("#tagawairbersih").val(data.result.awairbersih);
+                        $("#tagakairbersih").val(data.result.akairbersih);
+                        $("#tagpkairbersih").val(data.result.pkairbersih);
                     }
                     $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     $("#totalTagihan").val(total);
@@ -164,14 +214,26 @@ $(document).ready(function () {
                     $("#checkKeamananIpk").prop("checked", true).prop("disabled", false);
                 }
 
+                $("#tagkeamananipk").val(data.result.keamananipk);
+                $("#tagtungkeamananipk").val(data.result.tungkeamananipk);
+                $("#tagdenkeamananipk").val(data.result.denkeamananipk);
+
                 $('#checkKeamananIpk').click(function() {
                     if(!$(this).is(':checked')){
                         total = total - keamananipk - tungkeamananipk;
                         $("#fasKeamananIpk").hide();
+                        
+                        $("#tagkeamananipk").val(0);
+                        $("#tagtungkeamananipk").val(0);
+                        $("#tagdenkeamananipk").val(0);
                     }
                     else{
                         total = total + keamananipk + tungkeamananipk;
                         $("#fasKeamananIpk").show();
+
+                        $("#tagkeamananipk").val(data.result.keamananipk);
+                        $("#tagtungkeamananipk").val(data.result.tungkeamananipk);
+                        $("#tagdenkeamananipk").val(data.result.denkeamananipk);
                     }
                     $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     $("#totalTagihan").val(total);
@@ -203,14 +265,26 @@ $(document).ready(function () {
                     $("#checkKebersihan").prop("checked", true).prop("disabled", false);
                 }
 
+                $("#tagkebersihan").val(data.result.kebersihan);
+                $("#tagtungkebersihan").val(data.result.tungkebersihan);
+                $("#tagdenkebersihan").val(data.result.denkebersihan);
+
                 $('#checkKebersihan').click(function() {
                     if(!$(this).is(':checked')){
                         total = total - kebersihan - tungkebersihan;
                         $("#fasKebersihan").hide();
+
+                        $("#tagkebersihan").val(0);
+                        $("#tagtungkebersihan").val(0);
+                        $("#tagdenkebersihan").val(0);
                     }
                     else{
                         total = total + kebersihan + tungkebersihan;
                         $("#fasKebersihan").show();
+                        
+                        $("#tagkebersihan").val(data.result.kebersihan);
+                        $("#tagtungkebersihan").val(data.result.tungkebersihan);
+                        $("#tagdenkebersihan").val(data.result.denkebersihan);
                     }
                     $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     $("#totalTagihan").val(total);
@@ -242,14 +316,26 @@ $(document).ready(function () {
                     $("#checkAirKotor").prop("checked", true).prop("disabled", false);
                 }
 
+                $("#tagairkotor").val(data.result.airkotor);
+                $("#tagtungairkotor").val(data.result.tungairkotor);
+                $("#tagdenairkotor").val(data.result.denairkotor);
+
                 $('#checkAirKotor').click(function() {
                     if(!$(this).is(':checked')){
                         total = total - airkotor - tungairkotor;
                         $("#fasAirKotor").hide();
+
+                        $("#tagairkotor").val(0);
+                        $("#tagtungairkotor").val(0);
+                        $("#tagdenairkotor").val(0);
                     }
                     else{
                         total = total + airkotor + tungairkotor;
                         $("#fasAirKotor").show();
+
+                        $("#tagairkotor").val(data.result.airkotor);
+                        $("#tagtungairkotor").val(data.result.tungairkotor);
+                        $("#tagdenairkotor").val(data.result.denairkotor);
                     }
                     $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     $("#totalTagihan").val(total);
@@ -281,14 +367,26 @@ $(document).ready(function () {
                     $("#checkLain").prop("checked", true).prop("disabled", false);
                 }
 
+                $("#taglain").val(data.result.lain);
+                $("#tagtunglain").val(data.result.tunglain);
+                $("#tagdenlain").val(data.result.denlain);
+
                 $('#checkLain').click(function() {
                     if(!$(this).is(':checked')){
                         total = total - lain - tunglain;
                         $("#fasLain").hide();
+
+                        $("#taglain").val(0);
+                        $("#tagtunglain").val(0);
+                        $("#tagdenlain").val(0);
                     }
                     else{
                         total = total + lain + tunglain;
                         $("#fasLain").show();
+
+                        $("#taglain").val(data.result.lain);
+                        $("#tagtunglain").val(data.result.tunglain);
+                        $("#tagdenlain").val(data.result.denlain);
                     }
                     $('#nominalTotal').html('Rp. ' + total.toLocaleString());
                     $("#totalTagihan").val(total);
@@ -324,7 +422,9 @@ $(document).ready(function () {
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>Transaksi Berhasil</div>';
                     // testingdata(JSON.stringify(data.result));
-                    ajax_print('/kasir/bayar/' + JSON.stringify(data.result));
+                    if(data.result.totalTagihan != 0){
+                        ajax_print('/kasir/bayar/' + JSON.stringify(data.result));
+                    }
 				}
                 $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
                 $('#myRincian').modal('hide');

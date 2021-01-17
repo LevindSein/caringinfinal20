@@ -65,20 +65,21 @@
 											<i class="mdi mdi-book-minus text-primary"></i>
 											Rekap Sisa
 										</a>
-                                        <a class="dropdown-item"
+                                        <!-- <a class="dropdown-item"
                                             target="_blank"
                                             href="{{url('kasir/selesai')}}">
 											<i class="mdi mdi-book-plus text-primary"></i>
 											Rekap Selesai
-										</a>
-                                        @endif
-                                        <hr>
+                                        </a> -->
                                         <a class="dropdown-item"
                                             data-toggle="modal"
                                             data-target="#myUtama">
 											<i class="mdi mdi-database text-primary"></i>
 											Rekap Pendapatan
 										</a>
+                                        @endif
+                                        <hr>
+                                        
                                         <a class="dropdown-item"
                                             href="{{url('kasir/settings')}}">
                                             <i class="mdi mdi-settings text-primary"></i>

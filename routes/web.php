@@ -80,11 +80,11 @@ Route::middleware('ceklogin:kasir')->group(function(){
     
     Route::get('kasir/penerimaan',[KasirController::class, 'penerimaan']);
     
-    Route::get('kasir/periode',[KasirController::class, 'periode']);
-    Route::get('kasir/rincian/periode/{kontrol}',[KasirController::class, 'rincianPeriode']);
+    // Route::get('kasir/periode',[KasirController::class, 'periode']);
+    // Route::get('kasir/rincian/periode/{kontrol}',[KasirController::class, 'rincianPeriode']);
     
-    Route::post('kasir/periode',[KasirController::class, 'storePeriode']);
-    Route::post('kasir/bayar/periode/{kontrol}',[KasirController::class, 'bayarPeriode']);
+    // Route::post('kasir/periode',[KasirController::class, 'storePeriode']);
+    // Route::post('kasir/bayar/periode/{kontrol}',[KasirController::class, 'bayarPeriode']);
 
     Route::get('kasir/bayar/{data}',[KasirController::class, 'bayar']);
     Route::get('kasir/rincian/{kontrol}',[KasirController::class, 'rincian']);
@@ -123,7 +123,6 @@ Route::middleware('ceklogin:tagihan')->group(function (){
     Route::post('tagihan/listrik', [TagihanController::class, 'listrikUpdate']);
     Route::post('tagihan/airbersih', [TagihanController::class, 'airbersihUpdate']);
     Route::get('tagihan/print', [TagihanController::class, 'print']);
-    Route::post('tagihan/sinkronisasi', [TagihanController::class, 'sinkronisasi']);
     Route::post('tagihan/update', [TagihanController::class, 'update']);
     Route::get('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
     Route::resource('tagihan', TagihanController::class);

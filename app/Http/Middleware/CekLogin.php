@@ -160,30 +160,6 @@ class CekLogin
                 $validator = User::where([['username',$explode[0]],['role',$explode[1]]])->first();
                 $roles = array('master','admin');
                 if($validator != NULL){
-                    $date = date('Y-m-d',time());
-                    $check = date('Y-m-20',time());
-                    $time = strtotime($date);
-                    $nanti = date('Y-m-01', strtotime("+1 month", $time));
-                    $sekarang = date('Y-m-01',time());
-                    if($date < $check){
-                        $sync = Sinkronisasi::where('sinkron',$sekarang)->first();
-                        if($sync == NULL){
-                            Session::put('sync',$sekarang);
-                        }
-                        else{
-                            Session::put('sync','off');
-                        }
-                    }
-                    if($date >= $check){
-                        $sync = Sinkronisasi::where('sinkron',$nanti)->first();
-                        if($sync == NULL){
-                            Session::put('sync',$nanti);
-                        }
-                        else{
-                            Session::put('sync','off');
-                        }
-                    }
-
                     if(in_array($explode[1],$roles)){
                         if(Session::get('role') == 'admin' && Session::get('otoritas')[3]->tagihan)
                             return $next($request);

@@ -202,50 +202,87 @@ class KasirController extends Controller
 
     public function rincian(Request $request, $kontrol){
         $bulan = date("Y-m", time());
-        Session::put('periode',$bulan);
 
         if($request->ajax()){
             $dataset = array();
+
             //Periode ini -----------------------------------------
-            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')]])->first();
+            
+            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','>=',date('Y-m',time())]])->orderBy('bln_tagihan','asc')->get();
             $dataset['listrik'] = 0;
             $dataset['airbersih'] = 0;
             $dataset['keamananipk'] = 0;
             $dataset['kebersihan'] = 0;
             $dataset['airkotor'] = 0;
             $dataset['lain'] = 0;
-
+            
+            $dataset['dylistrik'] = 0;
+            $dataset['awlistrik'] = 0;
+            $dataset['aklistrik'] = 0;
+            $dataset['pklistrik'] = 0;
+            
+            $dataset['awairbersih'] = 0;
+            $dataset['akairbersih'] = 0;
+            $dataset['pkairbersih'] = 0;
+            
             if($data != NULL){
-                $listrik = $data->sel_listrik;
-                $denlistrik = $data->den_listrik;
-                if($listrik != 0 || $listrik != NULL)
+                $listrik = 0;
+                $denlistrik = 0;
+                $airbersih = 0;
+                $denairbersih = 0;
+                $keamananipk = 0;
+                $kebersihan = 0;
+                $airkotor= 0;
+                $lain = 0;
+                foreach($data as $d){
+                    $listrik = $listrik + $d->sel_listrik;
+                    $denlistrik = $denlistrik + $d->den_listrik;
+                    $dayalistrik = $d->daya_listrik;
+                    $awallistrik = $d->awal_listrik;
+                    $akhirlistrik = $d->akhir_listrik;
+                    $pakailistrik = $d->pakai_listrik;
+                    
+                    $airbersih = $airbersih + $d->sel_airbersih;
+                    $denairbersih = $denairbersih + $d->den_airbersih;
+                    $awalairbersih = $d->awal_airbersih;
+                    $akhirairbersih = $d->akhir_airbersih;
+                    $pakaiairbersih = $d->pakai_airbersih;
+                    
+                    $keamananipk = $keamananipk + $d->sel_keamananipk;
+    
+                    $kebersihan = $kebersihan + $d->sel_kebersihan;
+                    
+                    $airkotor = $airkotor + $d->sel_airkotor;
+    
+                    $lain = $lain + $d->sel_lain;
+                }
+                
+                if($listrik != 0 || $listrik != NULL){
                     $dataset['listrik'] = $listrik - $denlistrik;
-                
-                $airbersih = $data->sel_airbersih;
-                $denairbersih = $data->den_airbersih;
-                if($airbersih != 0 || $airbersih != NULL)
+                    $dataset['dylistrik'] = $dayalistrik;
+                    $dataset['awlistrik'] = $awallistrik;
+                    $dataset['aklistrik'] = $akhirlistrik;
+                    $dataset['pklistrik'] = $pakailistrik;
+                }
+                if($airbersih != 0 || $airbersih != NULL){
                     $dataset['airbersih'] = $airbersih - $denairbersih;
-                
-                $keamananipk = $data->sel_keamananipk;
+                    $dataset['awairbersih'] = $awalairbersih;
+                    $dataset['akairbersih'] = $akhirairbersih;
+                    $dataset['pkairbersih'] = $pakaiairbersih;
+                }
                 if($keamananipk != 0 || $keamananipk != NULL)
                     $dataset['keamananipk'] = $keamananipk;
-
-                $kebersihan = $data->sel_kebersihan;
                 if($kebersihan != 0 || $kebersihan != NULL)
                     $dataset['kebersihan'] = $kebersihan;
-                
-                $airkotor = $data->sel_airkotor;
                 if($airkotor != 0 || $airkotor != NULL)
                     $dataset['airkotor'] = $airkotor;
-
-                $lain = $data->sel_lain;
                 if($lain != 0 || $lain != NULL)
                     $dataset['lain'] = $lain;
             }
             
             //Periode Lalu ----------------------------------------
 
-            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','<',Session::get('periode')]])->get();
+            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['stt_denda','!=',NULL],['bln_tagihan','<',date('Y-m',time())]])->get();
             $dataset['tunglistrik'] = 0;
             $dataset['tungairbersih'] = 0;
             $dataset['tungkeamananipk'] = 0;
@@ -299,7 +336,7 @@ class KasirController extends Controller
             //Periode Ini + Lalu ----------------------------------
 
             $no_faktur = '';
-            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','<=',Session::get('periode')]])->get();
+            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1]])->get();
             $dataset['denlistrik'] = 0;
             $dataset['denairbersih'] = 0;
             if($data != NULL){
@@ -310,7 +347,7 @@ class KasirController extends Controller
                     $airbersih = $airbersih + $d->den_airbersih;
 
                     if($d->no_faktur === NULL){
-                        $faktur = Sinkronisasi::where('sinkron', $tanggal)->first();
+                        $faktur = Sinkronisasi::where('sinkron', date('Y-m-01',time()))->first();
                         $tgl_faktur = $faktur->sinkron;
                         $nomor = $faktur->faktur + 1;
                         $faktur->faktur = $nomor;
@@ -453,17 +490,26 @@ class KasirController extends Controller
                 $pembayaran->ttl_tagihan = $d->ttl_tagihan;
                 $pembayaran->realisasi = $total;
                 $pembayaran->sel_tagihan = $selisih;
+                $pembayaran->stt_denda = $d->stt_denda;
                 $pembayaran->save();
 
                 //-------------------------------------------------------------
                 $total = 0;
                 $selisih = $d->sel_tagihan;
 
+                $data['checkAirBersih'] = FALSE;
+                $data['checkListrik'] = FALSE;
+                $data['checkKeamananIpk'] = FALSE;
+                $data['checkKebersihan'] = FALSE;
+                $data['checkAirKotor'] = FALSE;
+                $data['checkLain'] = FALSE;
+
                 if(empty($request->checkAirBersih) == FALSE){
                     $d->rea_airbersih = $d->ttl_airbersih;
                     $total = $total + $d->rea_airbersih;
                     $selisih = $selisih - $d->sel_airbersih;
                     $d->sel_airbersih = 0;
+                    $data['checkAirBersih'] = TRUE;
                 }
 
                 if(empty($request->checkListrik) == FALSE){
@@ -471,6 +517,7 @@ class KasirController extends Controller
                     $total = $total + $d->rea_listrik;
                     $selisih = $selisih - $d->sel_listrik;
                     $d->sel_listrik = 0;
+                    $data['checkListrik'] = TRUE;
                 }
 
                 if(empty($request->checkKeamananIpk) == FALSE){
@@ -478,6 +525,7 @@ class KasirController extends Controller
                     $total = $total + $d->rea_keamananipk;
                     $selisih = $selisih - $d->sel_keamananipk;
                     $d->sel_keamananipk = 0;
+                    $data['checkKeamananIpk'] = TRUE;
                 }
 
                 if(empty($request->checkKebersihan) == FALSE){
@@ -485,6 +533,7 @@ class KasirController extends Controller
                     $total = $total + $d->rea_kebersihan;
                     $selisih = $selisih - $d->sel_kebersihan;
                     $d->sel_kebersihan = 0;
+                    $data['checkKebersihan'] = TRUE;
                 }
 
                 if(empty($request->checkAirKotor) == FALSE){
@@ -492,6 +541,7 @@ class KasirController extends Controller
                     $total = $total + $d->rea_airkotor;
                     $selisih = $selisih - $d->sel_airkotor;
                     $d->sel_airkotor = 0;
+                    $data['checkAirKotor'] = TRUE;
                 }
 
                 if(empty($request->checkLain) == FALSE){
@@ -499,6 +549,7 @@ class KasirController extends Controller
                     $total = $total + $d->rea_lain;
                     $selisih = $selisih - $d->sel_lain;
                     $d->sel_lain = 0;
+                    $data['checkLain'] = TRUE;
                 }
 
                 if($selisih == 0){
@@ -519,6 +570,36 @@ class KasirController extends Controller
             $data['los'] = $request->los;
             $data['lokasi'] = $request->lokasi;
             $data['faktur'] = $request->faktur;
+
+            $data['taglistrik'] = $request->taglistrik;
+            $data['tagtunglistrik'] = $request->tagtunglistrik;
+            $data['tagdenlistrik'] = $request->tagdenlistrik;
+            $data['tagawlistrik'] = $request->tagawlistrik;
+            $data['tagaklistrik'] = $request->tagaklistrik;
+            $data['tagdylistrik'] = $request->tagdylistrik;
+            $data['tagpklistrik'] = $request->tagpklistrik;
+            
+            $data['tagairbersih'] = $request->tagairbersih;
+            $data['tagtungairbersih'] = $request->tagtungairbersih;
+            $data['tagdenairbersih'] = $request->tagdenairbersih;
+            $data['tagawairbersih'] = $request->tagawairbersih;
+            $data['tagakairbersih'] = $request->tagakairbersih;
+            $data['tagpkairbersih'] = $request->tagpkairbersih;
+            
+            $data['tagkeamananipk'] = $request->tagkeamananipk;
+            $data['tagtungkeamananipk'] = $request->tagtungkeamananipk;
+            
+            $data['tagkebersihan'] = $request->tagkebersihan;
+            $data['tagtungkebersihan'] = $request->tagtungkeamananipk;
+            
+            $data['tagairkotor'] = $request->tagairkotor;
+            $data['tagtungairkotor'] = $request->tagtungairkotor;
+
+            $data['taglain'] = $request->taglain;
+            $data['tagtunglain'] = $request->tagtunglain;
+
+            $data['totalTagihan'] = $request->totalTagihan;
+
             $data['status'] = 'success';
 
             return response()->json(['result' => $data]);
@@ -531,8 +612,8 @@ class KasirController extends Controller
     public function testdata($data){
         echo($data);
         
-        $json = json_decode($data);
-        echo Crypt::decryptString($json->faktur);
+        // $json = json_decode($data);
+        // echo Crypt::decryptString($json->faktur);
         
     }
 
@@ -543,6 +624,35 @@ class KasirController extends Controller
         $los = $json->los;
         $lokasi = $json->lokasi;
         $faktur = Crypt::decryptString($json->faktur);
+
+        $listrik         = number_format($json->taglistrik);
+        $tunglistrik     = number_format($json->tagtunglistrik);
+        $denlistrik      = number_format($json->tagdenlistrik);
+        $dayalistrik     = number_format($json->tagdylistrik);
+        $awallistrik     = number_format($json->tagawlistrik);
+        $akhirlistrik    = number_format($json->tagaklistrik);
+        $pakailistrik    = number_format($json->tagpklistrik);
+        
+        $airbersih       = number_format($json->tagairbersih);
+        $tungairbersih   = number_format($json->tagtungairbersih);
+        $denairbersih    = number_format($json->tagdenairbersih);
+        $awalairbersih   = number_format($json->tagawairbersih);
+        $akhirairbersih  = number_format($json->tagakairbersih);
+        $pakaiairbersih  = number_format($json->tagpkairbersih);
+
+        $keamananipk     = number_format($json->tagkeamananipk);
+        $tungkeamananipk = number_format($json->tagtungkeamananipk);
+        
+        $kebersihan      = number_format($json->tagkebersihan);
+        $tungkebersihan  = number_format($json->tagtungkebersihan);
+        
+        $airkotor        = number_format($json->tagairkotor);
+        $tungairkotor    = number_format($json->tagtungairkotor);
+        
+        $lain            = number_format($json->taglain);
+        $tunglain        = number_format($json->tagtunglain);
+
+        $total           = number_format($json->totalTagihan);
 
         $profile = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
@@ -566,7 +676,49 @@ class KasirController extends Controller
                 $printer -> text("Lokasi  : $lokasi\n");
                 $printer -> setEmphasis(false);
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> feed();
+                if($json->checkListrik){
+                    $printer -> feed();
+                    $printer -> text("$listrik \n");
+                    $printer -> text("$dayalistrik \n");
+                    $printer -> text("$awallistrik \n");
+                    $printer -> text("$akhirlistrik \n");
+                    $printer -> text("$pakailistrik \n");
+                    $printer -> text("$tunglistrik \n");
+                    $printer -> text("$denlistrik \n");
+                }
+                if($json->checkAirBersih){
+                    $printer -> feed();
+                    $printer -> text("$airbersih \n");
+                    $printer -> text("$awalairbersih \n");
+                    $printer -> text("$akhirairbersih \n");
+                    $printer -> text("$pakaiairbersih \n");
+                    $printer -> text("$tungairbersih \n");
+                    $printer -> text("$denairbersih \n");
+                }
+                if($json->checkKeamananIpk){
+                    $printer -> feed();
+                    $printer -> text("$keamananipk \n");
+                    $printer -> text("$tungairbersih \n");
+                }
+                if($json->checkKebersihan){
+                    $printer -> feed();
+                    $printer -> text("$kebersihan \n");
+                    $printer -> text("$tungkebersihan \n");
+                }
+                if($json->checkAirKotor){
+                    $printer -> feed();
+                    $printer -> text("$airkotor \n");
+                    $printer -> text("$tungairkotor \n");
+                }
+                if($json->checkLain){
+                    $printer -> feed();
+                    $printer -> text("$lain \n");
+                    $printer -> text("$tunglain \n");
+                }
+                $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+                $printer -> text("$total \n");
+                $printer -> selectPrintMode();
+                $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------\n");
                 $printer -> text("No.Faktur : $faktur\n");
                 $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
@@ -594,7 +746,49 @@ class KasirController extends Controller
                 $printer -> text("Lokasi  : $lokasi\n");
                 $printer -> setEmphasis(false);
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> feed();
+                if($json->checkListrik){
+                    $printer -> feed();
+                    $printer -> text("$listrik \n");
+                    $printer -> text("$dayalistrik \n");
+                    $printer -> text("$awallistrik \n");
+                    $printer -> text("$akhirlistrik \n");
+                    $printer -> text("$pakailistrik \n");
+                    $printer -> text("$tunglistrik \n");
+                    $printer -> text("$denlistrik \n");
+                }
+                if($json->checkAirBersih){
+                    $printer -> feed();
+                    $printer -> text("$airbersih \n");
+                    $printer -> text("$awalairbersih \n");
+                    $printer -> text("$akhirairbersih \n");
+                    $printer -> text("$pakaiairbersih \n");
+                    $printer -> text("$tungairbersih \n");
+                    $printer -> text("$denairbersih \n");
+                }
+                if($json->checkKeamananIpk){
+                    $printer -> feed();
+                    $printer -> text("$keamananipk \n");
+                    $printer -> text("$tungairbersih \n");
+                }
+                if($json->checkKebersihan){
+                    $printer -> feed();
+                    $printer -> text("$kebersihan \n");
+                    $printer -> text("$tungkebersihan \n");
+                }
+                if($json->checkAirKotor){
+                    $printer -> feed();
+                    $printer -> text("$airkotor \n");
+                    $printer -> text("$tungairkotor \n");
+                }
+                if($json->checkLain){
+                    $printer -> feed();
+                    $printer -> text("$lain \n");
+                    $printer -> text("$tunglain \n");
+                }
+                $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+                $printer -> text("$total \n");
+                $printer -> selectPrintMode();
+                $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------\n");
                 $printer -> text("No.Faktur : $faktur \n");
                 $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
@@ -784,6 +978,7 @@ class KasirController extends Controller
                 $pembayaran->ttl_tagihan = $d->ttl_tagihan;
                 $pembayaran->realisasi = $total;
                 $pembayaran->sel_tagihan = $selisih;
+                $pembayaran->stt_denda = $d->stt_denda;
                 $pembayaran->save();
 
                 //-------------------------------------------------------------
@@ -900,9 +1095,9 @@ class KasirController extends Controller
                 DB::raw('SUM(realisasi)        as jumlah'),
                 DB::raw('SUM(diskon)           as diskon'))
             ->get();
-            $rekap[$i]['listrik']     = $setor[0]->listrik;
+            $rekap[$i]['listrik']     = $setor[0]->listrik - $setor[0]->denlistrik;
             $rekap[$i]['denlistrik']  = $setor[0]->denlistrik;
-            $rekap[$i]['airbersih']   = $setor[0]->airbersih;
+            $rekap[$i]['airbersih']   = $setor[0]->airbersih - $setor[0]->denairbersih;
             $rekap[$i]['denairbersih']= $setor[0]->denairbersih;
             $rekap[$i]['keamananipk'] = $setor[0]->keamananipk;
             $rekap[$i]['kebersihan']  = $setor[0]->kebersihan;
@@ -927,9 +1122,9 @@ class KasirController extends Controller
                 $rin[$j]['rek']  = date("m/Y", strtotime($r->tgl_tagihan));
                 $rin[$j]['kode']  = $r->kd_kontrol;
                 $rin[$j]['pengguna']  = $r->pengguna;
-                $rin[$j]['listrik']  = $r->byr_listrik;
+                $rin[$j]['listrik']  = $r->byr_listrik - $r->byr_denlistrik;
                 $rin[$j]['denlistrik']  = $r->byr_denlistrik;
-                $rin[$j]['airbersih']  = $r->byr_airbersih;
+                $rin[$j]['airbersih']  = $r->byr_airbersih - $r->byr_denairbersih;
                 $rin[$j]['denairbersih']  = $r->byr_denairbersih;
                 $rin[$j]['keamananipk']  = $r->byr_keamananipk;
                 $rin[$j]['kebersihan']  = $r->byr_kebersihan;
@@ -1052,6 +1247,8 @@ class KasirController extends Controller
                         $tagihan->sel_lain = $tagihan->ttl_lain;
                         $tagihan->stt_lunas   = 0;
                     }
+                    
+                    $tagihan->stt_denda = $p->stt_denda;
 
                     //Subtotal
                     $subtotal = 

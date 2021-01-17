@@ -24,6 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('cron:log')->monthlyOn(1, '01:00');
+        $schedule->command('cron:tagihan')->monthlyOn(20, '01:00');
         $schedule->command('cron:denda')->everyMinute();
     }
 

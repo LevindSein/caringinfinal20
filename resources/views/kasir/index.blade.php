@@ -26,7 +26,7 @@
         </button>
     </div>
     @endif
-    &nbsp;
+    <!-- &nbsp;
     <div>
         <a 
             type="button"
@@ -36,7 +36,7 @@
             title="Bayar by Bulanan">
             <i class="mdi mdi-magnify btn-icon-append"></i>  
         </a>
-    </div>
+    </div> -->
     &nbsp;
     <div>
         <button
@@ -364,12 +364,42 @@
                             <h3><strong><span id="nominalTotal" style="color:#3f6ad8;"></span></strong></h3>
                         </div>
                     </div>
+                    
                     <input hidden id="tempatId" name="tempatId"/>
                     <input hidden id="pedagang" name="pedagang"/>
                     <input hidden id="los" name="los"/>
                     <input hidden id="lokasi" name="lokasi"/>
                     <input hidden id="faktur" name="faktur"/>
+                    
+                    <input hidden id="taglistrik" name="taglistrik"/>
+                    <input hidden id="tagtunglistrik" name="tagtunglistrik"/>
+                    <input hidden id="tagdenlistrik" name="tagdenlistrik"/>
+                    <input hidden id="tagdylistrik" name="tagdylistrik"/>
+                    <input hidden id="tagawlistrik" name="tagawlistrik"/>
+                    <input hidden id="tagaklistrik" name="tagaklistrik"/>
+                    <input hidden id="tagpklistrik" name="tagpklistrik"/>
+                    
+                    <input hidden id="tagairbersih" name="tagairbersih"/>
+                    <input hidden id="tagtungairbersih" name="tagtungairbersih"/>
+                    <input hidden id="tagdenairbersih" name="tagdenairbersih"/>
+                    <input hidden id="tagawairbersih" name="tagawairbersih"/>
+                    <input hidden id="tagakairbersih" name="tagakairbersih"/>
+                    <input hidden id="tagpkairbersih" name="tagpkairbersih"/>
+                    
+                    <input hidden id="tagkeamananipk" name="tagkeamananipk"/>
+                    <input hidden id="tagtungkeamananipk" name="tagtungkeamananipk"/>
+                    
+                    <input hidden id="tagkebersihan" name="tagkebersihan"/>
+                    <input hidden id="tagtungkebersihan" name="tagtungkebersihan"/>
+                    
+                    <input hidden id="tagairkotor" name="tagairkotor"/>
+                    <input hidden id="tagtungairkotor" name="tagtungairkotor"/>
+
+                    <input hidden id="taglain" name="taglain"/>
+                    <input hidden id="tagtunglain" name="tagtunglain"/>
+
                     <input hidden id="totalTagihan" name="totalTagihan"/>
+                    
                     <input type="submit" id="printStruk" class="btn btn-primary btn-sm" value="Bayar Sekarang"/>
                 </div>
             </form>

@@ -1016,20 +1016,6 @@ class TagihanController extends Controller
         ]);
     }
 
-    public function sinkronisasi(Request $request){
-        if($request->ajax()){
-            try{
-                if(Session::get('sync') != 'off'){
-                    Sinkronisasi::sinkron();
-                }
-                return response()->json(['success' => 'Sinkronisasi Sukses']);
-            }
-            catch(\Exception $e){
-                return response()->json(['errors' => 'Oops! Sinkronisasi Gagal']);
-            }
-        }
-    }
-
     public function listrik(Request $request){
         if(Session::get('role') == 'admin'){
             $wherein = Session::get('otoritas')[0]->blok;
