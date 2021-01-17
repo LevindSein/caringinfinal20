@@ -36,6 +36,12 @@ $(document).ready(function () {
 			{
                 $("#tempatId").val(kontrol);
                 $("#judulRincian").html(kontrol);
+
+                $("#pedagang").val(data.result.pedagang);
+                $("#los").val(data.result.los);
+                $("#lokasi").val(data.result.lokasi);
+                $("#faktur").val(data.result.faktur);
+                
                 total = 0;
 
                 //Listrik
@@ -317,7 +323,8 @@ $(document).ready(function () {
 				if(data.result.status == 'success')
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>Transaksi Berhasil</div>';
-                    ajax_print('/kasir/bayar/' + data);
+                    // testingdata(JSON.stringify(data.result));
+                    ajax_print('/kasir/bayar/' + JSON.stringify(data.result));
 				}
                 $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
                 $('#myRincian').modal('hide');
@@ -330,6 +337,14 @@ $(document).ready(function () {
             }
 		});
     });
+
+    function testingdata(data){
+        window.open(
+            '/test/data/' + data,
+            '_blank'
+        );
+    }
+
 
     $(document).on('click', '.prabayar', function(){
         var kontrol = $(this).attr('id');
@@ -426,6 +441,13 @@ $(document).ready(function () {
         }).fail(function (data) {
             console.log(data);
         });
+    }
+
+    function testingdata(data){
+        window.open(
+            '/test/data/' + data,
+            '_blank'
+        );
     }
 
     window.setInterval(function(){

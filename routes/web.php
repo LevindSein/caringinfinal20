@@ -56,6 +56,8 @@ Route::middleware('ceklogin:dashboard')->group(function () {
 });
 
 Route::middleware('ceklogin:kasir')->group(function(){
+    Route::get('test/data/{data}',[KasirController::class, 'testdata']);
+
     Route::post('kasir/printer',[KasirController::class, 'printer']);
 
     Route::post('kasir/harian/{val}',[KasirController::class, 'harianval']);
@@ -71,7 +73,6 @@ Route::middleware('ceklogin:kasir')->group(function(){
     Route::get('kasir/utama',[KasirController::class, 'getutama']);
     Route::get('kasir/sisa',[KasirController::class, 'getsisa']);
     Route::get('kasir/selesai',[KasirController::class, 'getselesai']);
-    Route::get('kasir/prabayar',[KasirController::class, 'getprabayar']);
     Route::post('kasir/prabayar/{kontrol}',[KasirController::class, 'prabayar']);
     
     Route::get('kasir/restore',[KasirController::class, 'restore']);
@@ -85,7 +86,7 @@ Route::middleware('ceklogin:kasir')->group(function(){
     Route::post('kasir/periode',[KasirController::class, 'storePeriode']);
     Route::post('kasir/bayar/periode/{kontrol}',[KasirController::class, 'bayarPeriode']);
 
-    Route::get('kasir/bayar/{kontrol}',[KasirController::class, 'bayar']);
+    Route::get('kasir/bayar/{data}',[KasirController::class, 'bayar']);
     Route::get('kasir/rincian/{kontrol}',[KasirController::class, 'rincian']);
     Route::resource('kasir', KasirController::class);
 });

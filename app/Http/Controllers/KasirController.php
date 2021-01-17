@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Crypt;
 
 use App\Models\Kasir;
 use App\Models\Tagihan;
@@ -18,6 +19,7 @@ use App\Models\Harian;
 use App\Models\Item;
 
 use App\Models\TempatUsaha;
+use App\Models\Sinkronisasi;
 
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
@@ -212,6 +214,7 @@ class KasirController extends Controller
             $dataset['kebersihan'] = 0;
             $dataset['airkotor'] = 0;
             $dataset['lain'] = 0;
+
             if($data != NULL){
                 $listrik = $data->sel_listrik;
                 $denlistrik = $data->den_listrik;
@@ -295,6 +298,7 @@ class KasirController extends Controller
 
             //Periode Ini + Lalu ----------------------------------
 
+            $no_faktur = '';
             $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','<=',Session::get('periode')]])->get();
             $dataset['denlistrik'] = 0;
             $dataset['denairbersih'] = 0;
@@ -304,6 +308,29 @@ class KasirController extends Controller
                 foreach($data as $d){
                     $listrik = $listrik + $d->den_listrik;
                     $airbersih = $airbersih + $d->den_airbersih;
+
+                    if($d->no_faktur === NULL){
+                        $faktur = Sinkronisasi::where('sinkron', $tanggal)->first();
+                        $tgl_faktur = $faktur->sinkron;
+                        $nomor = $faktur->faktur + 1;
+                        $faktur->faktur = $nomor;
+                        if($nomor < 10)
+                            $nomor = '000'.$nomor;
+                        else if($nomor >= 10 && $nomor < 100)
+                            $nomor = '00'.$nomor;
+                        else if($nomor >= 100 && $nomor < 1000)
+                            $nomor = '0'.$nomor;
+                        else
+                            $nomor = $nomor;
+        
+                        $no_faktur = $nomor.'/'.str_replace('-','/',$tgl_faktur);
+                        $faktur->save();
+                        $d->no_faktur = $no_faktur;
+                        $d->save();
+                    }
+                    else{
+                        $no_faktur = $d->no_faktur;
+                    }
                 }
 
                 if($listrik != 0 || $listrik != NULL)
@@ -312,6 +339,19 @@ class KasirController extends Controller
                 if($airbersih != 0 || $airbersih != NULL)
                     $dataset['denairbersih'] = $airbersih;
             }
+
+            $data = TempatUsaha::where('kd_kontrol',$kontrol)->first();
+            if($data != NULL){
+                $dataset['pedagang'] = User::find($data->id_pengguna)->nama;
+                $dataset['los'] = $data->no_alamat;
+                $dataset['lokasi'] = $data->lok_tempat;
+            }
+            else{
+                $dataset['pedagang'] = '';
+                $dataset['los'] = '';
+                $dataset['lokasi'] = '';
+            }
+            $dataset['faktur'] = Crypt::encryptString($no_faktur);
 
             return response()->json(['result' => $dataset]);
         }
@@ -328,9 +368,6 @@ class KasirController extends Controller
         $bayar = '';
         $tagihan = '';
         $data = array();
-
-        $data['kd_kontrol'] = $request->tempatId;
-
         try{
             if($request->totalTagihan == 0){
                 return response()->json(['errors' => 'Transaksi 0 Tidak Dapat Dilakukan']);
@@ -466,6 +503,7 @@ class KasirController extends Controller
 
                 if($selisih == 0){
                     $d->stt_lunas = 1;
+                    $d->stt_denda = NULL;
                 }
 
                 if($total != 0){
@@ -476,12 +514,98 @@ class KasirController extends Controller
                 Tagihan::totalTagihan($d->id);
             }
 
+            $data['kd_kontrol'] = $request->tempatId;
+            $data['pedagang'] = $request->pedagang;
+            $data['los'] = $request->los;
+            $data['lokasi'] = $request->lokasi;
+            $data['faktur'] = $request->faktur;
             $data['status'] = 'success';
 
             return response()->json(['result' => $data]);
         } catch(\Exception $e){
             $data['status'] = 'error';
             return response()->json(['result' => $data]);
+        }
+    }
+
+    public function testdata($data){
+        echo($data);
+        
+        $json = json_decode($data);
+        echo Crypt::decryptString($json->faktur);
+        
+    }
+
+    public function bayar($objData){
+        $json = json_decode($objData);
+        $kontrol  = $json->kd_kontrol;
+        $pedagang = $json->pedagang;
+        $los = $json->los;
+        $lokasi = $json->lokasi;
+        $faktur = Crypt::decryptString($json->faktur);
+
+        $profile = CapabilityProfile::load("POS-5890");
+        $connector = new RawbtPrintConnector();
+        $printer = new Printer($connector,$profile);
+        try{
+            if(Session::get('printer') == 'panda'){
+                $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> setFont(Printer::FONT_A);
+                $printer -> setEmphasis(true);
+                $printer -> text("BADAN PENGELOLA PUSAT\nPERDAGANGAN CARINGIN\n");
+                $printer -> setEmphasis(false);
+                $printer -> selectPrintMode();
+                $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> setFont(Printer::FONT_B);
+                $printer -> feed();
+                $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                $printer -> setEmphasis(true);
+                $printer -> text("Nama    : $pedagang\n");
+                $printer -> text("Kontrol : $kontrol\n");
+                $printer -> text("Los     : $los\n");
+                $printer -> text("Lokasi  : $lokasi\n");
+                $printer -> setEmphasis(false);
+                $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> feed();
+                $printer -> text("----------------------------------------\n");
+                $printer -> text("No.Faktur : $faktur\n");
+                $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
+                $printer -> text("Struk ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
+                $printer -> feed();
+            }
+            else if(Session::get('printer') == 'androidpos'){
+
+            }
+            else{
+                $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> setFont(Printer::FONT_A);
+                $printer -> setEmphasis(true);
+                $printer -> text("BADAN PENGELOLA PUSAT\nPERDAGANGAN CARINGIN\n");
+                $printer -> setEmphasis(false);
+                $printer -> selectPrintMode();
+                $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> setFont(Printer::FONT_B);
+                $printer -> feed();
+                $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                $printer -> setEmphasis(true);
+                $printer -> text("Nama    : $pedagang\n");
+                $printer -> text("Kontrol : $kontrol\n");
+                $printer -> text("Los     : $los\n");
+                $printer -> text("Lokasi  : $lokasi\n");
+                $printer -> setEmphasis(false);
+                $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> feed();
+                $printer -> text("----------------------------------------\n");
+                $printer -> text("No.Faktur : $faktur \n");
+                $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
+                $printer -> text("Struk ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
+                $printer -> feed();
+                $printer -> cut();
+            }
+        }catch(\Exception $e){
+            return response()->json(['status' => 'Transaksi Berhasil, Gagal Print Struk']);
+        }finally{
+            $printer->close();
         }
     }
 
@@ -717,6 +841,7 @@ class KasirController extends Controller
                 
                 if($selisih == 0){
                     $d->stt_lunas = 1;
+                    $d->stt_denda = NULL;
                 }
 
                 if($total != 0){
@@ -1473,56 +1598,8 @@ class KasirController extends Controller
         ]);
     }
 
-    public function getprabayar(){
-        return view('kasir.prabayar');
-    }
-
     public function settings(){
         return view('kasir.settings');
-    }
-
-    public function bayar($kontrol){
-        $profile = CapabilityProfile::load("POS-5890");
-        $connector = new RawbtPrintConnector();
-        $printer = new Printer($connector,$profile);
-        try{
-            if(Session::get('printer') == 'panda'){
-
-            }
-            else if(Session::get('printer') == 'androidpos'){
-
-            }
-            else{
-                $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> setFont(Printer::FONT_A);
-                $printer -> setEmphasis(true);
-                $printer -> text("BADAN PENGELOLA PUSAT\nPERDAGANGAN CARINGIN\n");
-                $printer -> setEmphasis(false);
-                $printer -> selectPrintMode();
-                $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> setFont(Printer::FONT_B);
-                $printer -> text("----------------------------------------\n");
-                $printer -> setJustification(Printer::JUSTIFY_LEFT);
-                $printer -> setEmphasis(true);
-                $printer -> text("Nama    : \n");
-                $printer -> text("Kontrol : $kontrol\n");
-                $printer -> text("Los     : \n");
-                $printer -> text("Lokasi  : \n");
-                $printer -> setEmphasis(false);
-                $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> text("----------------------------------------\n");
-                $printer -> text("----------------------------------------\n");
-                $printer -> text("No.Faktur : "."0012/2021/01/01"."\n");
-                $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
-                $printer -> text("Struk ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
-                $printer -> feed(2);
-                $printer -> cut();
-            }
-        }catch(\Exception $e){
-            return response()->json(['status' => 'Transaksi Berhasil, Gagal Print Struk']);
-        }finally{
-            $printer->close();
-        }
     }
 
     public function printer(Request $request){

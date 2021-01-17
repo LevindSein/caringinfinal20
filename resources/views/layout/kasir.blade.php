@@ -71,11 +71,6 @@
 											<i class="mdi mdi-book-plus text-primary"></i>
 											Rekap Selesai
 										</a>
-                                        <a class="dropdown-item"
-                                            href="{{url('kasir/prabayar')}}">
-											<i class="mdi mdi-wallet text-primary"></i>
-											Prabayar
-										</a>
                                         @endif
                                         <hr>
                                         <a class="dropdown-item"

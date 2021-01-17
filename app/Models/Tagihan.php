@@ -179,7 +179,7 @@ class Tagihan extends Model
         $tagihan->beban_listrik = $beban_listrik;
         $tagihan->bpju_listrik = $bpju_listrik;
 
-        $tagihan->sub_listrik = round($ttl_listrik);
+        $tagihan->sub_listrik = round($ttl_listrik + ($ttl_listrik * (($tarif->trf_ppn) / 100)));
 
         $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
         $diskon = 0;
@@ -201,7 +201,7 @@ class Tagihan extends Model
         
         $total = $tagihan->sub_listrik - $diskon; 
         $tagihan->dis_listrik = $diskon;
-        $tagihan->ttl_listrik = $total + ($total * ($tarif->trf_ppn / 100)) + $tagihan->den_listrik;
+        $tagihan->ttl_listrik = $total + $tagihan->den_listrik;
         $tagihan->sel_listrik = $tagihan->ttl_listrik - $tagihan->rea_listrik;
         
         $tagihan->stt_listrik = 1;
@@ -275,7 +275,7 @@ class Tagihan extends Model
         $tagihan->pemeliharaan_airbersih = $pemeliharaan_airbersih;
         $tagihan->beban_airbersih = $beban_airbersih;
         $tagihan->arkot_airbersih = $arkot_airbersih;
-        $tagihan->sub_airbersih = round($ttl_airbersih);
+        $tagihan->sub_airbersih = round($ttl_airbersih  + ($ttl_airbersih * (($tarif->trf_ppn) / 100)));
 
         $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
         $diskon = 0;
@@ -330,7 +330,7 @@ class Tagihan extends Model
 
         $total = $tagihan->sub_airbersih - $diskon; 
         $tagihan->dis_airbersih = $diskon;
-        $tagihan->ttl_airbersih = $total + ($total * ($tarif->trf_ppn / 100)) + $tagihan->den_airbersih;
+        $tagihan->ttl_airbersih = $total + $tagihan->den_airbersih;
         $tagihan->sel_airbersih = $tagihan->ttl_airbersih - $tagihan->rea_airbersih;
         
         $tagihan->stt_airbersih = 1;

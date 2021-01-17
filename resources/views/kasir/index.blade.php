@@ -365,6 +365,10 @@
                         </div>
                     </div>
                     <input hidden id="tempatId" name="tempatId"/>
+                    <input hidden id="pedagang" name="pedagang"/>
+                    <input hidden id="los" name="los"/>
+                    <input hidden id="lokasi" name="lokasi"/>
+                    <input hidden id="faktur" name="faktur"/>
                     <input hidden id="totalTagihan" name="totalTagihan"/>
                     <input type="submit" id="printStruk" class="btn btn-primary btn-sm" value="Bayar Sekarang"/>
                 </div>

@@ -409,6 +409,7 @@ $(document).ready(function(){
 				if(data.success)
 				{
                     $('#process').hide();
+                    alert(data.success);
                     location.reload();
                 }
             },

@@ -161,7 +161,7 @@ class CekLogin
                 $roles = array('master','admin');
                 if($validator != NULL){
                     $date = date('Y-m-d',time());
-                    $check = date('Y-m-25',time());
+                    $check = date('Y-m-20',time());
                     $time = strtotime($date);
                     $nanti = date('Y-m-01', strtotime("+1 month", $time));
                     $sekarang = date('Y-m-01',time());

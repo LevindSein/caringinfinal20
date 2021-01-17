@@ -18,21 +18,21 @@
             </tr>
             <tr>
                 <th class="listrik">Tagihan</th>
-                <th class="listrik">Diskon</th>
                 <th class="listrik">Realisasi</th>
                 <th class="listrik">Selisih</th>
+                <th class="listrik">Diskon</th>
                 <th class="air">Tagihan</th>
-                <th class="air">Diskon</th>
                 <th class="air">Realisasi</th>
                 <th class="air">Selisih</th>
+                <th class="air">Diskon</th>
                 <th class="keamanan">Tagihan</th>
-                <th class="keamanan">Diskon</th>
                 <th class="keamanan">Realisasi</th>
                 <th class="keamanan">Selisih</th>
+                <th class="keamanan">Diskon</th>
                 <th class="kebersihan">Tagihan</th>
                 <th class="kebersihan">Realisasi</th>
-                <th class="kebersihan">Realisasi</th>
                 <th class="kebersihan">Selisih</th>
+                <th class="kebersihan">Diskon</th>
                 <th style="background-color:rgba(50, 255, 255, 0.2);">Tagihan</th>
                 <th style="background-color:rgba(50, 255, 255, 0.2);">Realisasi</th>
                 <th style="background-color:rgba(50, 255, 255, 0.2);">Selisih</th>
@@ -40,9 +40,9 @@
                 <th style="background-color:rgba(255, 50, 255, 0.2);">Realisasi</th>
                 <th style="background-color:rgba(255, 50, 255, 0.2);">Selisih</th>
                 <th style="background-color:rgba(255, 212, 71, 0.2);">Tagihan</th>
-                <th style="background-color:rgba(255, 212, 71, 0.2);">Diskon</th>
                 <th style="background-color:rgba(255, 212, 71, 0.2);">Realisasi</th>
                 <th style="background-color:rgba(255, 212, 71, 0.2);">Selisih</th>
+                <th style="background-color:rgba(255, 212, 71, 0.2);">Diskon</th>
             </tr>
         </thead>
     </table>

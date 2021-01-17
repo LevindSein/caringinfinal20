@@ -53,33 +53,41 @@
     </div>
     <canvas hidden="" id="qr-canvas"></canvas>
 </div>
-<div class="row">
-    <div class="table-responsive">
-        <table 
-            id="tabelKasir" 
-            class="table table-bordered" 
-            cellspacing="0"
-            width="100%">
-            <thead>
-                <tr>
-                    <th style="text-align:center;vertical-align:middle;" rowspan="2"><b>Nama</b></th>
-                    <th style="text-align:center;" colspan="2"><b>LOS</b></th>
-                    <th style="text-align:center;" colspan="2"><b>POS</b></th>
-                    <th style="text-align:center;vertical-align:middle;" rowspan="2"><b>Abonemen</b></th>
-                    <th style="text-align:center;vertical-align:middle;" rowspan="2"><b>Ket</b></th>
-                    <th style="text-align:center;vertical-align:middle;" rowspan="2"><b>Total</b></th>
-                    <th style="text-align:center;vertical-align:middle;" rowspan="2"><b>Action</b></th>
-                </tr>
-                <tr>
-                    <th style="text-align:center;"><b>Keamanan</b></th>
-                    <th style="text-align:center;"><b>Kebersihan</b></th>
-                    <th style="text-align:center;"><b>Kebersihan</b></th>
-                    <th style="text-align:center;"><b>> Kebersihan</b></th>
-                </tr>
-            </thead>
-        </table>
+<form>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group col-lg-12">
+                <label for="exampleInput1">Form</label>
+                <input type="text" class="form-control" id="exampleInput1" placeholder="Username">
+            </div>
+            <div class="form-group col-lg-12">
+                <label for="exampleInput2">Form</label>
+                <input type="text" class="form-control" id="exampleInput2" placeholder="Username">
+            </div>
+            <div class="form-group col-lg-12">
+                <label for="exampleInput3">Form</label>
+                <input type="text" class="form-control" id="exampleInput3" placeholder="Username">
+            </div>
+            <div class="form-group col-lg-12">
+                <label for="exampleInput4">Form</label>
+                <input type="text" class="form-control" id="exampleInput4" placeholder="Username">
+            </div>
+            <div class="form-group col-lg-12">
+                <label for="exampleInput5">Form</label>
+                <input type="text" class="form-control" id="exampleInput5" placeholder="Username">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-primary btn-rounded btn-icon float-right">
+                <i class="mdi mdi-plus"></i>
+            </button>
+        </div>  
     </div>
-</div>
+    <br>
+    <div class="col-lg-12" style="text-align:center;">
+        <input type="submit" class="btn btn-primary mr-2" value="Submit" />
+    </div>
+</form>
 
 <div
     class="modal fade"

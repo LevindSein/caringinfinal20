@@ -38,7 +38,7 @@ class TagihanController extends Controller
     public function index(Request $request)
     {
         $now = date("Y-m-d",time());
-        $check = date("Y-m-25",time());
+        $check = date("Y-m-20",time());
 
         if($now < $check){
             $sekarang = date("Y-m", time());
@@ -1523,7 +1523,7 @@ class TagihanController extends Controller
         if($request->ajax()){
             try{
                 $now = date('Y-m-d',time());
-                $check = date('Y-m-15',time());
+                $check = date('Y-m-20',time());
 
                 if($now < $check){
                     $tgl_tagihan = date('Y-m-01',time());
@@ -1640,7 +1640,7 @@ class TagihanController extends Controller
                             $tagihan->beban_listrik = $beban_listrik;
                             $tagihan->bpju_listrik = $bpju_listrik;
 
-                            $tagihan->sub_listrik = round($ttl_listrik);
+                            $tagihan->sub_listrik = round($ttl_listrik  + ($ttl_listrik * (($tarif->trf_ppn) / 100)));
 
                             $tempat = TempatUsaha::where('kd_kontrol',$record->kd_kontrol)->first();
                             $diskon = 0;
@@ -1661,7 +1661,7 @@ class TagihanController extends Controller
                             }
                             
                             $total = $tagihan->sub_listrik - $diskon; 
-                            $tagihan->ttl_listrik = $total + ($total * ($tarif->trf_ppn / 100)) + $tagihan->den_listrik;
+                            $tagihan->ttl_listrik = $total + $tagihan->den_listrik;
                             $tagihan->sel_listrik = $tagihan->ttl_listrik - $tagihan->rea_listrik;
 
                             $warna = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_listrik',1]])->orderBy('id','desc')->limit(3)->get();
@@ -1749,7 +1749,7 @@ class TagihanController extends Controller
                             $tagihan->pemeliharaan_airbersih = $pemeliharaan_airbersih;
                             $tagihan->beban_airbersih = $beban_airbersih;
                             $tagihan->arkot_airbersih = $arkot_airbersih;
-                            $tagihan->sub_airbersih = round($ttl_airbersih);
+                            $tagihan->sub_airbersih = round($ttl_airbersih + ($ttl_airbersih * (($tarif->trf_ppn) / 100)));
 
                             $tempat = TempatUsaha::where('kd_kontrol',$record->kd_kontrol)->first();
                             $diskon = 0;
@@ -1803,7 +1803,7 @@ class TagihanController extends Controller
                             }
 
                             $total = $tagihan->sub_airbersih - $diskon; 
-                            $tagihan->ttl_airbersih = $total + ($total * ($tarif->trf_ppn / 100)) + $tagihan->den_airbersih;
+                            $tagihan->ttl_airbersih = $total + $tagihan->den_airbersih;
                             $tagihan->sel_airbersih = $tagihan->ttl_airbersih - $tagihan->rea_airbersih;
 
                             $warna = Tagihan::where([['kd_kontrol',$tagihan->kd_kontrol],['stt_publish',1],['stt_airbersih',1]])->orderBy('id','desc')->limit(3)->get();
@@ -1840,7 +1840,6 @@ class TagihanController extends Controller
                         $tagihan->stt_airbersih = 1;
                     }
                 }
-
 
                 $tagihan->jml_alamat  = $record->jml_alamat;
 

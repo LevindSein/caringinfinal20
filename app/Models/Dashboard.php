@@ -22,7 +22,7 @@ class Dashboard extends Model
 
         for($i=1; $i<=12; $i++){
             if($i < 10){
-                $data = Tagihan::where('bln_pakai',($thn."-0".$i))
+                $data = Tagihan::where('bln_tagihan',($thn."-0".$i))
                 ->select(
                     DB::raw('SUM(ttl_listrik) as listrik'),
                     DB::raw('SUM(ttl_airbersih) as airbersih'),
@@ -31,7 +31,7 @@ class Dashboard extends Model
                 ->get();
             }
             else{
-                $data = Tagihan::where('bln_pakai',($thn."-".$i))
+                $data = Tagihan::where('bln_tagihan',($thn."-".$i))
                 ->select(
                     DB::raw('SUM(ttl_listrik) as listrik'),
                     DB::raw('SUM(ttl_airbersih) as airbersih'),
@@ -85,7 +85,7 @@ class Dashboard extends Model
         $j=0;
         for($i=1; $i<=12; $i++){
             if($i < 10){
-                $data = Tagihan::where('bln_pakai',($thn."-0".$i))
+                $data = Tagihan::where('bln_tagihan',($thn."-0".$i))
                 ->select(
                     DB::raw('SUM(ttl_tagihan) as tagihan'),
                     DB::raw('SUM(rea_tagihan) as realisasi'),
@@ -93,7 +93,7 @@ class Dashboard extends Model
                 ->get();
             }
             else{
-                $data = Tagihan::where('bln_pakai',($thn."-".$i))
+                $data = Tagihan::where('bln_tagihan',($thn."-".$i))
                 ->select(
                     DB::raw('SUM(ttl_tagihan) as tagihan'),
                     DB::raw('SUM(rea_tagihan) as realisasi'),
@@ -141,7 +141,7 @@ class Dashboard extends Model
         $j=0;
         for($i=1; $i<=12; $i++){
             if($i < 10){
-                $data = Tagihan::where('bln_pakai',($thn."-0".$i))
+                $data = Tagihan::where('bln_tagihan',($thn."-0".$i))
                 ->select(
                     DB::raw('SUM(ttl_tagihan) as tagihan'),
                     DB::raw('SUM(rea_tagihan) as realisasi'),
@@ -149,7 +149,7 @@ class Dashboard extends Model
                 ->get();
             }
             else{
-                $data = Tagihan::where('bln_pakai',($thn."-".$i))
+                $data = Tagihan::where('bln_tagihan',($thn."-".$i))
                 ->select(
                     DB::raw('SUM(ttl_tagihan) as tagihan'),
                     DB::raw('SUM(rea_tagihan) as realisasi'),
