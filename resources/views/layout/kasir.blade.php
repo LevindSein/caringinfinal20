@@ -262,6 +262,8 @@
                 if(val === "all") {
                     $("#divrekapsisa").hide();
                     $("#sebagian").prop('required',false);
+                    $('#sebagian').val('');
+                    $('#sebagian').html('');
                 }
                 else if(val === "sebagian") {
                     $("#divrekapsisa").show();
