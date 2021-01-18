@@ -434,6 +434,15 @@
                             name="tanggal"
                             id="tanggal">
                     </div>
+                    <div class="form-group col-lg-12">
+                        <br>
+                        <label for="shift">Pilih Shift</label>
+                        <select class="form-control" name="shift" id="shift">
+                            <option selected value="2">Semua</option>
+                            <option value="1">Shift 1</option>
+                            <option value="0">Shift 2</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary btn-sm">Cetak</button>

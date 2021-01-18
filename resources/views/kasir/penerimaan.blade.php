@@ -18,6 +18,9 @@
                     <div>
                         <span>Tanggal Bayar</span>:
                         {{$tanggal}}</div>
+                    <div>
+                        <span>Shift Kasir</span>:
+                        {{$shift}}</div>
                 </div>
             </header>
             <main>
@@ -95,6 +98,9 @@
                     <div>
                         <span>Tanggal Bayar</span>:
                         {{$tanggal}}</div>
+                    <div>
+                        <span>Shift Kasir</span>:
+                        {{$shift}}</div>
                 </div>
             </header>
             <main>

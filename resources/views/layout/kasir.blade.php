@@ -26,6 +26,8 @@
         <script src="{{asset('https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js')}}"></script>
         <script src="{{asset('js/animate.min.js')}}"></script>
 
+        <link rel="stylesheet" href="{{asset('vendor/select2/select2.min.css')}}"/>
+        <script src="{{asset('vendor/select2/select2.min.js')}}"></script>
 	</head>
 	<body>
         <div class="se-pre-con"></div>
@@ -37,8 +39,11 @@
 							<div class="text-center navbar-brand-wrapper d-flex align-items-center">
 								<a class="navbar-brand brand-logo" href="index.html"><img src="{{asset('images/kasir.png')}}" alt="logo"/></a>
 								<a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset('images/kasir.png')}}" alt="logo"/></a>
-							</div>
+                            </div>
 							<ul class="navbar-nav navbar-nav-right">
+                                <li class="nav-item ml-0 mr-5 d-lg-flex">
+                                    <button type="button" id="workasir" class="btn btn-sm">Status</button>
+                                </li>
 								<li class="nav-item nav-profile dropdown">
 									<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
 										<span class="nav-profile-name">{{Session::get('username')}}</span>
@@ -52,6 +57,7 @@
 											<i class="mdi mdi-sync text-primary"></i>
 											Mode Bulanan
 										</a>
+                                        <hr>
                                         @else
                                         <a class="dropdown-item"
                                             href="{{url('kasir/mode/harian')}}">
@@ -60,8 +66,8 @@
 										</a>
                                         <hr>
                                         <a class="dropdown-item"
-                                            target="_blank"
-                                            href="{{url('kasir/sisa')}}">
+                                            data-toggle="modal"
+                                            data-target="#mySisa">
 											<i class="mdi mdi-book-minus text-primary"></i>
 											Rekap Sisa
 										</a>
@@ -71,15 +77,14 @@
 											<i class="mdi mdi-book-plus text-primary"></i>
 											Rekap Selesai
                                         </a> -->
+                                        @endif
                                         <a class="dropdown-item"
                                             data-toggle="modal"
                                             data-target="#myUtama">
 											<i class="mdi mdi-database text-primary"></i>
 											Rekap Pendapatan
 										</a>
-                                        @endif
                                         <hr>
-                                        
                                         <a class="dropdown-item"
                                             href="{{url('kasir/settings')}}">
                                             <i class="mdi mdi-settings text-primary"></i>
@@ -162,6 +167,45 @@
 
         <div
             class="modal fade"
+            id="mySisa"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Rekap Sisa Tagihan</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form class="user" action="{{url('kasir/sisa')}}" target="_blank" method="GET">
+                        <div class="modal-body-short">
+                            <div class="form-group col-lg-12">
+                                <label for="sisatagihan">Pilih Rekap Sisa Tagihan</label>
+                                <select class="form-control" name="sisatagihan" id="sisatagihan" required>
+                                    <option selected value="all">Semua</option>
+                                    <option value="sebagian">Sebagian</option>
+                                </select>
+                                <div class="form-group col-lg-12" style="display:none;" id="divrekapsisa">
+                                    <br>
+                                    <label for="sebagian">Blok <span style="color:red;">*</span></label>
+                                    <div class="form-group">
+                                        <select class="sebagian" name="sebagian[]" id="sebagian" required multiple></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="modal fade"
             id="logoutModal"
             tabindex="-1"
             role="dialog"
@@ -192,7 +236,40 @@
                     .fadeIn("fast")
                     .fadeOut("fast");;
             });
+            
+            $('#sebagian').select2({
+                placeholder: '--- Pilih Blok ---',
+                ajax: {
+                    url: "/cari/blok",
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (blok) {
+                        return {
+                        results:  $.map(blok, function (bl) {
+                            return {
+                            text: bl.nama,
+                            id: bl.nama
+                            }
+                        })
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            $("#sisatagihan").change(function() {
+                var val = $(this).val();
+                if(val === "all") {
+                    $("#divrekapsisa").hide();
+                    $("#sebagian").prop('required',false);
+                }
+                else if(val === "sebagian") {
+                    $("#divrekapsisa").show();
+                    $("#sebagian").prop('required',true);
+                }
+            });
         </script>
+        <script src="{{asset('js/work.js')}}"></script>
         
         <!-- Core plugin JavaScript-->
         <script src="{{asset('vendors/base/vendor.bundle.base.js')}}"></script>

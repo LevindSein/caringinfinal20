@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Crypt;
 use App\Models\Kasir;
 use App\Models\Tagihan;
 use App\Models\Struk70mm;
+use App\Models\Struk80mm;
 use App\Models\Pembayaran;
 use App\Models\IndoDate;
 use App\Models\User;
@@ -72,10 +73,15 @@ class KasirController extends Controller
                     foreach($tagihan as $t){
                         $hasil = $hasil + $t->stt_prabayar;
                     }
-                    if($hasil == 0)
-                        $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'" class="prabayar btn btn-sm btn-success">Ajukan</a>';
-                    else
-                        $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'" class="prabayar btn btn-sm btn-danger">Cancel</a>';
+                    if(date('Y-m-d',time()) == date('Y-m-15',time()) || date('Y-m-d',time()) == date('Y-m-14',time())){
+                        if($hasil == 0)
+                            $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'" class="prabayar btn btn-sm btn-success">Ajukan</a>';
+                        else
+                            $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'" class="prabayar btn btn-sm btn-danger">Cancel</a>';
+                    }
+                    else{
+                        $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'"class="disabled prabayar btn btn-sm btn-info">Soon</a>';
+                    }
                     return $button;
                 })
                 ->addColumn('pengguna', function($data){
@@ -429,6 +435,7 @@ class KasirController extends Controller
                 $pembayaran->kd_kontrol = $d->kd_kontrol;
                 $pembayaran->pengguna = $d->nama;
                 $pembayaran->id_tagihan = $d->id;
+                $pembayaran->shift = Session::get('work');
 
                 $total = 0;
                 $selisih = $d->sel_tagihan;
@@ -654,6 +661,8 @@ class KasirController extends Controller
 
         $nama            = Session::get('username');
 
+        $bulan           = IndoDate::bulanS(date('Y-m',time()), ' ');
+
         $profile = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
         $printer = new Printer($connector,$profile);
@@ -680,8 +689,10 @@ class KasirController extends Controller
                 $printer -> setEmphasis(false);
                 $printer -> feed();
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> text("$bulan\n");
+                $printer -> feed();
                 $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-                $printer -> text(new Struk70mm("Items","Rp.",true, true));
+                $printer -> text(new Struk80mm("Items","Rp.",true, true));
                 $printer -> selectPrintMode();
                 $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------");
@@ -689,22 +700,22 @@ class KasirController extends Controller
                     $printer -> feed();
                     if($json->taglistrik != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Listrik",$listrik,true));
+                        $printer -> text(new Struk80mm("$i. Listrik",$listrik,true));
                         $printer -> setJustification(Printer::JUSTIFY_LEFT);
-                        $printer -> text(new Struk70mm("Daya" ,$dayalistrik,false));
-                        $printer -> text(new Struk70mm("Awal" ,$awallistrik,false));
-                        $printer -> text(new Struk70mm("Akhir",$akhirlistrik,false));
-                        $printer -> text(new Struk70mm("Pakai",$pakailistrik,false));
+                        $printer -> text(new Struk80mm("Daya" ,$dayalistrik,false));
+                        $printer -> text(new Struk80mm("Awal" ,$awallistrik,false));
+                        $printer -> text(new Struk80mm("Akhir",$akhirlistrik,false));
+                        $printer -> text(new Struk80mm("Pakai",$pakailistrik,false));
                         $i++;
                     }
                     if($json->tagtunglistrik != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Tgk.Listrik",$tunglistrik,true));
+                        $printer -> text(new Struk80mm("$i. Tgk.Listrik",$tunglistrik,true));
                         $i++;
                     }
                     if($json->tagdenlistrik != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Den.Listrik",$denlistrik,true));
+                        $printer -> text(new Struk80mm("$i. Den.Listrik",$denlistrik,true));
                         $i++;
                     }
                 }
@@ -712,21 +723,21 @@ class KasirController extends Controller
                     $printer -> feed();
                     if($json->tagairbersih != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Air Bersih",$airbersih,true));
+                        $printer -> text(new Struk80mm("$i. Air Bersih",$airbersih,true));
                         $printer -> setJustification(Printer::JUSTIFY_LEFT);
-                        $printer -> text(new Struk70mm("Awal" ,$awalairbersih,false));
-                        $printer -> text(new Struk70mm("Akhir",$akhirairbersih,false));
-                        $printer -> text(new Struk70mm("Pakai",$pakaiairbersih,false));
+                        $printer -> text(new Struk80mm("Awal" ,$awalairbersih,false));
+                        $printer -> text(new Struk80mm("Akhir",$akhirairbersih,false));
+                        $printer -> text(new Struk80mm("Pakai",$pakaiairbersih,false));
                         $i++;
                     }
                     if($json->tagtungairbersih != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Tgk.Air Bersih",$tungairbersih,true));
+                        $printer -> text(new Struk80mm("$i. Tgk.Air Bersih",$tungairbersih,true));
                         $i++;
                     }
                     if($json->tagdenairbersih != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Den.Air Bersih",$denairbersih,true));
+                        $printer -> text(new Struk80mm("$i. Den.Air Bersih",$denairbersih,true));
                         $i++;
                     }
                 }
@@ -734,12 +745,12 @@ class KasirController extends Controller
                     $printer -> feed();
                     if($json->tagkeamananipk != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Keamanan IPK",$keamananipk,true));
+                        $printer -> text(new Struk80mm("$i. Keamanan IPK",$keamananipk,true));
                         $i++;
                     }
                     if($json->tagtungkeamananipk != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Tgk.Keamanan IPK",$tungkeamananipk,true));
+                        $printer -> text(new Struk80mm("$i. Tgk.Keamanan IPK",$tungkeamananipk,true));
                         $i++;
                     }
                 }
@@ -747,12 +758,12 @@ class KasirController extends Controller
                     $printer -> feed();
                     if($json->tagkebersihan != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Kebersihan",$kebersihan,true));
+                        $printer -> text(new Struk80mm("$i. Kebersihan",$kebersihan,true));
                         $i++;
                     }
                     if($json->tagtungkebersihan != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Tgk.Kebersihan",$tungkebersihan,true));
+                        $printer -> text(new Struk80mm("$i. Tgk.Kebersihan",$tungkebersihan,true));
                         $i++;
                     }
                 }
@@ -760,12 +771,12 @@ class KasirController extends Controller
                     $printer -> feed();
                     if($json->tagairkotor != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Air Kotor",$airkotor,true));
+                        $printer -> text(new Struk80mm("$i. Air Kotor",$airkotor,true));
                         $i++;
                     }
                     if($json->tagtungairkotor != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Tgk.Air Kotor",$tungairkotor,true));
+                        $printer -> text(new Struk80mm("$i. Tgk.Air Kotor",$tungairkotor,true));
                         $i++;
                     }
                 }
@@ -773,18 +784,18 @@ class KasirController extends Controller
                     $printer -> feed();
                     if($json->taglain != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Lain Lain",$lain,true));
+                        $printer -> text(new Struk80mm("$i. Lain Lain",$lain,true));
                         $i++;
                     }
                     if($json->tagtunglain != 0){
                         $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                        $printer -> text(new Struk70mm("$i. Tgk.Lain Lain",$tunglain,true));
+                        $printer -> text(new Struk80mm("$i. Tgk.Lain Lain",$tunglain,true));
                         $i++;
                     }
                 }
                 $printer -> feed();
                 $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-                $printer -> text(new Struk70mm("Total",$total,true,true));
+                $printer -> text(new Struk80mm("Total",$total,true,true));
                 $printer -> selectPrintMode();
                 $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------\n");
@@ -818,6 +829,8 @@ class KasirController extends Controller
                 $printer -> setEmphasis(false);
                 $printer -> feed();
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                $printer -> text("$bulan\n");
+                $printer -> feed();
                 $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
                 $printer -> text(new Struk70mm("Items","Rp.",true, true));
                 $printer -> selectPrintMode();
@@ -1196,8 +1209,15 @@ class KasirController extends Controller
     public function penerimaan(Request $request){
         $tanggal = $request->tanggal;
         $cetak   = IndoDate::tanggal(date('Y-m-d',time()),' ');
+        $shift   = $request->shift;
 
-        $dataset     = Pembayaran::where([['tgl_bayar',$tanggal],['id_kasir',Session::get('userId')]])->select('blok')->groupBy('blok')->orderBy('blok','asc')->get();
+        if($shift == 2){
+            $dataset = Pembayaran::where([['tgl_bayar',$tanggal],['id_kasir',Session::get('userId')]])->whereIn('shift', [1, 0])->select('blok')->groupBy('blok')->orderBy('blok','asc')->get();
+        }
+        else{
+            $dataset = Pembayaran::where([['tgl_bayar',$tanggal],['id_kasir',Session::get('userId')],['shift',$shift]])->select('blok')->groupBy('blok')->orderBy('blok','asc')->get();
+        }
+
         $rekap       = array();
         $rek         = 0;
         $listrik     = 0;
@@ -1218,20 +1238,38 @@ class KasirController extends Controller
 
         foreach($dataset as $d){
             $rekap[$i]['blok'] = $d->blok;
-            $rekap[$i]['rek']  = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')]])->count();
-            $setor = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')]])
-            ->select(
-                DB::raw('SUM(byr_listrik)      as listrik'),
-                DB::raw('SUM(byr_denlistrik)   as denlistrik'),
-                DB::raw('SUM(byr_airbersih)    as airbersih'),
-                DB::raw('SUM(byr_denairbersih) as denairbersih'),
-                DB::raw('SUM(byr_keamananipk)  as keamananipk'),
-                DB::raw('SUM(byr_kebersihan)   as kebersihan'),
-                DB::raw('SUM(byr_airkotor)     as airkotor'),
-                DB::raw('SUM(byr_lain)         as lain'),
-                DB::raw('SUM(realisasi)        as jumlah'),
-                DB::raw('SUM(diskon)           as diskon'))
-            ->get();
+            if($shift == 2){
+                $rekap[$i]['rek']  = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')]])->whereIn('shift',[1, 0])->count();
+                $setor = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')]])->whereIn('shift',[1, 0])
+                ->select(
+                    DB::raw('SUM(byr_listrik)      as listrik'),
+                    DB::raw('SUM(byr_denlistrik)   as denlistrik'),
+                    DB::raw('SUM(byr_airbersih)    as airbersih'),
+                    DB::raw('SUM(byr_denairbersih) as denairbersih'),
+                    DB::raw('SUM(byr_keamananipk)  as keamananipk'),
+                    DB::raw('SUM(byr_kebersihan)   as kebersihan'),
+                    DB::raw('SUM(byr_airkotor)     as airkotor'),
+                    DB::raw('SUM(byr_lain)         as lain'),
+                    DB::raw('SUM(realisasi)        as jumlah'),
+                    DB::raw('SUM(diskon)           as diskon'))
+                ->get();
+            }
+            else{
+                $rekap[$i]['rek']  = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')],['shift',$shift]])->count();
+                $setor = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')],['shift',$shift]])
+                ->select(
+                    DB::raw('SUM(byr_listrik)      as listrik'),
+                    DB::raw('SUM(byr_denlistrik)   as denlistrik'),
+                    DB::raw('SUM(byr_airbersih)    as airbersih'),
+                    DB::raw('SUM(byr_denairbersih) as denairbersih'),
+                    DB::raw('SUM(byr_keamananipk)  as keamananipk'),
+                    DB::raw('SUM(byr_kebersihan)   as kebersihan'),
+                    DB::raw('SUM(byr_airkotor)     as airkotor'),
+                    DB::raw('SUM(byr_lain)         as lain'),
+                    DB::raw('SUM(realisasi)        as jumlah'),
+                    DB::raw('SUM(diskon)           as diskon'))
+                ->get();
+            }
             $rekap[$i]['listrik']     = $setor[0]->listrik - $setor[0]->denlistrik;
             $rekap[$i]['denlistrik']  = $setor[0]->denlistrik;
             $rekap[$i]['airbersih']   = $setor[0]->airbersih - $setor[0]->denairbersih;
@@ -1254,7 +1292,12 @@ class KasirController extends Controller
             $diskon      = $diskon      + $rekap[$i]['diskon'];
             $jumlah      = $jumlah      + $rekap[$i]['jumlah'];
 
-            $rincian = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')]])->orderBy('kd_kontrol','asc')->get();
+            if($shift == 2){
+                $rincian = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')]])->whereIn('shift',[1,0])->orderBy('kd_kontrol','asc')->get();
+            }
+            else{
+                $rincian = Pembayaran::where([['tgl_bayar',$tanggal],['blok',$d->blok],['id_kasir',Session::get('userId')],['shift',$shift]])->orderBy('kd_kontrol','asc')->get();
+            }
             foreach($rincian as $r){
                 $rin[$j]['rek']  = date("m/Y", strtotime($r->tgl_tagihan));
                 $rin[$j]['kode']  = $r->kd_kontrol;
@@ -1287,12 +1330,22 @@ class KasirController extends Controller
         $t_rekap['diskon']       = $diskon;
         $t_rekap['jumlah']       = $jumlah;
 
+        if($shift == 2){
+            $shift = '1 & 2';
+        }
+        else if ($shift == 0){
+            $shift = '2';
+        }
+        else{
+            $shift = '1';
+        }
         return view('kasir.penerimaan',[
             'tanggal'   => IndoDate::tanggal($tanggal,' '), 
             'cetak'     => $cetak,
             'rekap'     => $rekap,
             't_rekap'   => $t_rekap,
-            'rincian'   => $rin
+            'rincian'   => $rin,
+            'shift'     => $shift,
         ]);
     }
 
@@ -1788,75 +1841,120 @@ class KasirController extends Controller
         ]);
     }
 
-    public function getsisa(){
-        $bulan = IndoDate::bulan(date('Y-m',time()),' ');
-        $data = Tagihan::where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0]])->select('kd_kontrol')->groupBy('kd_kontrol')->orderBy('kd_kontrol','asc')->get();
-        $dataset = array();
+    public function getsisa(Request $request){
+        $bulan   = IndoDate::bulan(date('Y-m',time()),' ');
+        
+        if($request->sisatagihan == 'all'){
+            $dataset = Tagihan::where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0]])->select('blok')->groupBy('blok')->orderBy('blok','asc')->get();
+        }
+        else{
+            $dataset = Tagihan::where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0]])->whereIn('blok',$request->sebagian)->select('blok')->groupBy('blok')->orderBy('blok','asc')->get();
+        }
+        
+        $rekap       = array();
+        $rek         = 0;
+        $listrik     = 0;
+        $denlistrik  = 0;
+        $airbersih   = 0;
+        $denairbersih= 0;
+        $keamananipk = 0;
+        $kebersihan  = 0;
+        $airkotor    = 0;
+        $lain        = 0;
+        $jumlah      = 0;
+        $diskon      = 0;
+
+        $rin          = array();
+
         $i = 0;
-        foreach($data as $d){
-            $dataset[$i]['kd_kontrol'] = $d->kd_kontrol;
-            $tagihan = Tagihan::where([['kd_kontrol',$d->kd_kontrol],['stt_lunas',0],['stt_publish',1]])
+        $j = 0;
+
+        foreach($dataset as $d){
+            $rekap[$i]['blok'] = $d->blok;
+            $rekap[$i]['rek']  = Tagihan::where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0],['blok',$d->blok]])->count();
+            $setor = Tagihan::where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0],['blok',$d->blok]])
             ->select(
-                DB::raw('SUM(sel_tagihan) as tagihan'),
-                DB::raw('SUM(sel_listrik) as listrik'),
-                DB::raw('SUM(sel_airbersih) as airbersih'),
-                DB::raw('SUM(sel_keamananipk) as keamananipk'),
-                DB::raw('SUM(sel_kebersihan) as kebersihan'),
-                DB::raw('SUM(sel_airkotor) as airkotor'),
-                DB::raw('SUM(sel_lain) as lain'),
-                )
+                DB::raw('SUM(sel_listrik)      as listrik'),
+                DB::raw('SUM(den_listrik)      as denlistrik'),
+                DB::raw('SUM(sel_airbersih)    as airbersih'),
+                DB::raw('SUM(den_airbersih)    as denairbersih'),
+                DB::raw('SUM(sel_keamananipk)  as keamananipk'),
+                DB::raw('SUM(sel_kebersihan)   as kebersihan'),
+                DB::raw('SUM(sel_airkotor)     as airkotor'),
+                DB::raw('SUM(sel_lain)         as lain'),
+                DB::raw('SUM(sel_tagihan)      as jumlah'),
+                DB::raw('SUM(dis_tagihan)      as diskon'))
             ->get();
-            if($tagihan != NULL){
-                $listrik = $tagihan[0]->listrik;
-                $airbersih = $tagihan[0]->airbersih;
-                $keamananipk = $tagihan[0]->keamananipk;
-                $kebersihan = $tagihan[0]->kebersihan;
-                $airkotor = $tagihan[0]->airkotor;
-                $lain = $tagihan[0]->lain;
-                $total = $tagihan[0]->tagihan;
-            }
-            else{
-                $listrik = 0;
-                $airbersih = 0;
-                $keamananipk = 0;
-                $kebersihan = 0;
-                $airkotor = 0;
-                $lain = 0;
-                $total = 0;
-            }
-            $dataset[$i]['listrik'] = $listrik;
-            $dataset[$i]['airbersih'] = $airbersih;
-            $dataset[$i]['keamananipk'] = $keamananipk;
-            $dataset[$i]['kebersihan'] = $kebersihan;
-            $dataset[$i]['airkotor'] = $airkotor;
-            $dataset[$i]['lain'] = $lain;
-            $dataset[$i]['total'] = $total;
+            
+            $rekap[$i]['listrik']     = $setor[0]->listrik - $setor[0]->denlistrik;
+            $rekap[$i]['denlistrik']  = $setor[0]->denlistrik;
+            $rekap[$i]['airbersih']   = $setor[0]->airbersih - $setor[0]->denairbersih;
+            $rekap[$i]['denairbersih']= $setor[0]->denairbersih;
+            $rekap[$i]['keamananipk'] = $setor[0]->keamananipk;
+            $rekap[$i]['kebersihan']  = $setor[0]->kebersihan;
+            $rekap[$i]['airkotor']    = $setor[0]->airkotor;
+            $rekap[$i]['lain']        = $setor[0]->lain;
+            $rekap[$i]['diskon']      = $setor[0]->diskon;
+            $rekap[$i]['jumlah']      = $setor[0]->jumlah;
+            $rek         = $rek         + $rekap[$i]['rek'];
+            $listrik     = $listrik     + $rekap[$i]['listrik'];
+            $denlistrik  = $denlistrik  + $rekap[$i]['denlistrik'];
+            $airbersih   = $airbersih   + $rekap[$i]['airbersih'];
+            $denairbersih= $denairbersih+ $rekap[$i]['denairbersih'];
+            $keamananipk = $keamananipk + $rekap[$i]['keamananipk'];
+            $kebersihan  = $kebersihan  + $rekap[$i]['kebersihan'];
+            $airkotor    = $airkotor    + $rekap[$i]['airkotor'];
+            $lain        = $lain        + $rekap[$i]['lain'];
+            $diskon      = $diskon      + $rekap[$i]['diskon'];
+            $jumlah      = $jumlah      + $rekap[$i]['jumlah'];
 
-            $tempat = TempatUsaha::where('kd_kontrol', $d->kd_kontrol)->first();
-            if($tempat != NULL){
-                $lokasi = $tempat->lok_tempat;
-                $los = $tempat->no_alamat;
-            }
-            else{
-                $lokasi = '';
-                $los = '';
-            }
-            $dataset[$i]['lokasi'] = $lokasi;
-            $dataset[$i]['los'] = $los;
+            $rincian = Tagihan::where([['stt_lunas',0],['stt_publish',1],['ttl_tagihan','!=',0],['blok',$d->blok]])->orderBy('kd_kontrol','asc')->get();
+            foreach($rincian as $r){
+                $rin[$j]['blok']  = $r->blok;
+                $rin[$j]['kode']  = $r->kd_kontrol;
+                $rin[$j]['pengguna']  = $r->nama;
+                $rin[$j]['listrik']  = $r->sel_listrik - $r->den_listrik;
+                $rin[$j]['denlistrik']  = $r->den_listrik;
+                $rin[$j]['airbersih']  = $r->sel_airbersih - $r->den_airbersih;
+                $rin[$j]['denairbersih']  = $r->den_airbersih;
+                $rin[$j]['keamananipk']  = $r->sel_keamananipk;
+                $rin[$j]['kebersihan']  = $r->sel_kebersihan;
+                $rin[$j]['airkotor']  = $r->sel_airkotor;
+                $rin[$j]['lain']  = $r->sel_lain;
+                $rin[$j]['jumlah']  = $r->sel_tagihan;
+                $rin[$j]['diskon']  = $r->dis_tagihan;
 
-            $pengguna = TempatUsaha::where('kd_kontrol',$d->kd_kontrol)->select('id_pengguna')->first();
-            if($pengguna != NULL){
-                $pengguna = User::find($pengguna->id_pengguna)->nama;
+                $tempat = TempatUsaha::where('kd_kontrol',$r->kd_kontrol)->first();
+                if($tempat != NULL){
+                    $rin[$j]['lokasi'] = $tempat->lok_tempat;
+                }
+                else{
+                    $rin[$j]['lokasi'] = '';
+                }
+
+                $j++;
             }
-            else{
-                $pengguna = '';
-            }
-            $dataset[$i]['pengguna'] = $pengguna;
+
             $i++;
         }
+        $t_rekap['rek']          = $rek;
+        $t_rekap['listrik']      = $listrik;
+        $t_rekap['denlistrik']   = $denlistrik;
+        $t_rekap['airbersih']    = $airbersih;
+        $t_rekap['denairbersih'] = $denairbersih;
+        $t_rekap['keamananipk']  = $keamananipk;
+        $t_rekap['kebersihan']   = $kebersihan;
+        $t_rekap['airkotor']     = $airkotor;
+        $t_rekap['lain']         = $lain;
+        $t_rekap['diskon']       = $diskon;
+        $t_rekap['jumlah']       = $jumlah;
+
         return view('kasir.sisa',[
             'dataset' => $dataset,
             'bulan' => $bulan,
+            'rekap'     => $rekap,
+            't_rekap'   => $t_rekap,
+            'rincian'   => $rin
         ]);
     }
 

@@ -52,6 +52,7 @@ class CekLogin
                 
                 if($user->role === 'kasir') {
                     Session::put('mode','bulanan');
+                    Session::put('work',$user->stt_aktif);
                     if($agent->isDesktop()){
                         Session::put('printer','desktop');
                     }

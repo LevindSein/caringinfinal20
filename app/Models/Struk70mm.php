@@ -25,8 +25,8 @@ class Struk70mm extends Model
     {
         if($this->status){
             if($this->ket){
-                $left = str_pad($this->fasilitas, 6);
-                $right = str_pad($this->harga, 13, ' ', STR_PAD_LEFT);
+                $left = str_pad($this->fasilitas, 5);
+                $right = str_pad($this->harga, 11, ' ', STR_PAD_LEFT);
             }
             else{
                 $left = str_pad($this->fasilitas, 20);
@@ -35,7 +35,7 @@ class Struk70mm extends Model
             return "$left$right\n";
         }
         else{
-            $left = str_pad('(', 14, ' ', STR_PAD_LEFT).str_pad($this->fasilitas, 6);
+            $left = str_pad('(', 10, ' ', STR_PAD_LEFT).str_pad($this->fasilitas, 6);
             $right = str_pad($this->harga, 10, ' ', STR_PAD_LEFT).')';
             return "$left$right\n";
         }

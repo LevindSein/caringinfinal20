@@ -21,7 +21,7 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th class="tg-gmla" colspan="5"><span style="font-weight:bold">BADAN PENGELOLA</span><br><span style="font-weight:bold">PUSAT PERDAGANGAN CARINGIN</span><br><span style="font-weight:bold">SEGI PEMBAYARAN</span></th>
+                            <th class="tg-gmla" colspan="5"><span style="font-weight:bold">BADAN PENGELOLA</span><br><span style="font-weight:bold">PUSAT PERDAGANGAN CARINGIN</span><br><span style="font-weight:bold;font-size:20px">SEGI PEMBAYARAN</span></th>
                         </tr>
                         <tr>
                             <td class="tg-0r18" colspan="5"><span style="font-weight:bold">{{$bulan}}</span></td>

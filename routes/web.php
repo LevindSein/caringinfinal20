@@ -20,6 +20,8 @@ use App\Http\Controllers\SearchController;
 
 use App\Http\Controllers\KasirController;
 
+use App\Http\Controllers\WorkController;
+
 use App\Models\User;
 use App\Models\LoginLog;
 
@@ -230,3 +232,6 @@ Route::get('cari/nasabah',[SearchController::class, 'cariNasabah']);
 Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
 Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
 Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);
+
+Route::get('work',[WorkController::class, 'work']);
+Route::post('work/update',[WorkController::class, 'update']);

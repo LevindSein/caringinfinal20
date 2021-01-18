@@ -48,7 +48,7 @@ class CronDenda extends Command
             foreach($dataset as $t){
                 $sekarang = date('Y-m-d',time());
                 $denda    = $t->tgl_expired;
-                if($sekarang >= $denda){
+                if($sekarang > $denda){
                     if($t->stt_prabayar === 1){
                         $expired = $t->tgl_expired;
                         $expired = date('Y-m-d',strtotime($expired . "+1 days"));

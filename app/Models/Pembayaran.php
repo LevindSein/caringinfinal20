@@ -41,6 +41,7 @@ class Pembayaran extends Model
         'realisasi',
         'sel_tagihan',
         'stt_denda',
+        'shift',
         'updated_at',
         'created_at'
     ];
