@@ -134,33 +134,65 @@ $(document).ready(function(){
         "order": [ 0, "asc" ]
     });
 
+    //Search
+    $('#meterAir').select2();
+    
+    $('#meterListrik').select2();
+
+    $('#blok').select2();
+
+    $('#pemilik').select2();
+
+    $('#pengguna').select2();
+
     $('#add_tempat').click(function(){
 		$('.modal-title').text('Tambah Tempat Usaha');
-		$('#action_btn').val('Tambah');
-		$('#action').val('Add');
+        
+        $('#action_btn').val('Tambah');
+        $('#action').val('Add');
+        
 		$('#form_result').html('');
+        
         $('#form_tempat')[0].reset();
+        
         $('#displayAir').hide();
         $('#diskonBayarAir').hide();
         $('#hanyaBayarAir').hide();
         $('#displayCharge').hide();
+        $("#persenDiskonAir").val();
+        
         $('#displayListrik').hide();
         $('#displayListrikDiskon').hide();
+        $("#persenDiskonListrik").val();
+
         $('#displayKeamananIpk').hide();
         $('#displayKeamananIpkDiskon').hide();
+        
         $('#displayKebersihan').hide();
         $('#displayKebersihanDiskon').hide();
+        
         $('#displayAirKotor').hide();
         $('#displayLain').hide();
+        
         $('#ketStatus').hide();
-        $("#persenDiskonAir").val();
-        $("#persenDiskonListrik").val();
+        
         $("#myDiv3 option:selected" ).text('--- Pilih Tarif ---').val('');
         $("#diskonKeamananIpk").val();
+        
         $("#myDiv4 option:selected" ).text('--- Pilih Tarif ---').val('');
         $("#diskonKebersihan").val();
+        
         $("#myDiv5 option:selected" ).text('--- Pilih Tarif ---').val('');
         $("#myDiv6 option:selected" ).text('--- Pilih Tarif ---').val('');
+
+        $('#myDiv1').prop('required',false);
+        $('#myDiv2').prop('required',false);
+        $('#myDiv3').prop('required',false);
+        $('#myDiv4').prop('required',false);
+        $('#myDiv5').prop('required',false);
+        $('#myDiv6').prop('required',false);
+        $('#ket_tempat').prop('required',false);
+        
         $('#meterAir').val('').select2({
             placeholder: '--- Pilih Alat ---',
             ajax: {
@@ -263,8 +295,10 @@ $(document).ready(function(){
     
     var id='';
     $(document).on('click', '.edit', function(){
-		id = $(this).attr('id');
+        id = $(this).attr('id');
+        
         $('#form_result').html('');
+
         $('#meterAir').val('').html('').select2({
             placeholder: '--- Pilih Alat ---',
             ajax: {
@@ -365,23 +399,37 @@ $(document).ready(function(){
         $('#diskonBayarAir').hide();
         $('#hanyaBayarAir').hide();
         $('#displayCharge').hide();
+        $("#persenDiskonAir").val();
+
         $('#displayListrik').hide();
         $('#displayListrikDiskon').hide();
+        $("#persenDiskonListrik").val();
+        
         $('#displayKeamananIpk').hide();
         $('#displayKeamananIpkDiskon').hide();
-        $('#displayKebersihan').hide();
-        $('#displayKebersihanDiskon').hide();
-        $('#displayAirKotor').hide();
-        $('#displayLain').hide();
-        $('#ketStatus').hide();
-        $("#persenDiskonAir").val();
-        $("#persenDiskonListrik").val();
         $("#myDiv3 option:selected" ).val();
         $("#diskonKeamananIpk").val();
+
+        $('#displayKebersihan').hide();
+        $('#displayKebersihanDiskon').hide();
         $("#myDiv4 option:selected" ).val();
         $("#diskonKebersihan").val();
+        
+        $('#displayAirKotor').hide();
         $("#myDiv5 option:selected" ).val();
+        
+        $('#displayLain').hide();
         $("#myDiv6 option:selected" ).val();
+        
+        $('#ketStatus').hide();
+        
+        $('#myDiv1').prop('required',false);
+        $('#myDiv2').prop('required',false);
+        $('#myDiv3').prop('required',false);
+        $('#myDiv4').prop('required',false);
+        $('#myDiv5').prop('required',false);
+        $('#myDiv6').prop('required',false);
+        $('#ket_tempat').prop('required',false);
 
         $('#form_tempat')[0].reset();
 		$.ajax({
@@ -486,6 +534,10 @@ $(document).ready(function(){
                         $("#dis_keamananipk").prop("checked", true);
                         $("#diskonKeamananIpk").val(data.result.dis_keamananipk.toLocaleString());
                         $('#displayKeamananIpkDiskon').show();
+                        if(data.result.dis_keamananipk == 0){
+                            $("#dis_keamananipk").prop("checked", false);
+                            $('#displayKeamananIpkDiskon').hide();
+                        }
                     }
                 }
                 if(data.result.trf_kebersihan != null){    
@@ -496,6 +548,10 @@ $(document).ready(function(){
                         $("#dis_kebersihan").prop("checked", true);
                         $("#diskonKebersihan").val(data.result.dis_kebersihan.toLocaleString());
                         $('#displayKebersihanDiskon').show();
+                        if(data.result.dis_kebersihan == 0){
+                            $("#dis_kebersihan").prop("checked", false);
+                            $('#displayKebersihanDiskon').hide();
+                        }
                     }
                 }
                 if(data.result.trf_airkotor != null){    
@@ -540,6 +596,7 @@ $(document).ready(function(){
 			dataType:"json",
 			success:function(data)
 			{
+                $('#form_result').show();
 				var html = '';
 				if(data.errors)
 				{
@@ -551,12 +608,12 @@ $(document).ready(function(){
                     
                     var myRadio = $('input[name="radioAlatListrik"]:checked').val();
                     if(myRadio == 'pasang_listrik'){
-                        let handle = window.open(
-                            '/tempatusaha/download/bg1',
-                            '_blank'
-                        );
-                        handle.blur();
-                        window.focus();
+                        window.location.href = '/download/bg1';
+                    }
+
+                    var myRadio = $('input[name="radioAlatAir"]:checked').val();
+                    if(myRadio == 'pasang_airbersih'){
+                        window.location.href = '/download/bg1';
                     }
 					
                     setTimeout(function(){
@@ -589,6 +646,7 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
+                $('#form_result').hide();
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
 					$('#tabelTempat').DataTable().ajax.reload(function(){}, false);
@@ -605,106 +663,6 @@ $(document).ready(function(){
                 $('#ok_button').text('Hapus');
             }
         })
-    });
-
-    //Search
-    $('#meterAir').val('').select2({
-        placeholder: '--- Pilih Alat ---',
-        ajax: {
-            url: "/cari/alatair",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (alats) {
-                return {
-                results:  $.map(alats, function (alat) {
-                    return {
-                    text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir + ')',
-                    id: alat.id
-                    }
-                })
-                };
-            },
-            cache: true
-        }
-    });
-    $('#meterListrik').val('').select2({
-        placeholder: '--- Pilih Alat ---',
-        ajax: {
-            url: "/cari/alatlistrik",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (alats) {
-                return {
-                results:  $.map(alats, function (alat) {
-                    return {
-                    text: alat.kode + ' - ' + alat.nomor + ' (' + alat.akhir +  ' - ' + alat.daya + ' W)',
-                    id: alat.id
-                    }
-                })
-                };
-            },
-            cache: true
-        }
-    });
-
-    $('#blok').select2({
-        placeholder: '--- Pilih Blok ---',
-        ajax: {
-            url: "/cari/blok",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (blok) {
-                return {
-                results:  $.map(blok, function (bl) {
-                    return {
-                    text: bl.nama,
-                    id: bl.nama
-                    }
-                })
-                };
-            },
-            cache: true
-        }
-    });
-
-    $('#pemilik').select2({
-        placeholder: '--- Cari Nasabah ---',
-        ajax: {
-            url: "/cari/nasabah",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (nasabah) {
-                return {
-                results:  $.map(nasabah, function (nas) {
-                    return {
-                    text: nas.nama + " - " + nas.ktp,
-                    id: nas.id
-                    }
-                })
-                };
-            },
-            cache: true
-        }
-    });
-
-    $('#pengguna').select2({
-        placeholder: '--- Cari Nasabah ---',
-        ajax: {
-            url: "/cari/nasabah",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (nasabah) {
-                return {
-                results:  $.map(nasabah, function (nas) {
-                    return {
-                    text: nas.nama + " - " + nas.ktp,
-                    id: nas.id
-                    }
-                })
-                };
-            },
-            cache: true
-        }
     });
 
     $('#los').on('keypress', function (event) {
@@ -801,29 +759,29 @@ $(document).ready(function(){
         .each(statusTempat);
 
     // Metode Pembayaran
-    function pembayaran() {
-        if ($('#cicilan2').is(':checked')) {
-            document
-                .getElementById('ketCicil')
-                .style
-                .display = 'block';
-            document
-                .getElementById('ket_cicil')
-                .required = true;
-        }
-        else {
-            document
-                .getElementById('ketCicil')
-                .style
-                .display = 'none';
-            document
-                .getElementById('ket_cicil')
-                .required = false;
-        }
-    }
-    $('input[type="radio"]')
-        .click(pembayaran)
-        .each(pembayaran);
+    // function pembayaran() {
+    //     if ($('#cicilan2').is(':checked')) {
+    //         document
+    //             .getElementById('ketCicil')
+    //             .style
+    //             .display = 'block';
+    //         document
+    //             .getElementById('ket_cicil')
+    //             .required = true;
+    //     }
+    //     else {
+    //         document
+    //             .getElementById('ketCicil')
+    //             .style
+    //             .display = 'none';
+    //         document
+    //             .getElementById('ket_cicil')
+    //             .required = false;
+    //     }
+    // }
+    // $('input[type="radio"]')
+    //     .click(pembayaran)
+    //     .each(pembayaran);
 
     // Fasilitas Button
     function evaluate() {

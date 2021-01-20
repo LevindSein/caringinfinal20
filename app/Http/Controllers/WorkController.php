@@ -8,6 +8,11 @@ use App\Models\User;
 
 class WorkController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('human');
+    }
+    
     public function work(Request $request){
         if($request->ajax()){
             if(Session::get('role') == 'kasir'){

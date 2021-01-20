@@ -304,6 +304,7 @@ $(document).ready(function(){
 			dataType:"json",
 			success:function(data)
 			{
+                $('#form_result').show();
 				var html = '';
 				if(data.errors)
 				{
@@ -341,6 +342,7 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
+                $('#form_result').hide();
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
 					$('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
@@ -364,6 +366,33 @@ $(document).ready(function(){
             '/tagihan/publish',
             '_blank'
         );
+    });
+
+    $('#sinkronisasi').click(function(){
+        $('#process').show();
+        $.ajaxSetup({
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+		$.ajax({
+			url :"/tagihan/sinkronisasi",
+            cache:false,
+			method:"POST",
+			dataType:"json",
+			success:function(data)
+			{
+                if(data.errors){
+                    $('#process').hide();
+                    alert(data.errors);
+                }
+                if(data.success){
+                    $('#process').hide();
+                    alert(data.success);
+                    location.reload();
+                }
+            }
+        });
     });
 
     $('#cetakPemberitahuan').on('submit',function(e){
@@ -669,6 +698,11 @@ $(document).ready(function(){
                 if(data.errors){
                     alert(data.errors);
                 }
+
+                if(data.unsuccess){
+                    alert(data.unsuccess);
+                }
+
                 if(data.success){
                     $('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
                 }

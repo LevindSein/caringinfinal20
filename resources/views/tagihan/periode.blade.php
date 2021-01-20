@@ -48,12 +48,18 @@
                         <i class="fas fa-ellipsis-v fa-sm fa-fw"></i></b>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Preview Tagihan:</div>
+                        <div class="dropdown-header">Tagihan:</div>
                         <button
                             class="dropdown-item" 
                             id="publish"
                             type="submit">
                             <i class="fas fa-fw fa-paper-plane fa-sm text-gray-500"></i> Publish
+                        </button>
+                        <button
+                            class="dropdown-item" 
+                            id="sinkronisasi"
+                            type="submit">
+                            <i class="fas fa-fw fa-sync fa-sm text-gray-500"></i> Sinkronisasi
                         </button>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-header">Periode:</div>

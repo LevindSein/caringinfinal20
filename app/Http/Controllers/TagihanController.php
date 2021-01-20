@@ -17,6 +17,8 @@ use App\Models\Penghapusan;
 use App\Models\TarifListrik;
 use App\Models\TarifAirBersih;
 
+use App\Models\Pembayaran;
+
 use App\Models\HariLibur;
 use App\Models\Sinkronisasi;
 use App\Models\IndoDate;
@@ -2224,16 +2226,27 @@ class TagihanController extends Controller
         if($request->ajax()){
             try{
                 $tagihan = Tagihan::find($id);
-                $publish = $tagihan->stt_publish;
-                if($publish === 1){
-                    $hasil = 0;
+                if($tagihan->bln_tagihan >= date('Y-m',time())){
+                    $pembayaran = Pembayaran::where('id_tagihan',$tagihan->id)->first();
+                    if($pembayaran == NULL){
+                        $publish = $tagihan->stt_publish;
+                        if($publish === 1){
+                            $hasil = 0;
+                        }
+                        else if($publish === 0){
+                            $hasil = 1;
+                        }
+                        $tagihan->stt_publish = $hasil;
+                        $tagihan->save();
+                        return response()->json(['success' => 'Unpublish Sukses']);
+                    }
+                    else{
+                        return response()->json(['unsuccess' => 'Unpublish Gagal, Pembayaran telah dilakukan']);
+                    }
                 }
-                else if($publish === 0){
-                    $hasil = 1;
+                else{
+                    return response()->json(['unsuccess' => 'Data Tagihan Kedaluwarsa']);
                 }
-                $tagihan->stt_publish = $hasil;
-                $tagihan->save();
-                return response()->json(['success' => 'Unpublish Sukses']);
             }
             catch(\Exception $e){
                 return response()->json(['errors' => 'Oops! Gagal Unpublish']);

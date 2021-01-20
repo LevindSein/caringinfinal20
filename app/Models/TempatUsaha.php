@@ -74,13 +74,12 @@ class TempatUsaha extends Model
 
     public static function fasilitas($fas){
         if($fas == 'diskon'){
-            return TempatUsaha::
-              leftJoin('user as user_pengguna','tempat_usaha.id_pengguna','=','user_pengguna.id')
-            ->leftJoin('user as user_pemilik','tempat_usaha.id_pemilik','=','user_pemilik.id')
-            ->where('tempat_usaha.dis_airbersih','!=',NULL)
+            return TempatUsaha::where('tempat_usaha.dis_airbersih','!=',NULL)
             ->orWhere('tempat_usaha.dis_listrik','!=',NULL)
             ->orWhere('tempat_usaha.dis_keamananipk','!=',NULL)
             ->orWhere('tempat_usaha.dis_kebersihan','!=',NULL)
+            ->leftJoin('user as user_pengguna','tempat_usaha.id_pengguna','=','user_pengguna.id')
+            ->leftJoin('user as user_pemilik','tempat_usaha.id_pemilik','=','user_pemilik.id')
             ->select(
                 'tempat_usaha.id',
                 'user_pengguna.nama as pengguna',

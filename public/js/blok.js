@@ -93,6 +93,9 @@ $(document).ready(function () {
                     .slideUp(2000, function () {
                         $("#success-alert,#error-alert").slideUp(1000);
                 });
+                setTimeout(function(){
+                    $('#myModal').modal('hide');
+                }, 5000);
 			}
 		});
     });

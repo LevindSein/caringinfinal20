@@ -6,6 +6,7 @@
 @section('content')
 <!-- Tambah Content Pada Body Utama -->
 <title>Data Pedagang | BP3C</title>
+<span id="form_result"></span>
 <div class = "container-fluid">
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -79,7 +80,6 @@
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <span id="form_result"></span>
             <form id="form_pedagang" class="user" method="POST">
                 <div class="modal-body">
                     @csrf

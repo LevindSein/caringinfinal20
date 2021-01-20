@@ -111,7 +111,8 @@ class Tagihan extends Model
                 ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                 ->where([
                     ['tagihan.kd_kontrol',$id],
-                    ['tagihan.stt_lunas',0]
+                    ['tagihan.stt_lunas',0],
+                    ['tagihan.stt_publish',1]
                 ])
                 ->select(DB::raw("SUM(sel_tagihan) as selisih"))
                 ->get();
@@ -121,7 +122,8 @@ class Tagihan extends Model
                 ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                 ->where([
                     ['tagihan.kd_kontrol',$id],
-                    ['tagihan.stt_lunas',0]
+                    ['tagihan.stt_lunas',0],
+                    ['tagihan.stt_publish',1]
                 ])
                 ->select(DB::raw("SUM(sel_$fas) as selisih"))
                 ->get();

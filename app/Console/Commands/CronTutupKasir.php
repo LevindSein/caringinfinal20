@@ -39,8 +39,13 @@ class CronTutupKasir extends Command
      */
     public function handle()
     {
-        $user = User::find(Session::get('userId'));
-        $user->stt_aktif = 0;
-        $user->save();
+        $users = User::where('role','kasir')->get();
+        if($users != NULL){
+            foreach($users as $user){
+                $user->stt_aktif = 0;
+                $user->save();
+            }
+            \Log::info('Shift 2 Kasir Fine');
+        }
     }
 }

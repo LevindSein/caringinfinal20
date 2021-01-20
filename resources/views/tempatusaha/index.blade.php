@@ -590,7 +590,7 @@
                     </div>
 
                     <!-- Pembayaran -->
-                    <div class="form-group row col-lg-12">
+                    <!-- <div class="form-group row col-lg-12">
                         <div class="col-sm-2">Metode Bayar</div>
                         <div class="col-sm-10">
                             <div class="form-check">
@@ -626,7 +626,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <!-- Status -->
                     <div class="form-group row col-lg-12">

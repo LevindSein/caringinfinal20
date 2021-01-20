@@ -287,6 +287,7 @@ $(document).ready(function(){
 			dataType:"json",
 			success:function(data)
 			{
+                $('#form_result').show();
 				var html = '';
 				if(data.result.status == 'success')
 				{
@@ -364,6 +365,7 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
+                $('#form_result').hide();
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
                     if(data.result.role == 'keamananipk'){

@@ -210,6 +210,7 @@ $(document).ready(function () {
 			},
 			success:function(data)
 			{
+                $('#form_result').hide();
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
                     if(data.result.role == 'listrik'){

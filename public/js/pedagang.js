@@ -104,6 +104,7 @@ $(document).ready(function(){
 			dataType:"json",
 			success:function(data)
 			{
+                $('#form_result').show();
 				var html = '';
 				if(data.errors)
 				{
@@ -162,6 +163,7 @@ $(document).ready(function(){
                     .slideUp(2000, function () {
                         $("#success-alert,#error-alert").slideUp(1000);
                 });
+                $('#myModal').modal('hide');
 			}
 		});
     });
@@ -371,6 +373,7 @@ $(document).ready(function(){
 			},
 			success:function(data)
 			{
+                $('#form_result').hide();
 				setTimeout(function(){
                     $('#confirmModal').modal('hide');
 					$('#tabelPedagang').DataTable().ajax.reload(function(){}, false);

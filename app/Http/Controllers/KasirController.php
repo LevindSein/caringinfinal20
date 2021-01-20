@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Kasir;
 use App\Models\Tagihan;
@@ -381,6 +382,8 @@ class KasirController extends Controller
                     $dataset['denairbersih'] = $airbersih;
             }
 
+            Session::put('fakturtagihan',$no_faktur);
+
             $data = TempatUsaha::where('kd_kontrol',$kontrol)->first();
             if($data != NULL){
                 $dataset['pedagang'] = User::find($data->id_pengguna)->nama;
@@ -436,6 +439,7 @@ class KasirController extends Controller
                 $pembayaran->pengguna = $d->nama;
                 $pembayaran->id_tagihan = $d->id;
                 $pembayaran->shift = Session::get('work');
+                $pembayaran->no_faktur = Session::get('fakturtagihan');
 
                 $total = 0;
                 $selisih = $d->sel_tagihan;
@@ -615,11 +619,10 @@ class KasirController extends Controller
     }
 
     public function testdata($data){
-        echo($data);
+        // echo($data);
         
         // $json = json_decode($data);
         // echo Crypt::decryptString($json->faktur);
-        
     }
 
     public function bayar($objData){
@@ -663,9 +666,9 @@ class KasirController extends Controller
 
         $bulan           = IndoDate::bulanS(date('Y-m',time()), ' ');
 
-        $profile = CapabilityProfile::load("POS-5890");
+        $profile   = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
-        $printer = new Printer($connector,$profile);
+        $printer   = new Printer($connector,$profile);
         $i = 1;
         try{
             if(Session::get('printer') == 'panda'){
@@ -799,9 +802,9 @@ class KasirController extends Controller
                 $printer -> selectPrintMode();
                 $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------\n");
-                $printer -> text("No.Faktur : $faktur\n");
+                $printer -> text("Nomor : $faktur\n");
                 $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
-                $printer -> text("Struk ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
+                $printer -> text("Kuitansi ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
                 $printer -> text("Ksr : $nama\n");
                 $printer -> feed();
             }
@@ -939,9 +942,9 @@ class KasirController extends Controller
                 $printer -> selectPrintMode();
                 $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------\n");
-                $printer -> text("No.Faktur : $faktur\n");
+                $printer -> text("Nomor : $faktur\n");
                 $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
-                $printer -> text("Struk ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
+                $printer -> text("Kuitansi ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
                 $printer -> text("Ksr : $nama\n");
                 $printer -> feed();
                 $printer -> cut();

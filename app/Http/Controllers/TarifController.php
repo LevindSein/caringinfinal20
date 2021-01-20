@@ -224,7 +224,7 @@ class TarifController extends Controller
             ];      
             
             try{
-                TarifListrik::whereId(1)->update($data);
+                TarifListrik::first()->update($data);
                 return response()->json(['success' => 'Data Berhasil Disimpan']);
             }
             catch(\Exception $e){
@@ -263,7 +263,7 @@ class TarifController extends Controller
             ];      
             
             try{
-                TarifAirBersih::whereId(1)->update($data);
+                TarifAirBersih::first()->update($data);
                 return response()->json(['success' => 'Data Berhasil Disimpan']);
             }
             catch(\Exception $e){

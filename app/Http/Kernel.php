@@ -77,6 +77,7 @@ class Kernel extends HttpKernel
         'blok' => \App\Http\Middleware\Blok::class,
         'user' => \App\Http\Middleware\User::class,
         'log' => \App\Http\Middleware\Log::class,
+        'human' => \App\Http\Middleware\Human::class,
 
         'kasir' => \App\Http\Middleware\Kasir::class,
     ];

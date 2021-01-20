@@ -33,6 +33,9 @@ $(document).ready(function () {
             cache:false,
 			success:function(data)
 			{
+                //Test Print Logo
+                // ajax_print('/test/data/test');
+
                 $("#tempatId").val(kontrol);
                 $("#judulRincian").html(kontrol);
 

@@ -21,6 +21,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\KasirController;
 
 use App\Http\Controllers\WorkController;
+use App\Http\Controllers\DownloadController;
 
 use App\Models\User;
 use App\Models\LoginLog;
@@ -100,7 +101,6 @@ Route::middleware('ceklogin:pedagang')->group(function (){
 });
 
 Route::middleware('ceklogin:tempatusaha')->group(function (){
-    Route::get('tempatusaha/download/bg1',[TempatController::class, 'downloadBG1']);
     Route::get('tempatusaha/qr/{id}',[TempatController::class, 'qr']);
     Route::get('tempatusaha/rekap', [TempatController::class, 'rekap']);
     Route::get('tempatusaha/rekap/{blok}',[TempatController::class, 'rekapdetail']);
@@ -111,6 +111,17 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 });
 
 Route::middleware('ceklogin:tagihan')->group(function (){
+    Route::post('tagihan/sinkronisasi', function(Request $request){
+        if($request->ajax()){
+            try{
+                \Artisan::call('cron:tagihan');
+                return response()->json(['success' => 'Sinkronisasi Sukses']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => 'Oops! Sinkronisasi Gagal']);
+            }
+        }
+    });
     Route::get('tagihan/pemberitahuan/{blok}', [TagihanController::class, 'pemberitahuan']);
     Route::post('tagihan/unpublish/{id}', [TagihanController::class, 'unpublish']);
     Route::post('tagihan/publishing/{id}', [TagihanController::class, 'publishing']);
@@ -227,11 +238,15 @@ Route::middleware('ceklogin:log')->group(function(){
     })->middleware('log');
 });
 
-Route::get('cari/blok',[SearchController::class, 'cariBlok']);
-Route::get('cari/nasabah',[SearchController::class, 'cariNasabah']);
-Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
-Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
-Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);
+Route::middleware('ceklogin:human')->group(function(){
+    Route::get('cari/blok',[SearchController::class, 'cariBlok']);
+    Route::get('cari/nasabah',[SearchController::class, 'cariNasabah']);
+    Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
+    Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
+    Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);
+
+    Route::get('download/{file}',[DownloadController::class, 'download']);
+});
 
 Route::get('work',[WorkController::class, 'work']);
 Route::post('work/update',[WorkController::class, 'update']);

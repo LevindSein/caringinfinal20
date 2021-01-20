@@ -84,4 +84,23 @@ class IndoDate extends Model
         $pecahkan = explode('-', $date);
         return $tanggal[ (int)$pecahkan[1] ] . $separator . $pecahkan[0];
     }
+
+    public static function kopsurat($date,$separator){
+        $tanggal = array (
+            1 =>   'I',
+            'II',
+            'III',
+            'IV',
+            'V',
+            'VI',
+            'VII',
+            'VIII',
+            'IX',
+            'X',
+            'XI',
+            'XII'
+        );
+        $pecahkan = explode('-', $date);
+        return $tanggal[ (int)$pecahkan[1] ] . $separator . $pecahkan[0];
+    }
 }

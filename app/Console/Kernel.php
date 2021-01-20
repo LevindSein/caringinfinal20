@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('cron:tagihan')->monthlyOn(20, '01:00');
         $schedule->command('cron:denda')->dailyAt('00:01');
         $schedule->command('cron:kerjakasir')->dailyAt('06:00');
-        $schedule->command('cron:tutupkasir')->dailyAt('16:00');
+        $schedule->command('cron:tutupkasir')->dailyAt('15:00');
     }
 
     /**
