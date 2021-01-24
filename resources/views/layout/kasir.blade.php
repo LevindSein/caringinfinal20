@@ -237,6 +237,8 @@
                     .fadeOut("fast");;
             });
             
+            $("#sebagian").prop('required',false);
+            
             $('#sebagian').select2({
                 placeholder: '--- Pilih Blok ---',
                 ajax: {

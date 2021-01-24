@@ -40,7 +40,7 @@ class TagihanController extends Controller
     public function index(Request $request)
     {
         $now = date("Y-m-d",time());
-        $check = date("Y-m-20",time());
+        $check = date("Y-m-25",time());
 
         if($now < $check){
             $sekarang = date("Y-m", time());
@@ -73,8 +73,8 @@ class TagihanController extends Controller
                         $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
-                        $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
-                        if(Session::get('role') == 'master')
+                        // $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
+                        // if(Session::get('role') == 'master')
                             $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
                     }
                     return $button;
@@ -382,8 +382,8 @@ class TagihanController extends Controller
                         $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
-                        $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
-                        if(Session::get('role') == 'master')
+                        // $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
+                        // if(Session::get('role') == 'master')
                             $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
                     }
                     return $button;
@@ -989,6 +989,7 @@ class TagihanController extends Controller
                 ->select(
                     'pengguna.nama as nama',
                     'tempat_usaha.kd_kontrol as kontrol',
+                    'tempat_usaha.lok_tempat as lokasi',
                     'meteran_listrik.nomor as nomor',
                     'meteran_listrik.akhir as lalu')
                 ->orderBy('tempat_usaha.kd_kontrol')
@@ -1005,6 +1006,7 @@ class TagihanController extends Controller
                 ->select(
                     'pengguna.nama as nama',
                     'tempat_usaha.kd_kontrol as kontrol',
+                    'tempat_usaha.lok_tempat as lokasi',
                     'meteran_air.nomor as nomor',
                     'meteran_air.akhir as lalu')
                 ->orderBy('tempat_usaha.kd_kontrol')
@@ -1012,9 +1014,11 @@ class TagihanController extends Controller
                 $j++;
             }
         }
+        $bulan = IndoDate::bulan(date("Y-m",time())," ");
         $dataset = [$dataListrik,$dataAir];
         return view('tagihan.print',[
-            'dataset'=>$dataset
+            'dataset'=> $dataset,
+            'bulan'  => $bulan
         ]);
     }
 

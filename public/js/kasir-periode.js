@@ -43,11 +43,11 @@ $(document).ready(function () {
 
                 //Listrik
                 listrik = data.result.listrik;
-                $("#nominalListrik").html(data.result.listrik.toLocaleString());
+                $("#nominalListrik").html(data.result.listrik.toLocaleString("en-US"));
                 total = total + listrik;
 
                 denlistrik = data.result.denlistrik;
-                $("#dennominalListrik").html(data.result.denlistrik.toLocaleString());
+                $("#dennominalListrik").html(data.result.denlistrik.toLocaleString("en-US"));
                 total = total + denlistrik;
 
                 if(listrik == 0)
@@ -76,17 +76,17 @@ $(document).ready(function () {
                         total = total + listrik + denlistrik;
                         $("#fasListrik").show();
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Air Bersih
                 airbersih = data.result.airbersih;
-                $("#nominalAirBersih").html(data.result.airbersih.toLocaleString());
+                $("#nominalAirBersih").html(data.result.airbersih.toLocaleString("en-US"));
                 total = total + airbersih;
 
                 denairbersih = data.result.denairbersih;
-                $("#dennominalAirBersih").html(data.result.denairbersih.toLocaleString());
+                $("#dennominalAirBersih").html(data.result.denairbersih.toLocaleString("en-US"));
                 total = total + denairbersih;
 
                 if(airbersih == 0)
@@ -115,13 +115,13 @@ $(document).ready(function () {
                         total = total + airbersih + denairbersih;
                         $("#fasAirBersih").show();
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Keamanan IPK
                 keamananipk = data.result.keamananipk;
-                $("#nominalKeamananIpk").html(data.result.keamananipk.toLocaleString());
+                $("#nominalKeamananIpk").html(data.result.keamananipk.toLocaleString("en-US"));
                 total = total + keamananipk;
 
                 if(keamananipk == 0)
@@ -146,13 +146,13 @@ $(document).ready(function () {
                         total = total + keamananipk;
                         $("#fasKeamananIpk").show();
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Kebersihan
                 kebersihan = data.result.kebersihan;
-                $("#nominalKebersihan").html(data.result.kebersihan.toLocaleString());
+                $("#nominalKebersihan").html(data.result.kebersihan.toLocaleString("en-US"));
                 total = total + kebersihan;
 
                 if(kebersihan == 0)
@@ -177,13 +177,13 @@ $(document).ready(function () {
                         total = total + kebersihan;
                         $("#fasKebersihan").show();
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Air Kotor
                 airkotor = data.result.airkotor;
-                $("#nominalAirKotor").html(data.result.airkotor.toLocaleString());
+                $("#nominalAirKotor").html(data.result.airkotor.toLocaleString("en-US"));
                 total = total + airkotor;
 
                 if(airkotor == 0)
@@ -208,13 +208,13 @@ $(document).ready(function () {
                         total = total + airkotor;
                         $("#fasAirKotor").show();
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Lain
                 lain = data.result.lain;
-                $("#nominalLain").html(data.result.lain.toLocaleString());
+                $("#nominalLain").html(data.result.lain.toLocaleString("en-US"));
                 total = total + lain;
 
                 if(lain == 0)
@@ -239,12 +239,12 @@ $(document).ready(function () {
                         total = total + lain;
                         $("#fasLain").show();
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Total
-                $("#nominalTotal").html("Rp. " + total.toLocaleString());
+                $("#nominalTotal").html("Rp. " + total.toLocaleString("en-US"));
                 
                 $("#totalTagihan").val(total);
 

@@ -12,6 +12,7 @@ use App\Models\TempatUsaha;
 use App\Models\Tagihan;
 use App\Models\Penghapusan;
 use App\Models\Pembayaran;
+use App\Models\PasangAlat;
 
 class BlokController extends Controller
 {
@@ -113,6 +114,7 @@ class BlokController extends Controller
             $tagihan = Tagihan::where('blok',$blokLama)->get();
             $penghapusan = Penghapusan::where('blok',$blokLama)->get();
             $pembayaran = Pembayaran::where('blok',$blokLama)->get();
+            $pasangalat = PasangAlat::where('blok',$blokLama)->get();
             
             if($tempat != NULL){
                 foreach($tempat as $t){
@@ -149,6 +151,17 @@ class BlokController extends Controller
             
             if($pembayaran != NULL){
                 foreach($pembayaran as $t){
+                    $kontrol = $t->kd_kontrol;
+                    $pattern = '/'.$blokLama.'/i';
+                    $kontrol = preg_replace($pattern, $nama, $kontrol);
+                    $t->kd_kontrol = $kontrol;
+                    $t->blok = $nama;
+                    $t->save();
+                }
+            }
+
+            if($pasangalat != NULL){
+                foreach($pasangalat as $t){
                     $kontrol = $t->kd_kontrol;
                     $pattern = '/'.$blokLama.'/i';
                     $kontrol = preg_replace($pattern, $nama, $kontrol);

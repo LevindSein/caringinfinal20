@@ -90,11 +90,11 @@ $(document).ready(function () {
 			success:function(data)
 			{
                 $('#nama').val(data.result.nama);
-                $('#keamananlos').val(data.result.keamanan_los.toLocaleString());
-                $('#kebersihanlos').val(data.result.kebersihan_los.toLocaleString());
-                $('#kebersihanpos').val(data.result.kebersihan_pos.toLocaleString());
-                $('#kebersihanlebihpos').val(data.result.kebersihan_lebih_pos.toLocaleString());
-                $('#abonemen').val(data.result.abonemen.toLocaleString());
+                $('#keamananlos').val(data.result.keamanan_los.toLocaleString("en-US"));
+                $('#kebersihanlos').val(data.result.kebersihan_los.toLocaleString("en-US"));
+                $('#kebersihanpos').val(data.result.kebersihan_pos.toLocaleString("en-US"));
+                $('#kebersihanlebihpos').val(data.result.kebersihan_lebih_pos.toLocaleString("en-US"));
+                $('#abonemen').val(data.result.abonemen.toLocaleString("en-US"));
                 $('#laporan').val(data.result.ket);
             }
         });

@@ -110,10 +110,17 @@ class TarifController extends Controller
             $lain = $request->checkLain;
 
             if(empty($keamananipk) == FALSE){
+                if($request->prs_keamanan > 100 || $request->prs_ipk > 100 || $request->prs_keamanan < 0 || $request->prs_ipk < 0){
+                    $dataset['status'] = 'error';
+                    $dataset['message'] = 'Data Gagal Ditambah';
+                    return response()->json(['result' => $dataset]);
+                }
                 $tarif = explode(',',$request->keamananIpk);
                 $tarif = implode('',$tarif);
                 $data = [
-                    'tarif' => $tarif,
+                    'tarif'        => $tarif,
+                    'prs_keamanan' => $request->prs_keamanan,
+                    'prs_ipk'      => $request->prs_ipk,
                 ];
                 TarifKeamananIpk::create($data);
                 $role = 'keamananipk';
@@ -169,7 +176,9 @@ class TarifController extends Controller
             if($fasilitas == 'keamananipk'){
                 $data = TarifKeamananIpk::find($id);
                 if($data != NULL){
-                    $data = number_format($data->tarif);
+                    $data['keamananipk'] = number_format($data->tarif);
+                    $data['prs_keamanan'] = $data->prs_keamanan;
+                    $data['prs_ipk']      = $data->prs_ipk;
                 }
             }
             if($fasilitas == 'kebersihan'){
@@ -284,10 +293,17 @@ class TarifController extends Controller
                 $lain = $request->checkLain;
 
                 if(empty($keamananipk) == FALSE){
+                    if($request->prs_keamanan > 100 || $request->prs_ipk > 100 || $request->prs_keamanan < 0 || $request->prs_ipk < 0){
+                        $dataset['status'] = 'error';
+                        $dataset['message'] = 'Data Gagal Diedit';
+                        return response()->json(['result' => $dataset]);
+                    }
                     $tarif = explode(',',$request->keamananIpk);
                     $tarif = implode('',$tarif);
                     $data = [
-                        'tarif' => $tarif,
+                        'tarif'        => $tarif,
+                        'prs_keamanan' => $request->prs_keamanan,
+                        'prs_ipk'      => $request->prs_ipk,
                     ];
                     TarifKeamananIpk::whereId($request->hidden_id)->update($data);
                     $role = 'keamananipk';
@@ -324,14 +340,14 @@ class TarifController extends Controller
                 }
 
                 $dataset['status'] = 'success';
-                $dataset['message'] = 'Data Berhasil Ditambah';
+                $dataset['message'] = 'Data Berhasil Diedit';
                 $dataset['role'] = $role;
 
                 return response()->json(['result' => $dataset]);
             }
             catch(\Exception $e){
                 $dataset['status'] = 'error';
-                $dataset['message'] = 'Data Gagal Ditambah';
+                $dataset['message'] = 'Data Gagal Diedit';
                 return response()->json(['result' => $dataset]);
             }
         }

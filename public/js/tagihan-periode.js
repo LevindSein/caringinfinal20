@@ -83,9 +83,9 @@ $(document).ready(function(){
                 if(data.result.sub_listrik != 0 ){
                     $('#divEditListrik').show();
                     $('#stt_listrik').val('ok');
-                    $('#dayaListrik').val(data.result.daya_listrik.toLocaleString());
-                    $('#awalListrik').val(data.result.awal_listrik.toLocaleString());
-                    $('#akhirListrik').val(data.result.akhir_listrik.toLocaleString());
+                    $('#dayaListrik').val(data.result.daya_listrik.toLocaleString("en-US"));
+                    $('#awalListrik').val(data.result.awal_listrik.toLocaleString("en-US"));
+                    $('#akhirListrik').val(data.result.akhir_listrik.toLocaleString("en-US"));
 
                     var daya = $('#dayaListrik').val();
                     daya = daya.split(',');
@@ -137,8 +137,8 @@ $(document).ready(function(){
                 if(data.result.sub_airbersih !== 0 ){
                     $('#divEditAirBersih').show();
                     $('#stt_airbersih').val('ok');
-                    $('#awalAir').val(data.result.awal_airbersih.toLocaleString());
-                    $('#akhirAir').val(data.result.akhir_airbersih.toLocaleString());
+                    $('#awalAir').val(data.result.awal_airbersih.toLocaleString("en-US"));
+                    $('#akhirAir').val(data.result.akhir_airbersih.toLocaleString("en-US"));
 
                     var awal = $('#awalAir').val();
                     awal = awal.split(',');
@@ -180,8 +180,8 @@ $(document).ready(function(){
                 if(data.result.sub_keamananipk !== 0 ){
                     $('#divEditKeamananIpk').show();
                     $('#stt_keamananipk').val('ok');
-                    $('#keamananipk').val(data.result.sub_keamananipk.toLocaleString());
-                    $('#dis_keamananipk').val(data.result.dis_keamananipk.toLocaleString());
+                    $('#keamananipk').val(data.result.sub_keamananipk.toLocaleString("en-US"));
+                    $('#dis_keamananipk').val(data.result.dis_keamananipk.toLocaleString("en-US"));
                     var awal = $('#keamananipk').val();
                     awal = awal.split(',');
                     awal = awal.join('');
@@ -222,8 +222,8 @@ $(document).ready(function(){
                 if(data.result.sub_kebersihan !== 0 ){
                     $('#divEditKebersihan').show();
                     $('#stt_kebersihan').val('ok');
-                    $('#kebersihan').val(data.result.sub_kebersihan.toLocaleString());
-                    $('#dis_kebersihan').val(data.result.dis_kebersihan.toLocaleString());
+                    $('#kebersihan').val(data.result.sub_kebersihan.toLocaleString("en-US"));
+                    $('#dis_kebersihan').val(data.result.dis_kebersihan.toLocaleString("en-US"));
                     
                     var awal = $('#kebersihan').val();
                     awal = awal.split(',');
@@ -265,13 +265,13 @@ $(document).ready(function(){
                 if(data.result.ttl_airkotor != 0 ){
                     $('#divEditAirKotor').show();
                     $('#stt_airkotor').val('ok');
-                    $('#airkotor').val(data.result.ttl_airkotor.toLocaleString());
+                    $('#airkotor').val(data.result.ttl_airkotor.toLocaleString("en-US"));
                 }
 
                 if(data.result.ttl_lain != 0 ){
                     $('#divEditLain').show();
                     $('#stt_lain').val('ok');
-                    $('#lain').val(data.result.ttl_lain.toLocaleString());
+                    $('#lain').val(data.result.ttl_lain.toLocaleString("en-US"));
                 }
                 
                 if(listrik * air * keamananipk * kebersihan == 0){

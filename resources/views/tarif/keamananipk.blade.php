@@ -9,6 +9,8 @@
             <tr>
                 <th style="width:40px;">Kategori</th>
                 <th>Tarif (Rp.)</th>
+                <th>Keamanan (%)</th>
+                <th>IPK (%)</th>
                 <th>Action</th>
             </tr>
         </thead>

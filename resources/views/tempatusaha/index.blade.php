@@ -22,20 +22,13 @@
                     type="button"
                     name="add_tempat"
                     id="add_tempat" 
-                    class="btn btn-sm btn-success"><b>
+                    class="btn btn-sm btn-primary"><b>
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Tempat Usaha</b></button>
                 &nbsp;
                 @endif
-                <a 
-                    href="{{url('tempatusaha/rekap')}}" 
-                    type="submit"
-                    title="Rekap Tempat Usaha"
-                    class="btn btn-sm btn-danger"><b>Rekap</b>
-                </a>
-                &nbsp;
                 <div class="dropdown no-arrow" style="display:inline-block">
                     <a 
-                        class="dropdown-toggle btn btn-sm btn-warning" 
+                        class="dropdown-toggle btn btn-sm btn-danger" 
                         href="#" 
                         role="button" 
                         data-toggle="dropdown"
@@ -45,6 +38,18 @@
                         <i class="fas fa-ellipsis-v fa-sm fa-fw"></i></b>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        @if(Session::get('role') == 'master' || Session::get('role') == 'manajemen')
+                        <div class="dropdown-header">Manajemen:</div>
+                        <a class="dropdown-item {{ (request()->is('tempatusaha/rekap')) ? 'active' : '' }}" href="{{url('tempatusaha/rekap')}}" target="_blank">Data Rekap</a>
+                        <a class="dropdown-item {{ (request()->is('tempatusaha/potensi')) ? 'active' : '' }}" href="{{url('tempatusaha/potensi')}}" target="_blank">Data Potensi</a>
+                        <div class="dropdown-divider"></div>
+                        @endif
+                        @if(Session::get('role') == 'master' || Session::get('role') == 'admin')
+                        <div class="dropdown-header">Surat Terkait:</div>
+                        <a class="dropdown-item {{ (request()->is('tempatusaha/pengajuan/listrik')) ? 'active' : '' }}" href="{{url('tempatusaha/pengajuan/listrik')}}" target="_blank">Surat Listrik</a>
+                        <a class="dropdown-item {{ (request()->is('tempatusaha/pengajuan/air')) ? 'active' : '' }}" href="{{url('tempatusaha/pengajuan/air')}}" target="_blank">Surat Air</a>
+                        <div class="dropdown-divider"></div>
+                        @endif
                         <div class="dropdown-header">Pengguna Fasilitas:</div>
                         <a class="dropdown-item {{ (request()->is('tempatusaha/fasilitas/airbersih')) ? 'active' : '' }}" href="{{url('tempatusaha/fasilitas/airbersih')}}">Air Bersih</a>
                         <a class="dropdown-item {{ (request()->is('tempatusaha/fasilitas/listrik')) ? 'active' : '' }}" href="{{url('tempatusaha/fasilitas/listrik')}}">Listrik</a>
@@ -454,7 +459,7 @@
                                 <select class="form-control" name="trfKeamananIpk" id="myDiv3">
                                     <option selected hidden value="">--- Pilih Tarif ---</option>
                                     @foreach($trfKeamananIpk as $tarif)
-                                    <option value="{{$tarif->tarif}}">Rp. {{number_format($tarif->tarif)}}</option>
+                                    <option value="{{$tarif->tarif}}">Rp. {{number_format($tarif->tarif)}} ({{$tarif->prs_keamanan}}% - {{$tarif->prs_ipk}}%)</option>
                                     @endforeach
                                 </select>
                                 <div class="col-sm-12">

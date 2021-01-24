@@ -9,5 +9,5 @@ class TarifKeamananIpk extends Model
 {
     use HasFactory;
     protected $table ='trf_keamanan_ipk';
-    protected $fillable = ['id','tarif','updated_at','created_at'];
+    protected $fillable = ['id','tarif','prs_keamanan','prs_ipk','updated_at','created_at'];
 }

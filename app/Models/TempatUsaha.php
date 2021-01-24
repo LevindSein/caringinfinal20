@@ -129,19 +129,19 @@ class TempatUsaha extends Model
     }
 
     public static function trfKeamananIpk(){
-        return DB::table('trf_keamanan_ipk')->get();
+        return DB::table('trf_keamanan_ipk')->orderBy('tarif','asc')->get();
     }
     
     public static function trfKebersihan(){
-        return DB::table('trf_kebersihan')->get();
+        return DB::table('trf_kebersihan')->orderBy('tarif','asc')->get();
     }
     
     public static function trfAirKotor(){
-        return DB::table('trf_air_kotor')->get();
+        return DB::table('trf_air_kotor')->orderBy('tarif','asc')->get();
     }
     
     public static function trfLain(){
-        return DB::table('trf_lain')->get();
+        return DB::table('trf_lain')->orderBy('tarif','asc')->get();
     }
 
     public static function kode($blok,$los){

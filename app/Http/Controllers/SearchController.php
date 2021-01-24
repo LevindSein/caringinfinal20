@@ -47,6 +47,7 @@ class SearchController extends Controller
             $cariAlat = $request->q;
             $alat = AlatAir::where([['kode', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
             ->orWhere([['nomor', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
+            ->orderBy('updated_at','desc')
             ->get();
         }
         return response()->json($alat);
@@ -59,6 +60,7 @@ class SearchController extends Controller
             $alat = AlatListrik::where([['kode', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
             ->orWhere([['nomor', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
             ->orWhere([['daya', 'LIKE', '%'.$cariAlat.'%'],['stt_sedia',0]])
+            ->orderBy('updated_at','desc')
             ->get();
         }
         return response()->json($alat);

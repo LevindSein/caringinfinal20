@@ -40,8 +40,7 @@ $(document).ready(function () {
 				if(data.errors)
 				{
                     alert(data.errors);
-                    console.log(data.errors);
-                    // location.reload();
+                    $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
 				}
 				if(data.success)
 				{

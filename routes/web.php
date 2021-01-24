@@ -101,6 +101,7 @@ Route::middleware('ceklogin:pedagang')->group(function (){
 });
 
 Route::middleware('ceklogin:tempatusaha')->group(function (){
+    Route::get('tempatusaha/pengajuan/{fas}',[TempatController::class, 'pengajuan']);
     Route::get('tempatusaha/qr/{id}',[TempatController::class, 'qr']);
     Route::get('tempatusaha/rekap', [TempatController::class, 'rekap']);
     Route::get('tempatusaha/rekap/{blok}',[TempatController::class, 'rekapdetail']);
@@ -239,14 +240,13 @@ Route::middleware('ceklogin:log')->group(function(){
 });
 
 Route::middleware('ceklogin:human')->group(function(){
-    Route::get('cari/blok',[SearchController::class, 'cariBlok']);
-    Route::get('cari/nasabah',[SearchController::class, 'cariNasabah']);
-    Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
-    Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
-    Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);
-
-    Route::get('download/{file}',[DownloadController::class, 'download']);
+    Route::get('download/{file}/{id}',[DownloadController::class, 'download']);
 });
 
 Route::get('work',[WorkController::class, 'work']);
 Route::post('work/update',[WorkController::class, 'update']);
+Route::get('cari/blok',[SearchController::class, 'cariBlok']);
+Route::get('cari/nasabah',[SearchController::class, 'cariNasabah']);
+Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
+Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
+Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);

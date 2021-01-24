@@ -68,6 +68,8 @@ $(document).ready(function(){
                 columns: [
                     { data: 'DT_RowIndex', name: 'DT_RowIndex', class : 'text-center', orderable: false, width: "8%", searchable: false },
                     { data: 'tarif', name: 'tarif', class : 'text-center' },
+                    { data: 'prs_keamanan', name: 'prs_keamanan', class : 'text-center' },
+                    { data: 'prs_ipk', name: 'prs_ipk', class : 'text-center' },
                     { data: 'action', name: 'action', class : 'text-center' },
                 ],
                 stateSave: true,
@@ -188,12 +190,27 @@ $(document).ready(function(){
         $("#displayAirKotor").hide();
         $("#checkLain").prop("checked", false);
         $("#displayLain").hide();
+
+        $('#keamananIpk').prop('required',false);
+        $('#prs_keamanan').prop('required',false);
+        $('#prs_ipk').prop('required',false);
+        $('#kebersihan').prop('required',false);
+        $('#airkotor').prop('required',false);
+        $('#lain').prop('required',false);
     });
 
     $(document).on('click', '.edit', function(){
         id = $(this).attr('id');
         fas = $(this).attr('fas');
-		$('#form_result').html('');
+        $('#form_result').html('');
+        
+        $('#keamananIpk').prop('required',false);
+        $('#prs_keamanan').prop('required',false);
+        $('#prs_ipk').prop('required',false);
+        $('#kebersihan').prop('required',false);
+        $('#airkotor').prop('required',false);
+        $('#lain').prop('required',false);
+
 		$.ajax({
 			url :"/utilities/tarif/edit/" + fas + "/" + id,
             cache:false,
@@ -211,7 +228,10 @@ $(document).ready(function(){
                     $("#displayAirKotor").hide();
                     $("#displayLain").hide();
 
-                    $('#keamananIpk').val(data.result);
+                    $('#keamananIpk').val(data.result.keamananipk);
+                    
+                    $('#prs_keamanan').val(data.result.prs_keamanan);
+                    $('#prs_ipk').val(data.result.prs_ipk);
                 }
 
                 if(fas == 'kebersihan'){
@@ -344,6 +364,12 @@ $(document).ready(function(){
                     .slideUp(2000, function () {
                         $("#success-alert,#error-alert").slideUp(1000);
                 });
+                if($('#action').val() == 'Edit')
+                {
+                    setTimeout(function(){
+                        $('#myModal').modal('hide');
+                    }, 3000);
+                }
 			}
 		});
     });
@@ -438,9 +464,21 @@ $(document).ready(function(){
             document
                 .getElementById('keamananIpk')
                 .required = true;
+            document
+                .getElementById('prs_keamanan')
+                .required = true;
+            document
+                .getElementById('prs_ipk')
+                .required = true;
         } else {
             document
                 .getElementById('keamananIpk')
+                .required = false;
+            document
+                .getElementById('prs_keamanan')
+                .required = false;
+            document
+                .getElementById('prs_ipk')
                 .required = false;
         }
     }

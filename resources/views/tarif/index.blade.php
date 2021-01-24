@@ -146,6 +146,32 @@
                                         id="keamananIpk"
                                         placeholder="Masukkan Tarif Baru"
                                         aria-describedby="inputGroupPrepend">
+                                </div>            
+                                <div class="keamananipk-persen">
+                                    <div class="input-group">
+                                        <input 
+                                            type="number"
+                                            max="100"
+                                            min="0"
+                                            autocomplete="off" 
+                                            class="form-control prs_keamanan"
+                                            name="prs_keamanan"
+                                            id="prs_keamanan"
+                                            oninput="functionKeamanan()"
+                                            placeholder="% Keamanan"
+                                            aria-describedby="inputGroupPrepend">
+                                        <input 
+                                            type="number"
+                                            max="100"
+                                            min="0"
+                                            autocomplete="off" 
+                                            class="form-control prs_ipk"
+                                            name="prs_ipk"
+                                            id="prs_ipk"
+                                            oninput="functionIpk()"
+                                            placeholder="% IPK"
+                                            aria-describedby="inputGroupPrepend">
+                                    </div>
                                 </div>
                             </div>
 
@@ -247,4 +273,22 @@
 @section('js')
 <!-- Tambah Content pada Body JS -->
 <script src="{{asset('js/tarif.js')}}"></script>
+<script>
+function functionKeamanan() {
+    $(".keamananipk-persen").each(function() { 
+        var keamanan = document.getElementById("prs_keamanan").value;
+
+        var ipk = 100 - keamanan;
+        $(this).find('.prs_ipk').val(ipk);
+    });
+}
+function functionIpk() {
+    $(".keamananipk-persen").each(function() { 
+        var ipk = document.getElementById("prs_ipk").value;
+
+        var keamanan = 100 - ipk;
+        $(this).find('.prs_keamanan').val(keamanan);
+    });
+}
+</script>
 @endsection

@@ -333,8 +333,5 @@ $(document).ready(function () {
         if (/^,/.test(this.value)) {
             this.value = this.value.replace(/^,/, "")
         }
-        else if (/^0/.test(this.value)) {
-            this.value = this.value.replace(/^0/, "")
-        }
     });
 });

@@ -32,10 +32,6 @@ class CekLogin
                 Session::put('role',$user->role);
                 Session::put('login',$user->username.'-'.$user->role);
 
-                if(LoginLog::count() > 10000){
-                    LoginLog::orderBy('id','asc')->limit(1000)->delete();
-                }
-
                 $agent = new Agent();
                 $loginLog = new LoginLog;
                 $loginLog->username = $user->username;

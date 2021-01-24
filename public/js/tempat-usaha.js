@@ -463,9 +463,12 @@ $(document).ready(function(){
                     $('#ket_tempat').val(data.result.ket_tempat);
                 }
 
-                if(data.result.trf_airbersih != null){    
-                    $("#myCheck1").prop("checked", true);
-                    $('#displayAir').show();
+                if(data.result.trf_airbersih !== null || data.result.meterAirId !== null){
+                    if(data.result.trf_airbersih !== null){
+                        $("#myCheck1").prop("checked", true);
+                        $('#displayAir').show();
+                    }
+
                     if(data.result.meterAirId != null){
                         var meter = new Option(data.result.meterAir, data.result.meterAirId, false, false);
                         $('#meterAir').append(meter).trigger('change');
@@ -504,7 +507,7 @@ $(document).ready(function(){
                                 if(charge[1] === 'byr'){
                                     $("#dariChargeAir").val('byr');
                                 }
-                            }  
+                            }
                         }
                     }
                     else{
@@ -512,9 +515,11 @@ $(document).ready(function(){
                     }
                 }
 
-                if(data.result.trf_listrik != null && data.result.trf_listrik == 1){    
-                    $("#myCheck2").prop("checked", true);
-                    $('#displayListrik').show();
+                if(data.result.trf_listrik !== null || data.result.meterListrikId !== null){   
+                    if(data.result.trf_listrik !== null){
+                        $("#myCheck2").prop("checked", true);
+                        $('#displayListrik').show();
+                    }
                     if(data.result.meterListrikId != null){
                         var meter = new Option(data.result.meterListrik, data.result.meterListrikId, false, false);
                         $('#meterListrik').append(meter).trigger('change');
@@ -532,7 +537,7 @@ $(document).ready(function(){
                     $("#myDiv3 option:selected" ).text(data.result.tarifKeamananIpk).val(data.result.tarifKeamananIpkId);
                     if(data.result.dis_keamananipk != null){ 
                         $("#dis_keamananipk").prop("checked", true);
-                        $("#diskonKeamananIpk").val(data.result.dis_keamananipk.toLocaleString());
+                        $("#diskonKeamananIpk").val(data.result.dis_keamananipk.toLocaleString("en-US"));
                         $('#displayKeamananIpkDiskon').show();
                         if(data.result.dis_keamananipk == 0){
                             $("#dis_keamananipk").prop("checked", false);
@@ -546,7 +551,7 @@ $(document).ready(function(){
                     $("#myDiv4 option:selected" ).text(data.result.tarifKebersihan).val(data.result.tarifKebersihanId);
                     if(data.result.dis_kebersihan != null){ 
                         $("#dis_kebersihan").prop("checked", true);
-                        $("#diskonKebersihan").val(data.result.dis_kebersihan.toLocaleString());
+                        $("#diskonKebersihan").val(data.result.dis_kebersihan.toLocaleString("en-US"));
                         $('#displayKebersihanDiskon').show();
                         if(data.result.dis_kebersihan == 0){
                             $("#dis_kebersihan").prop("checked", false);
@@ -601,19 +606,24 @@ $(document).ready(function(){
 				if(data.errors)
 				{
                     html = '<div class="alert alert-danger" id="error-alert"> <strong>Maaf ! </strong>' + data.errors + '</div>';
+                    // console.log(data.errors);
 				}
 				if(data.success)
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
                     
-                    var myRadio = $('input[name="radioAlatListrik"]:checked').val();
-                    if(myRadio == 'pasang_listrik'){
-                        window.location.href = '/download/bg1';
+                    if ($('#myCheck2').is(':checked')){
+                        var myRadio = $('input[name="radioAlatListrik"]:checked').val();
+                        if(myRadio == 'pasang_listrik'){
+                            alert('Surat Pasang Listrik Telah Diajukan');
+                        }
                     }
 
-                    var myRadio = $('input[name="radioAlatAir"]:checked').val();
-                    if(myRadio == 'pasang_airbersih'){
-                        window.location.href = '/download/bg1';
+                    if ($('#myCheck1').is(':checked')){
+                        var myRadio = $('input[name="radioAlatAir"]:checked').val();
+                        if(myRadio == 'pasang_airbersih'){
+                            alert('Surat Pasang Air Telah Diajukan');
+                        }
                     }
 					
                     setTimeout(function(){

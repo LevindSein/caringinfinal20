@@ -48,15 +48,15 @@ $(document).ready(function () {
 
                 //Listrik
                 listrik = data.result.listrik;
-                $("#nominalListrik").html(data.result.listrik.toLocaleString());
+                $("#nominalListrik").html(data.result.listrik.toLocaleString("en-US"));
                 total = total + listrik;
 
                 tunglistrik = data.result.tunglistrik;
-                $("#tungnominalListrik").html(data.result.tunglistrik.toLocaleString());
+                $("#tungnominalListrik").html(data.result.tunglistrik.toLocaleString("en-US"));
                 total = total + tunglistrik;
 
                 denlistrik = data.result.denlistrik;
-                $("#dennominalListrik").html(data.result.denlistrik.toLocaleString());
+                $("#dennominalListrik").html(data.result.denlistrik.toLocaleString("en-US"));
                 total = total + denlistrik;
 
                 if(listrik == 0)
@@ -117,21 +117,21 @@ $(document).ready(function () {
                         $("#tagaklistrik").val(data.result.aklistrik);
                         $("#tagpklistrik").val(data.result.pklistrik);
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Air Bersih
                 airbersih = data.result.airbersih;
-                $("#nominalAirBersih").html(data.result.airbersih.toLocaleString());
+                $("#nominalAirBersih").html(data.result.airbersih.toLocaleString("en-US"));
                 total = total + airbersih;
 
                 tungairbersih = data.result.tungairbersih;
-                $("#tungnominalAirBersih").html(data.result.tungairbersih.toLocaleString());
+                $("#tungnominalAirBersih").html(data.result.tungairbersih.toLocaleString("en-US"));
                 total = total + tungairbersih;
 
                 denairbersih = data.result.denairbersih;
-                $("#dennominalAirBersih").html(data.result.denairbersih.toLocaleString());
+                $("#dennominalAirBersih").html(data.result.denairbersih.toLocaleString("en-US"));
                 total = total + denairbersih;
 
                 if(airbersih == 0)
@@ -187,17 +187,17 @@ $(document).ready(function () {
                         $("#tagakairbersih").val(data.result.akairbersih);
                         $("#tagpkairbersih").val(data.result.pkairbersih);
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Keamanan IPK
                 keamananipk = data.result.keamananipk;
-                $("#nominalKeamananIpk").html(data.result.keamananipk.toLocaleString());
+                $("#nominalKeamananIpk").html(data.result.keamananipk.toLocaleString("en-US"));
                 total = total + keamananipk;
 
                 tungkeamananipk = data.result.tungkeamananipk;
-                $("#tungnominalKeamananIpk").html(data.result.tungkeamananipk.toLocaleString());
+                $("#tungnominalKeamananIpk").html(data.result.tungkeamananipk.toLocaleString("en-US"));
                 total = total + tungkeamananipk;
 
                 if(keamananipk == 0)
@@ -238,17 +238,17 @@ $(document).ready(function () {
                         $("#tagtungkeamananipk").val(data.result.tungkeamananipk);
                         $("#tagdenkeamananipk").val(data.result.denkeamananipk);
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Kebersihan
                 kebersihan = data.result.kebersihan;
-                $("#nominalKebersihan").html(data.result.kebersihan.toLocaleString());
+                $("#nominalKebersihan").html(data.result.kebersihan.toLocaleString("en-US"));
                 total = total + kebersihan;
 
                 tungkebersihan = data.result.tungkebersihan;
-                $("#tungnominalKebersihan").html(data.result.tungkebersihan.toLocaleString());
+                $("#tungnominalKebersihan").html(data.result.tungkebersihan.toLocaleString("en-US"));
                 total = total + tungkebersihan;
 
                 if(kebersihan == 0)
@@ -289,17 +289,17 @@ $(document).ready(function () {
                         $("#tagtungkebersihan").val(data.result.tungkebersihan);
                         $("#tagdenkebersihan").val(data.result.denkebersihan);
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Air Kotor
                 airkotor = data.result.airkotor;
-                $("#nominalAirKotor").html(data.result.airkotor.toLocaleString());
+                $("#nominalAirKotor").html(data.result.airkotor.toLocaleString("en-US"));
                 total = total + airkotor;
 
                 tungairkotor = data.result.tungairkotor;
-                $("#tungnominalAirKotor").html(data.result.tungairkotor.toLocaleString());
+                $("#tungnominalAirKotor").html(data.result.tungairkotor.toLocaleString("en-US"));
                 total = total + tungairkotor;
 
                 if(airkotor == 0)
@@ -340,17 +340,17 @@ $(document).ready(function () {
                         $("#tagtungairkotor").val(data.result.tungairkotor);
                         $("#tagdenairkotor").val(data.result.denairkotor);
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Lain
                 lain = data.result.lain;
-                $("#nominalLain").html(data.result.lain.toLocaleString());
+                $("#nominalLain").html(data.result.lain.toLocaleString("en-US"));
                 total = total + lain;
 
                 tunglain = data.result.tunglain;
-                $("#tungnominalLain").html(data.result.tunglain.toLocaleString());
+                $("#tungnominalLain").html(data.result.tunglain.toLocaleString("en-US"));
                 total = total + tunglain;
 
                 if(lain == 0)
@@ -391,12 +391,12 @@ $(document).ready(function () {
                         $("#tagtunglain").val(data.result.tunglain);
                         $("#tagdenlain").val(data.result.denlain);
                     }
-                    $('#nominalTotal').html('Rp. ' + total.toLocaleString());
+                    $('#nominalTotal').html('Rp. ' + total.toLocaleString("en-US"));
                     $("#totalTagihan").val(total);
                 });
 
                 //Total
-                $("#nominalTotal").html("Rp. " + total.toLocaleString());
+                $("#nominalTotal").html("Rp. " + total.toLocaleString("en-US"));
                 
                 $("#totalTagihan").val(total);
 
