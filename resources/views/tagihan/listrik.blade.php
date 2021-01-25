@@ -26,7 +26,7 @@
     </div>
     @if($ket->lok_tempat != NULL)
     <div class="form-group col-lg-12">
-        <label for="ket">Kode Sebelumnya</label>
+        <label for="ket">Keterangan</label>
         <input
             readonly
             value="{{$ket->lok_tempat}}"
@@ -76,6 +76,7 @@
         <label for="laporan">Laporan (optional)</label>
         <textarea autocomplete="off" name="laporan" class="form-control" id="laporan">{{$dataset->ket}}</textarea>
     </div>
+    <input type="hidden" name="hidden_blok" id="hidden_blok" value="{{$blok}}">
     <input type="hidden" name="hidden_id" id="hidden_id" value="{{$dataset->id}}">
     <input type="hidden" name="kd_kontrol" id="kd_kontrol" value="{{$dataset->kd_kontrol}}">
     <div class="form-group col-lg-12">

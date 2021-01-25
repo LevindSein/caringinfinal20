@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\TempatUsaha;
 use App\Models\AlatAir;
 use App\Models\AlatListrik;
+use App\Models\Tagihan;
+use App\Models\IndoDate;
 
 class SearchController extends Controller
 {
@@ -64,5 +66,54 @@ class SearchController extends Controller
             ->get();
         }
         return response()->json($alat);
+    }
+
+    public function cariTagihan(Request $request, $id){
+        if($request->ajax()) {
+            $result = array();
+
+            $data = Tagihan::find($id);
+
+            $bulan = strtotime($data->bln_tagihan);
+
+            $result['kode']     = $data->kd_kontrol;
+            
+            $bulan1  = date("Y-m", strtotime("-3 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan1]])->first();
+            if($tagihan != NULL){
+                $result['bulan1']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan1'] = number_format($tagihan->ttl_tagihan);
+            }
+            else{
+                $result['bulan1']      = '';
+                $result['totalbulan1'] = 0;
+            }
+
+            $bulan2  = date("Y-m", strtotime("-2 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan2]])->first();
+            if($tagihan != NULL){
+                $result['bulan2']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan2'] = number_format($tagihan->ttl_tagihan);
+            }
+            else{
+                $result['bulan2']      = '';
+                $result['totalbulan2'] = 0;
+            }
+
+            $bulan3  = date("Y-m", strtotime("-1 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan3]])->first();
+            if($tagihan != NULL){
+                $result['bulan3']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan3'] = number_format($tagihan->ttl_tagihan);
+            }
+            else{
+                $result['bulan3']      = '';
+                $result['totalbulan3'] = 0;
+            }
+
+            $result['bulanini']      = IndoDate::bulan($data->bln_tagihan," ");
+            $result['totalbulanini'] = number_format($data->ttl_tagihan);
+            return response()->json(['result' => $result]);
+        }
     }
 }

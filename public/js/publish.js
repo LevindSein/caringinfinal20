@@ -32,7 +32,7 @@ $(document).ready(function () {
         pageLength: 100,
         "iDisplayLength": -1,
         "bPaginate": true,
-        "iCookieDuration": 60,
+        // "iCookieDuration": 60,
         // "ordering":false,
         "bStateSave": false,
         "bAutoWidth": true,
@@ -46,7 +46,7 @@ $(document).ready(function () {
             "rightColumns": 3,
         },
         "sDom": '<"H"CTrf>t<"F"lip>',
-        "aLengthMenu": [[-1], ["All"]],
+        "aLengthMenu": [[100,-1], [100,"All"]],
         "sScrollY": "290px",
         "scrollX":true,
         // "sScrollX": "300px",
@@ -150,6 +150,53 @@ $(document).ready(function () {
                 alert('Oops! Kesalahan Sistem');
                 $('#process').hide();
                 location.reload();
+            }
+		});
+    });
+
+    $(document).on('click', '.totaltagihan', function(){
+        id = $(this).attr('id');
+        $('#bulan1').html('');
+        $('#totalbulan1').html('');
+        $('#bulan2').html('');
+        $('#totalbulan2').html('');
+        $('#bulan3').html('');
+        $('#totalbulan3').html('');
+        $('#bulanini').html('');
+        $('#totalbulanini').html('');
+        $('#divBulan1').hide();
+        $('#divBulan2').hide();
+        $('#divBulan3').hide();
+        $.ajax({       
+			url: "/cari/tagihan/" + id,
+            cache:false,
+			method:"GET",
+			dataType:"json",
+			success:function(data)
+			{
+                $('.modal-title').html(data.result.kode);
+                if(data.result.totalbulan1 != 0){
+                    $('#divBulan1').show();
+                    $('#bulan1').html(data.result.bulan1);
+                    $('#totalbulan1').html("RP. " + data.result.totalbulan1);
+                }
+
+                if(data.result.totalbulan2 != 0){
+                    $('#divBulan2').show();
+                    $('#bulan2').html(data.result.bulan2);
+                    $('#totalbulan2').html("RP. " + data.result.totalbulan2);
+                }
+                
+                if(data.result.totalbulan3 != 0){
+                    $('#divBulan3').show();
+                    $('#bulan3').html(data.result.bulan3);
+                    $('#totalbulan3').html("RP. " + data.result.totalbulan3);
+                }
+
+                $('#bulanini').html(data.result.bulanini);
+                $('#totalbulanini').html("RP. " + data.result.totalbulanini);
+                
+                $('#myModal').modal('show');
             }
 		});
     });

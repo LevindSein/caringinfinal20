@@ -76,7 +76,6 @@ Route::middleware('ceklogin:kasir')->group(function(){
     Route::get('kasir/utama',[KasirController::class, 'getutama']);
     Route::get('kasir/sisa',[KasirController::class, 'getsisa']);
     Route::get('kasir/selesai',[KasirController::class, 'getselesai']);
-    Route::post('kasir/prabayar/{kontrol}',[KasirController::class, 'prabayar']);
     
     Route::get('kasir/restore',[KasirController::class, 'restore']);
     Route::post('kasir/restore/{id}',[KasirController::class, 'restoreStore']);
@@ -101,6 +100,7 @@ Route::middleware('ceklogin:pedagang')->group(function (){
 });
 
 Route::middleware('ceklogin:tempatusaha')->group(function (){
+    Route::get('tempatusaha/potensi', [TempatController::class, 'potensi']);
     Route::get('tempatusaha/pengajuan/{fas}',[TempatController::class, 'pengajuan']);
     Route::get('tempatusaha/qr/{id}',[TempatController::class, 'qr']);
     Route::get('tempatusaha/rekap', [TempatController::class, 'rekap']);
@@ -250,3 +250,4 @@ Route::get('cari/nasabah',[SearchController::class, 'cariNasabah']);
 Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
 Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
 Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);
+Route::get('cari/tagihan/{id}',[SearchController::class, 'cariTagihan']);

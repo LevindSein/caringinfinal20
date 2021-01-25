@@ -22,19 +22,21 @@
                     <i class="fas fa-fw fa-home fa-sm text-white"></i></b>
                 </a>
                 &nbsp;
-                <a
-                    href="{{url('tagihan/listrik')}}"
-                    type="submit"
+                <button 
+                    type="button"
+                    name="add_listrik"
+                    id="add_listrik" 
                     class="btn btn-sm btn-warning"><b>
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Listrik </b> <span class="badge badge-pill badge-light">{{$listrik_badge}}</span>
-                </a>
+                </button>
                 &nbsp;
-                <a
-                    href="{{url('tagihan/airbersih')}}"
-                    type="submit"
+                <button 
+                    type="button"
+                    name="add_air"
+                    id="add_air" 
                     class="btn btn-sm btn-info"><b>
                     <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Air Bersih </b> <span class="badge badge-pill badge-light">{{$air_badge}}</span>
-                </a>
+                </button>
                 &nbsp;
                 <div class="dropdown no-arrow" style="display:inline-block">
                     <a 
@@ -96,7 +98,6 @@
                             type="submit">
                             <i class="fas fa-fw fa-dollar-sign fa-sm text-gray-500"></i> Pembayaran
                         </a>
-                        @if(Session::get('sync') == 'off')
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-header">Tagihan:</div>
                         <button 
@@ -108,7 +109,6 @@
                             type="submit">
                             <i class="fas fa-fw fa-plus fa-sm text-gray-500"></i> Manual
                         </button>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -292,6 +292,40 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="cetakPembayaran" class="btn btn-primary btn-sm">Cetak Pembayaran</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div
+    class="modal fade"
+    id="tagihanku"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Tagihan</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="form_tagihanku" action="" method="GET">
+                <div class="modal-body-short">
+                    <div class="form-group">
+                        <label for="blok">Pilih Blok</label>
+                        <select class="form-control" name="tagihan_blok" id="tagihan_blok" required>
+                            @foreach($blok as $b)
+                            <option value="{{$b->nama}}">{{$b->nama}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
                 </div>
             </form>
         </div>

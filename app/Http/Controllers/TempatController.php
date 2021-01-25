@@ -877,7 +877,8 @@ class TempatController extends Controller
 
                     //------------------------------------------------------
 
-                    $dok->stt_surat = 1;
+                    $dok->stt_surat  = 1;
+                    $dok->keterangan = "Pasang";
                     $dok->save();
 
                     $tarifP = TarifListrik::first();
@@ -1144,6 +1145,10 @@ class TempatController extends Controller
             'dataset' => TempatUsaha::detailRekap($blok),
             'blok'=>$blok
         ]);
+    }
+
+    public function potensi(){
+        return view('tempatusaha.potensi');
     }
 
     public function fasilitas($fas){

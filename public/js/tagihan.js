@@ -877,4 +877,16 @@ $(document).ready(function(){
             'input',
             event => event.target.value = (parseInt(event.target.value.replace(/[^\d]+/gi, '')) || 0).toLocaleString('en-US')
     );
+
+    $('#add_listrik').click(function(){
+        $('.modal-title').text('Tambah Tagihan Listrik');
+        $('#form_tagihanku').attr('action', '/tagihan/listrik');
+        $('#tagihanku').modal('show');
+    });
+
+    $('#add_air').click(function(){
+        $('.modal-title').text('Tambah Tagihan Air Bersih');
+        $('#form_tagihanku').attr('action', '/tagihan/airbersih');
+        $('#tagihanku').modal('show');
+    });
 });

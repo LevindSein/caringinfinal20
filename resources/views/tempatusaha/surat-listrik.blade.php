@@ -28,6 +28,7 @@
                             <th rowspan="2">Kontrol</th>
                             <th rowspan="2">Nama</th>
                             <th colspan="6">Surat</th>
+                            <th rowspan="2">Keterangan</th>
                         </tr>
                         <tr>
                             <th>Permohonan</th>
@@ -90,6 +91,7 @@
                                 {{$d->kd_kontrol}}
                                 @endif
                             </td>
+                            <td style="text-align:center">{{$d->keterangan}}</td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -112,7 +114,8 @@ $('#tabelSurat').DataTable({
     },
     "deferRender": true,
     "fixedColumns":   {
-        "leftColumns": 3
+        "leftColumns": 3,
+        "rightColumns": 1,
     },
     "scrollX": true,
     "scrollCollapse": true,

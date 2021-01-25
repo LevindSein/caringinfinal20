@@ -91,7 +91,6 @@
                     <th style="text-align:center;"><b>Pengguna</b></th>
                     <th style="text-align:center;"><b>Ket</b></th>
                     <th style="text-align:center;"><b>Action</b></th>
-                    <th style="text-align:center;"><b>Prabayar</b></th>
                 </tr>
             </thead>
         </table>

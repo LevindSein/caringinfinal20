@@ -38,7 +38,7 @@
                         <i class="fas fa-ellipsis-v fa-sm fa-fw"></i></b>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                        @if(Session::get('role') == 'master' || Session::get('role') == 'manajemen')
+                        @if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
                         <div class="dropdown-header">Manajemen:</div>
                         <a class="dropdown-item {{ (request()->is('tempatusaha/rekap')) ? 'active' : '' }}" href="{{url('tempatusaha/rekap')}}" target="_blank">Data Rekap</a>
                         <a class="dropdown-item {{ (request()->is('tempatusaha/potensi')) ? 'active' : '' }}" href="{{url('tempatusaha/potensi')}}" target="_blank">Data Potensi</a>

@@ -12,8 +12,7 @@ $(document).ready(function () {
 			{ data: 'tagihan', name: 'tagihan', class : 'text-center', width: '25%' },
 			{ data: 'pengguna', name: 'pengguna', class : 'text-center', width: '20%' },
 			{ data: 'lokasi', name: 'lokasi', class : 'text-center', width: '20%', orderable: false },
-			{ data: 'action', name: 'action', class : 'text-center', width: '5%', orderable: false, searchable: false },
-			{ data: 'prabayar', name: 'prabayar', class : 'text-center', width: '5%', orderable: false, searchable: false },
+			{ data: 'action', name: 'action', class : 'text-center', width: '5%', orderable: false, searchable: false }
         ],
         pageLength: 3,
         stateSave: true,
@@ -447,34 +446,6 @@ $(document).ready(function () {
             '_blank'
         );
     }
-
-
-    $(document).on('click', '.prabayar', function(){
-        var kontrol = $(this).attr('id');
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-		$.ajax({
-			url :"/kasir/prabayar/"+kontrol,
-            cache:false,
-			method:"POST",
-			dataType:"json",
-			success:function(data)
-			{
-                if(data.errors){
-                    alert(data.errors);
-                }
-                if(data.success){
-                    $('#tabelKasir').DataTable().ajax.reload(function(){}, false);
-                }
-            },
-            error:function(data){
-                console.log(data);
-            }
-        });
-    });
 
     $(document).on('change', '#printer', function() {
         $.ajaxSetup({

@@ -21,6 +21,7 @@ class Dokumen extends Model
         'srt_peringatan',
         'srt_bongkar',
         'stt_surat',
+        'keterangan',
         'updated_at',
         'created_at'
     ];

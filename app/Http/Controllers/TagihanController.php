@@ -73,9 +73,7 @@ class TagihanController extends Controller
                         $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
-                        // $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
-                        // if(Session::get('role') == 'master')
-                            $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
+                        $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
                     }
                     return $button;
                 })
@@ -330,7 +328,7 @@ class TagihanController extends Controller
             return view('tagihan.index',[
                 'periode'       => IndoDate::bulan($periode,' '),
                 'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-                'blok'          => Blok::select('nama')->orderBy('nama')->get(),
+                'blok'          => Blok::select('nama')->whereIn('nama',$wherein)->orderBy('nama')->get(),
                 'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->whereIn('tagihan.blok',$wherein)
@@ -346,11 +344,9 @@ class TagihanController extends Controller
                 'periode'       => IndoDate::bulan($periode,' '),
                 'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
                 'blok'          => Blok::select('nama')->orderBy('nama')->get(),
-                'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
-                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                'listrik_badge' => Tagihan::where('stt_listrik',0)
                                     ->count(),
-                'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
-                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                'air_badge'     => Tagihan::where('tagihan.stt_airbersih',0)
                                     ->count(),
             ]);
         }
@@ -639,7 +635,7 @@ class TagihanController extends Controller
             return view('tagihan.periode',[
                 'periode'       => IndoDate::bulan($periode,' '),
                 'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
-                'blok'          => Blok::select('nama')->orderBy('nama')->get(),
+                'blok'          => Blok::select('nama')->whereIn('nama',$wherein)->orderBy('nama')->get(),
                 'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->whereIn('tagihan.blok',$wherein)
@@ -1023,13 +1019,15 @@ class TagihanController extends Controller
     }
 
     public function listrik(Request $request){
+        $blok    = $request->tagihan_blok; 
+
         if(Session::get('role') == 'admin'){
-            $wherein = Session::get('otoritas')[0]->blok;
-            $tagihan = Tagihan::where([['stt_listrik',0],['stt_publish',0]])->whereIn('blok',$wherein)->orderBy('kd_kontrol','asc')->first();
+            if (!in_array($blok, Session::get('otoritas')[0]->blok)) {
+                return redirect()->route('tagihan.index');
+            }
         }
-        else{
-            $tagihan = Tagihan::where([['stt_listrik',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
-        }
+
+        $tagihan = Tagihan::where([['stt_listrik',0],['stt_publish',0],['blok',$blok]])->orderBy('kd_kontrol','asc')->first();
 
         if($tagihan == NULL){
             return redirect()->route('tagihan.index');
@@ -1071,11 +1069,13 @@ class TagihanController extends Controller
                 $ket = '';
             }
 
-            return view('tagihan.listrik',['dataset' => $tagihan, 'suggest' => $suggest, 'ket' => $ket]);
+            return view('tagihan.listrik',['dataset' => $tagihan, 'suggest' => $suggest, 'ket' => $ket,'blok' => $blok]);
         }
     }
 
     public function listrikUpdate(Request $request){
+        $blok = $request->hidden_blok;
+
         $daya = explode(',',$request->daya);
         $daya = implode('',$daya);
         
@@ -1107,17 +1107,19 @@ class TagihanController extends Controller
 
         $this->total($request->hidden_id);
 
-        return redirect()->route('listrik');
+        return redirect()->route('listrik',['tagihan_blok'=>$blok]);
     }
     
-    public function airbersih(){
+    public function airbersih(Request $request){
+        $blok    = $request->tagihan_blok;
+
         if(Session::get('role') == 'admin'){
-            $wherein = Session::get('otoritas')[0]->blok;
-            $tagihan = Tagihan::where([['stt_airbersih',0],['stt_publish',0]])->whereIn('blok',$wherein)->orderBy('kd_kontrol','asc')->first();
+            if (!in_array($blok, Session::get('otoritas')[0]->blok)) {
+                return redirect()->route('tagihan.index');
+            }
         }
-        else{
-            $tagihan = Tagihan::where([['stt_airbersih',0],['stt_publish',0]])->orderBy('kd_kontrol','asc')->first();
-        }
+
+        $tagihan = Tagihan::where([['stt_airbersih',0],['stt_publish',0],['blok',$blok]])->orderBy('kd_kontrol','asc')->first();
 
         if($tagihan == NULL){
             return redirect()->route('tagihan.index');
@@ -1159,11 +1161,13 @@ class TagihanController extends Controller
                 $ket = '';
             }
 
-            return view('tagihan.airbersih',['dataset' => $tagihan, 'suggest' => $suggest, 'ket' => $ket]);
+            return view('tagihan.airbersih',['dataset' => $tagihan, 'suggest' => $suggest, 'ket' => $ket,'blok' => $blok]);
         }
     }
 
     public function airbersihUpdate(Request $request){
+        $blok = $request->hidden_blok;
+
         $awal = explode(',',$request->awal);
         $awal = implode('',$awal);
         
@@ -1428,11 +1432,11 @@ class TagihanController extends Controller
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
                     $hasil = number_format($data->ttl_tagihan);
                     if($warna == 1 || $warna == 2)
-                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totaltagihan" id="'.$data->id.'"><span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span></a>';
                     else if($warna == 3)
-                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totaltagihan" id="'.$data->id.'"><span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span></a>';
                     else
-                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totaltagihan" id="'.$data->id.'"><span style="font-size:14px;color:#000000;"><b>'.$hasil.'</b></span></a>';
                 })
                 ->editColumn('ket', function ($data) {
                     return '<span style="white-space:normal;">'.$data->ket.'</span>';

@@ -68,23 +68,6 @@ class KasirController extends Controller
                     $button = '<a type="button" title="Bayar" name="bayar" id="'.$data->kd_kontrol.'" class="bayar btn btn-sm btn-warning">Bayar</a>';
                     return $button;
                 })
-                ->addColumn('prabayar', function($data){
-                    $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['stt_lunas',0],['stt_publish',1]])->get();
-                    $hasil = 0;
-                    foreach($tagihan as $t){
-                        $hasil = $hasil + $t->stt_prabayar;
-                    }
-                    if(date('Y-m-d',time()) == date('Y-m-15',time()) || date('Y-m-d',time()) == date('Y-m-14',time())){
-                        if($hasil == 0)
-                            $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'" class="prabayar btn btn-sm btn-success">Ajukan</a>';
-                        else
-                            $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'" class="prabayar btn btn-sm btn-danger">Cancel</a>';
-                    }
-                    else{
-                        $button = '<a type="button" title="Prabayar" name="prabayar" id="'.$data->kd_kontrol.'"class="disabled prabayar btn btn-sm btn-info">Soon</a>';
-                    }
-                    return $button;
-                })
                 ->addColumn('pengguna', function($data){
                     $pengguna = TempatUsaha::where('kd_kontrol',$data->kd_kontrol)->select('id_pengguna')->first();
                     if($pengguna != NULL){
@@ -113,7 +96,7 @@ class KasirController extends Controller
                         return 0;
                     }
                 })
-                ->rawColumns(['action','prabayar'])
+                ->rawColumns(['action'])
                 ->make(true);
         }
 
@@ -1507,28 +1490,6 @@ class KasirController extends Controller
             }
             catch(\Exception $e){
                 return response()->json(['errors' => 'Restore Gagal']);
-            }
-        }
-    }
-
-    public function prabayar(Request $request,$kontrol){
-        if($request->ajax()){
-            try{
-                $tagihan = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1]])->get();
-                foreach($tagihan as $t){
-                    if($t->stt_prabayar === 1){
-                        $hasil = 0;
-                    }
-                    if($t->stt_prabayar === 0){
-                        $hasil = 1;
-                    }
-                    $t->stt_prabayar = $hasil;
-                    $t->save();
-                }
-                return response()->json(['success' => 'Prabayar Sukses']);
-            }
-            catch(\Exception $e){
-                return response()->json(['errors' => 'Oops! Prabayar Gagal']);
             }
         }
     }

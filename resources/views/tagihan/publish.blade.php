@@ -107,6 +107,68 @@
             </div>    
         </div>
 
+        <div
+            class="modal fade"
+            id="myModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body-short">
+                        <div id="divBulan1">
+                            <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                                <div>
+                                    <h5><strong><span id="bulan1"></span></strong></h5>
+                                </div>
+                                <div>
+                                    <h5><strong><span id="totalbulan1"></span></strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divBulan2">
+                            <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                                <div>
+                                    <h5><strong><span id="bulan2"></span></strong></h5>
+                                </div>
+                                <div>
+                                    <h5><strong><span id="totalbulan2"></span></strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divBulan3">
+                            <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                                <div>
+                                    <h5><strong><span id="bulan3"></span></strong></h5>
+                                </div>
+                                <div>
+                                    <h5><strong><span id="totalbulan3"></span></strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                            <div>
+                                <h4><strong><span id="bulanini" style="color:#3f6ad8;"></span></strong></h4>
+                            </div>
+                            <div>
+                                <h4><strong><span id="totalbulanini" style="color:#3f6ad8;"></span></strong></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="okbutton btn btn-primary btn-sm" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="{{asset('js/publish.js')}}"></script>
 
         <script>
