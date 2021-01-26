@@ -181,7 +181,7 @@ class Tagihan extends Model
         $tagihan->beban_listrik = $beban_listrik;
         $tagihan->bpju_listrik = $bpju_listrik;
 
-        $tagihan->sub_listrik = round($ttl_listrik + ($ttl_listrik * (($tarif->trf_ppn) / 100)));
+        $tagihan->sub_listrik = round($ttl_listrik + ($ttl_listrik * ($tarif->trf_ppn / 100)));
 
         $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
         $diskon = 0;
@@ -277,7 +277,7 @@ class Tagihan extends Model
         $tagihan->pemeliharaan_airbersih = $pemeliharaan_airbersih;
         $tagihan->beban_airbersih = $beban_airbersih;
         $tagihan->arkot_airbersih = $arkot_airbersih;
-        $tagihan->sub_airbersih = round($ttl_airbersih  + ($ttl_airbersih * (($tarif->trf_ppn) / 100)));
+        $tagihan->sub_airbersih = round($ttl_airbersih  + ($ttl_airbersih * ($tarif->trf_ppn / 100)));
 
         $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
         $diskon = 0;
@@ -292,19 +292,19 @@ class Tagihan extends Model
                     $diskon = ($tagihan->sub_airbersih * $diskon) / 100;
                 }
                 else{
-                    $disc = $tagihan->sub_airbersih;
+                    $disc = 0;
                     $diskonArray = $diskon->value;
                     if(in_array('byr',$diskonArray)){
-                        $disc = $disc - $tagihan->byr_airbersih;
+                        $disc = $disc + $tagihan->byr_airbersih;
                     }
                     if(in_array('beban',$diskonArray)){
-                        $disc = $disc - $tagihan->beban_airbersih;
+                        $disc = $disc + $tagihan->beban_airbersih;
                     }
                     if(in_array('pemeliharaan',$diskonArray)){
-                        $disc = $disc - $tagihan->pemeliharaan_airbersih;
+                        $disc = $disc + $tagihan->pemeliharaan_airbersih;
                     }
                     if(in_array('arkot',$diskonArray)){
-                        $disc = $disc - $tagihan->arkot_airbersih;
+                        $disc = $disc + $tagihan->arkot_airbersih;
                     }
                     if(is_object($diskonArray[count($diskonArray) - 1])){
                         $charge = $diskonArray[count($diskonArray) - 1]->charge;
@@ -316,9 +316,11 @@ class Tagihan extends Model
                         if($charge[1] == 'byr'){
                             $sale = $tagihan->byr_airbersih * ($persen / 100); 
                         }
-                        $disc = $disc - $sale;
+                        $disc = $disc + $sale;
                     }
                     
+                    $disc   = $disc + ($disc * ($tarif->trf_ppn / 100));
+                    $disc   = $tagihan->sub_airbersih - $disc;
                     $diskon = $disc;
                 }
             }

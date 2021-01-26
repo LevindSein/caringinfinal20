@@ -153,6 +153,36 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="divBulan4">
+                            <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                                <div>
+                                    <h5><strong><span id="bulan4"></span></strong></h5>
+                                </div>
+                                <div>
+                                    <h5><strong><span id="totalbulan4"></span></strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divBulan5">
+                            <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                                <div>
+                                    <h5><strong><span id="bulan5"></span></strong></h5>
+                                </div>
+                                <div>
+                                    <h5><strong><span id="totalbulan5"></span></strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="divBulan6">
+                            <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                                <div>
+                                    <h5><strong><span id="bulan6"></span></strong></h5>
+                                </div>
+                                <div>
+                                    <h5><strong><span id="totalbulan6"></span></strong></h5>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
                             <div>
                                 <h4><strong><span id="bulanini" style="color:#3f6ad8;"></span></strong></h4>
@@ -165,6 +195,38 @@
                     <div class="modal-footer">
                         <button class="okbutton btn btn-primary btn-sm" data-dismiss="modal">OK</button>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="modal fade"
+            id="myChecking"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Checking . . .</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form id="form_checking">
+                        @csrf
+                        <div class="modal-body-short">
+                            <div class="form-group col-lg-12">
+                                <label for="pesan">Pesan</label>
+                                <textarea autocomplete="off" name="pesan" class="form-control" id="pesan"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="hidden_id" name="hidden_id"/>
+                            <input type="submit" class="btn btn-primary btn-sm" value="Checking"/>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

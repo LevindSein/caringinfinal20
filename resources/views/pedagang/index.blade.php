@@ -121,21 +121,6 @@
                             id="username">
                     </div>
                     <div class="form-group col-lg-12">
-                        <label for="password">Password</label>
-                        <div>
-                            <input
-                                readonly
-                                type="password"
-                                class="form-control"
-                                name="password"
-                                id="password">
-                            <span 
-                                toggle="#password" 
-                                style="float:right;margin-right:10px;margin-top:-25px;position:relative;z-index:2;"
-                                class="fa fa-fw fa-eye toggle-password"></span>
-                        </div>
-                    </div>
-                    <div class="form-group col-lg-12">
                         <label for="anggota">Nomor Anggota</label>
                         <input
                             required

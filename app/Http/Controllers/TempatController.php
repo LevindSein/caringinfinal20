@@ -211,35 +211,10 @@ class TempatController extends Controller
                 $id_meteran_air = $request->meterAir;
                 $tempat->id_meteran_air = $id_meteran_air;
 
-                //Normal
-                if($request->radioAlatAir == 'normal_airbersih'){
-                    $meteran = AlatAir::find($id_meteran_air);
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-                }
-
-                //Pasang Alat
-                if($request->radioAlatAir == 'pasang_airbersih'){
-                    $tempat->trf_airbersih = NULL;
-                    $meteran = AlatAir::find($id_meteran_air);
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 0;
-                    $meteran->save();
-
-                    //Download Surat Perintah Bayar
-                    //Download Surat Perintah Ganti / Pasang
-                }
-
-                //Ganti Alat
-                if($request->radioAlatAir == 'ganti_airbersih'){
-                    $meteran = AlatAir::find($id_meteran_air);
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-
-                    //Download Surat Perintah Ganti
-                }
+                $meteran = AlatAir::find($id_meteran_air);
+                $meteran->stt_sedia = 1;
+                $meteran->stt_bayar = 1;
+                $meteran->save();
 
                 $diskon = array();
                 if($request->radioAirBersih == "semua_airbersih"){
@@ -284,14 +259,6 @@ class TempatController extends Controller
                         $tempat->dis_airbersih = NULL;
                     }
                 }
-
-                //Tagihan Pasang
-                //Download Surat Perintah Bayar
-
-                
-                //Tagihan Ganti
-                //Ganti Baru atau Ganti Rusak
-                //Download Surat Perintah Bayar
             }
 
             if(empty($request->listrik) == FALSE){
@@ -299,39 +266,11 @@ class TempatController extends Controller
                 $id_meteran_listrik = $request->meterListrik;
                 $tempat->id_meteran_listrik = $id_meteran_listrik;
 
-                //Normal
-                if($request->radioAlatListrik == 'normal_listrik'){
-                    $meteran = AlatListrik::find($id_meteran_listrik);
-                    $tempat->daya = $meteran->daya;
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-                }
-
-                //Pasang Alat
-                if($request->radioAlatListrik == 'pasang_listrik'){
-                    $tempat->trf_listrik = NULL;
-                    $meteran = AlatListrik::find($id_meteran_listrik);
-                    $tempat->daya = $meteran->daya;
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 0;
-                    $meteran->save();
-
-                    //Download Surat Perintah Bayar
-                    //Download Surat Perintah Ganti / Pasang
-                    
-                }
-
-                //Ganti Alat
-                if($request->radioAlatListrik == 'ganti_listrik'){
-                    $meteran = AlatListrik::find($id_meteran_listrik);
-                    $tempat->daya = $meteran->daya;
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-
-                    //Download Surat Perintah Ganti
-                }
+                $meteran = AlatListrik::find($id_meteran_listrik);
+                $tempat->daya = $meteran->daya;
+                $meteran->stt_sedia = 1;
+                $meteran->stt_bayar = 1;
+                $meteran->save();
 
                 if(empty($request->dis_listrik) == FALSE){
                     if($request->persenDiskonListrik == NULL){
@@ -603,35 +542,10 @@ class TempatController extends Controller
                 $id_meteran_air = $request->meterAir;
                 $tempat->id_meteran_air = $id_meteran_air;
 
-                //Normal
-                if($request->radioAlatAir == 'normal_airbersih'){
-                    $meteran = AlatAir::find($id_meteran_air);
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-                }
-
-                //Pasang Alat
-                if($request->radioAlatAir == 'pasang_airbersih'){
-                    $tempat->trf_airbersih = NULL;
-                    $meteran = AlatAir::find($id_meteran_air);
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 0;
-                    $meteran->save();
-
-                    //Download Surat Perintah Bayar
-                    //Download Surat Perintah Ganti / Pasang
-                }
-
-                //Ganti Alat
-                if($request->radioAlatAir == 'ganti_airbersih'){
-                    $meteran = AlatAir::find($id_meteran_air);
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-
-                    //Download Surat Perintah Ganti
-                }
+                $meteran = AlatAir::find($id_meteran_air);
+                $meteran->stt_sedia = 1;
+                $meteran->stt_bayar = 1;
+                $meteran->save();
 
                 $diskon = array();
                 if($request->radioAirBersih == "semua_airbersih"){
@@ -678,15 +592,6 @@ class TempatController extends Controller
                 }
             }
             else{
-                if($tempat->trf_airbersih != NULL){
-                    $meteran = AlatAir::find($tempat->id_meteran_air);
-                    $meteran->stt_sedia = 0;
-                    $meteran->stt_bayar = 0;
-                    $meteran->save();
-
-                    //Bongkaran
-                }
-
                 if($tempat->id_meteran_air !== NULL){
                     $meteran = AlatAir::find($tempat->id_meteran_air);
                     $meteran->stt_sedia = 0;
@@ -704,222 +609,11 @@ class TempatController extends Controller
                 $id_meteran_listrik = $request->meterListrik;
                 $tempat->id_meteran_listrik = $id_meteran_listrik;
                
-                //Normal
-                if($request->radioAlatListrik == 'normal_listrik'){
-                    $meteran = AlatListrik::find($id_meteran_listrik);
-                    $tempat->daya = $meteran->daya;
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-                }
-
-                //Pasang Alat
-                if($request->radioAlatListrik == 'pasang_listrik'){
-                    $tempat->trf_listrik = NULL;
-                    $meteran = AlatListrik::find($id_meteran_listrik);
-                    $tempat->daya = $meteran->daya;
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 0;
-
-                    $pDaya   = $meteran->daya;
-                    $pSeri   = $meteran->nomor;
-                    $pAwal   = $meteran->akhir;
-
-                    $meteran->save();
-
-                    // Download Surat Perintah Bayar
-                    // Download Surat Perintah Ganti / Pasang
-                    
-                    //Surat Pasang
-                    $pNama = Pedagang::find($request->pengguna);
-                    $pKtp  = $pNama->ktp;
-                    $pNama = $pNama->nama;
-
-                    $pTarif = TarifListrik::first();
-                    $pTarif = $pTarif->trf_pasang;
-
-                    $kopsurat = Sinkronisasi::where('sinkron', date('Y-m-01',time()))->first();
-                    $tgl_surat = $kopsurat->sinkron;
-                    $periode_surat = strtotime($tgl_surat);
-                    $bln_surat = date('Y-m', $periode_surat);
-                    $periode_surat = IndoDate::kopsurat($bln_surat,'/');
-
-                    $nomor = $kopsurat->surat + 1;
-                    $kopsurat->surat = $nomor;
-                    if($nomor < 10)
-                        $nomor = '000'.$nomor;
-                    else if($nomor >= 10 && $nomor < 100)
-                        $nomor = '00'.$nomor;
-                    else if($nomor >= 100 && $nomor < 1000)
-                        $nomor = '0'.$nomor;
-                    else
-                        $nomor = $nomor;
-                    
-                    $kopsurat->save();
-
-                    $dok = new Dokumen;
-                    $dok->kd_kontrol = $kode;
-                    $dok->nama = $pNama;
-                    $dok->tgl_tagihan = date('Y-m-d',time());
-
-                    //-----------------------------------------------------
-                    
-                    $no_surat = $nomor."/PB/LIS/UME/".$periode_surat;
-                    $pKopSurat = 'Nomor : '.$no_surat;
-
-                    $document = file_get_contents('rtf/BG1.rtf');
-
-                    $judul = "SAMBUNGAN BARU LISTRIK";
-                    $nosurat = $pKopSurat;
-                    $tarif = "Rp. ".number_format($pTarif * $pDaya);
-                    $permohonan = "sambungan baru listrik dengan daya $pDaya VA";
-                    $tanggal = IndoDate::tanggal(date('Y-m-d',time()),' ');
-
-                    $document = str_replace("#JUDULSURAT", $judul, $document);
-                    $document = str_replace("#NOMORSURAT", $nosurat, $document);
-                    $document = str_replace("#NAMA", $pNama, $document);
-                    $document = str_replace("#KTP", $pKtp, $document);
-                    $document = str_replace("#BLOK", $blok, $document);
-                    $document = str_replace("#ALAMAT", $alamat, $document);
-                    $document = str_replace("#NOKONTROL", $kode, $document);
-                    $document = str_replace("#LOKASI", $lokasi, $document);
-                    $document = str_replace("#NOSERI", $pSeri, $document);
-                    $document = str_replace("#TARIF", $tarif, $document);
-                    $document = str_replace("#PERMOHONAN", $permohonan, $document);
-                    $document = str_replace("#KEPERLUAN", $usaha, $document);
-                    $document = str_replace("#FASILITAS", "Listrik", $document);
-                    $document = str_replace("#TANGGAL", $tanggal, $document);
-
-                    $dok->srt_permohonan = $document;
-
-                    //-----------------------------------------------------
-
-                    $no_surat = $nomor."/BA/LIS/UME/".$periode_surat;
-                    $pKopSurat = 'Nomor : '.$no_surat;
-
-                    $document = file_get_contents('rtf/BG3.rtf');
-
-                    $nosurat = $pKopSurat;
-
-                    $document = str_replace("#JUDULSURAT", "KWH", $document);
-                    $document = str_replace("#NOMORSURAT", $nosurat, $document);
-                    $document = str_replace("#TANGGAL", "....................", $document);
-                    $document = str_replace("#ALAT", "kWh Meter", $document);
-                    $document = str_replace("#PERUSAHAAN", "PT. (Persero) Perusahaan Listrik Negara", $document);
-                    $document = str_replace("#NAMA", $pNama, $document);
-                    $document = str_replace("#NOKONTROL", $kode, $document);
-                    $document = str_replace("#NOSERI", $pSeri, $document);
-                    $document = str_replace("#AWALMETER", $pAwal, $document);
-                    $document = str_replace("#FASILITAS", "listrik", $document);
-
-                    $dok->srt_acara = $document;
-
-                    //------------------------------------------------------
-
-                    $no_surat = $nomor."/KB/LIS/UME/".$periode_surat;
-                    $pKopSurat = 'Nomor : '.$no_surat;
-
-                    $document = file_get_contents('rtf/PB.rtf');
-
-                    $nosurat = $pKopSurat;
-                    $tanggal = IndoDate::tanggal(date('Y-m-d',time()),' ');
-                    $tarif = number_format($pTarif * $pDaya);
-
-                    $tunggakan = 0;
-                    $bongkaran = Bongkaran::where('kd_kontrol',$kodeLama)->get();
-                    if($bongkaran != NULL){
-                        foreach($bongkaran as $b){
-                            $tunggakan = $tunggakan + $b->listrik;
-                        }
-                    }
-
-                    $bayar     = number_format($tunggakan + ($pTarif * $pDaya));
-                    $tunggakan = number_format($tunggakan);
-
-                    $document = str_replace("#ALAT", "KWH METER", $document);
-                    $document = str_replace("#NAMA", $pNama, $document);
-                    $document = str_replace("#NOMORSURAT", $nosurat, $document);
-                    $document = str_replace("#NOKONTROL", $kode, $document);
-                    $document = str_replace("#TANGGAL", $tanggal, $document);
-                    $document = str_replace("#NAMA", $pNama, $document);
-                    $document = str_replace("#FASILITAS", "Listrik", $document);
-                    $document = str_replace("#BIAYA", $tarif, $document);
-                    $document = str_replace("#TUNGGAKAN", $tunggakan, $document);
-                    $document = str_replace("#BAYAR", $bayar, $document);
-                    $document = str_replace("#ADMIN", Session::get('username'), $document);
-
-                    $dok->srt_bayar = $document;
-
-                    //------------------------------------------------------
-
-                    $no_surat = $nomor."/SP/LIS/UME/".$periode_surat;
-                    $pKopSurat = 'Nomor : '.$no_surat;
-
-                    $document = file_get_contents('rtf/BG4.rtf');
-
-                    $nosurat = $pKopSurat;
-                    $tanggal = IndoDate::tanggal(date('Y-m-d',time()),' ');
-
-                    $document = str_replace("#JUDULSURAT", "SAMBUNGAN BARU LISTRIK", $document);
-                    $document = str_replace("#NOMORSURAT", $nosurat, $document);
-                    $document = str_replace("#NAMA", $pNama, $document);
-                    $document = str_replace("#KTP", $pKtp, $document);
-                    $document = str_replace("#BLOK", $blok, $document);
-                    $document = str_replace("#ALAMAT", $alamat, $document);
-                    $document = str_replace("#NOKONTROL", $kode, $document);
-                    $document = str_replace("#LOKASI", $lokasi, $document);
-                    $document = str_replace("#NOSERI", $pSeri, $document);
-                    $document = str_replace("#KEPERLUAN", $usaha, $document);
-                    $document = str_replace("#ALAT", "kWH Meter", $document);
-                    $document = str_replace("#TANGGAL", $tanggal, $document);
-
-                    $dok->srt_pasang = $document;
-
-                    //------------------------------------------------------
-
-                    $dok->stt_surat  = 1;
-                    $dok->keterangan = "Pasang";
-                    $dok->save();
-
-                    $tarifP = TarifListrik::first();
-                    $tunggakan = 0;
-                    $bongkaran = Bongkaran::where('kd_kontrol',$kodeLama)->get();
-                    if($bongkaran != NULL){
-                        foreach($bongkaran as $b){
-                            $tunggakan = $tunggakan + $b->listrik;
-                        }
-                    }
-                    $pasang = new PasangAlat;
-                    $penggunaPasang = Pedagang::find($id_pengguna);
-                    if($penggunaPasang != NULL)
-                        $pasang->nama = $penggunaPasang->nama;
-                    else
-                        $pasang->nama = 'Unknown';
-                    $pasang->blok = $blok;
-                    $pasang->kd_kontrol = $kode;
-                    $pasang->tgl_tagihan = date('Y-m-d',time());
-                    $pasang->bln_tagihan = date('Y-m',time());
-                    $pasang->thn_tagihan = date('Y',time());
-                    $pasang->sub_tagihan = $tarifP->trf_pasang * $pDaya;
-                    $pasang->tunggakan   = $tunggakan;
-                    $pasang->ttl_tagihan = $pasang->sub_tagihan + $pasang->tunggakan;
-                    $pasang->sel_tagihan = $pasang->ttl_tagihan - $pasang->rea_tagihan;
-                    $pasang->stt_pasang = 1;
-                    $pasang->keterangan = 'Listrik';
-                    $pasang->via_tambah = Session::get('username');
-                    $pasang->save();
-                }
-
-                //Ganti Alat
-                if($request->radioAlatListrik == 'ganti_listrik'){
-                    $meteran = AlatListrik::find($id_meteran_listrik);
-                    $tempat->daya = $meteran->daya;
-                    $meteran->stt_sedia = 1;
-                    $meteran->stt_bayar = 1;
-                    $meteran->save();
-
-                    //Download Surat Perintah Ganti
-                }
+                $meteran = AlatListrik::find($id_meteran_listrik);
+                $tempat->daya = $meteran->daya;
+                $meteran->stt_sedia = 1;
+                $meteran->stt_bayar = 1;
+                $meteran->save();
                 
                 if(empty($request->dis_listrik) == FALSE){
                     if($request->persenDiskonListrik == NULL){
@@ -934,57 +628,6 @@ class TempatController extends Controller
                 }
             }
             else{
-                if($tempat->trf_listrik !== NULL){
-                    $meteran = AlatListrik::find($tempat->id_meteran_listrik);
-                    $meteran->stt_sedia = 0;
-                    $meteran->stt_bayar = 0;
-                    $meteran->save();
-                    
-                    //Bongkaran
-                    $tagihan = Tagihan::where([['kd_kontrol',$kodeLama],['stt_lunas',0],['sel_listrik','>',0]])->get();
-                    if($tagihan != NULL){
-                        $tunggakan = 0;
-                        foreach($tagihan as $t){
-                            $tunggakan = $tunggakan + $t->sel_listrik;
-
-                            $t->daya_listrik = NULL;
-                            $t->awal_listrik = NULL;
-                            $t->akhir_listrik = NULL;
-                            $t->pakai_listrik = NULL;
-                            $t->byr_listrik = NULL;
-                            $t->rekmin_listrik = NULL;
-                            $t->blok1_listrik = NULL;
-                            $t->blok2_listrik = NULL;
-                            $t->beban_listrik = NULL;
-                            $t->bpju_listrik = NULL;
-                            $t->sub_listrik = 0;
-                            $t->dis_listrik = 0;
-                            $t->ttl_listrik = 0;
-                            $t->rea_listrik = 0;
-                            $t->sel_listrik = 0;
-                            $t->den_listrik = 0;
-                            $t->stt_listrik = NULL;
-                            $t->save();
-
-                            Tagihan::totalTagihan($t->id);
-
-                            $dataTagihan = Tagihan::find($t->id);
-                            if($dataTagihan->sel_tagihan === 0){
-                                $dataTagihan->stt_lunas = 1;
-                                $dataTagihan->stt_bayar = 1;
-                            }
-                            $dataTagihan->save();
-                        }
-                        
-                        $bongkaran = new Bongkaran;
-                        $bongkaran->tgl_bongkar = date('Y-m-d',time());
-                        $bongkaran->kd_kontrol  = $kodeLama;
-                        $bongkaran->listrik     = $tunggakan;
-                        $bongkaran->via_bongkar = Session::get('username');
-                        $bongkaran->save();
-                    }
-                }
-
                 if($tempat->id_meteran_listrik !== NULL){
                     $meteran = AlatListrik::find($tempat->id_meteran_listrik);
                     $meteran->stt_sedia = 0;

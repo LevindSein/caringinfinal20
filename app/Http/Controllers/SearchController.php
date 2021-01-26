@@ -78,7 +78,7 @@ class SearchController extends Controller
 
             $result['kode']     = $data->kd_kontrol;
             
-            $bulan1  = date("Y-m", strtotime("-3 month", $bulan));
+            $bulan1  = date("Y-m", strtotime("-6 month", $bulan));
             $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan1]])->first();
             if($tagihan != NULL){
                 $result['bulan1']      = IndoDate::bulan($tagihan->bln_tagihan," ");
@@ -89,7 +89,7 @@ class SearchController extends Controller
                 $result['totalbulan1'] = 0;
             }
 
-            $bulan2  = date("Y-m", strtotime("-2 month", $bulan));
+            $bulan2  = date("Y-m", strtotime("-5 month", $bulan));
             $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan2]])->first();
             if($tagihan != NULL){
                 $result['bulan2']      = IndoDate::bulan($tagihan->bln_tagihan," ");
@@ -100,7 +100,7 @@ class SearchController extends Controller
                 $result['totalbulan2'] = 0;
             }
 
-            $bulan3  = date("Y-m", strtotime("-1 month", $bulan));
+            $bulan3  = date("Y-m", strtotime("-4 month", $bulan));
             $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan3]])->first();
             if($tagihan != NULL){
                 $result['bulan3']      = IndoDate::bulan($tagihan->bln_tagihan," ");
@@ -110,9 +110,206 @@ class SearchController extends Controller
                 $result['bulan3']      = '';
                 $result['totalbulan3'] = 0;
             }
+            
+            $bulan4  = date("Y-m", strtotime("-3 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan4]])->first();
+            if($tagihan != NULL){
+                $result['bulan4']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan4'] = number_format($tagihan->ttl_tagihan);
+            }
+            else{
+                $result['bulan4']      = '';
+                $result['totalbulan4'] = 0;
+            }
+
+            $bulan5  = date("Y-m", strtotime("-2 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan5]])->first();
+            if($tagihan != NULL){
+                $result['bulan5']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan5'] = number_format($tagihan->ttl_tagihan);
+            }
+            else{
+                $result['bulan5']      = '';
+                $result['totalbulan5'] = 0;
+            }
+
+            $bulan6  = date("Y-m", strtotime("-1 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan6]])->first();
+            if($tagihan != NULL){
+                $result['bulan6']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan6'] = number_format($tagihan->ttl_tagihan);
+            }
+            else{
+                $result['bulan6']      = '';
+                $result['totalbulan6'] = 0;
+            }
 
             $result['bulanini']      = IndoDate::bulan($data->bln_tagihan," ");
             $result['totalbulanini'] = number_format($data->ttl_tagihan);
+            return response()->json(['result' => $result]);
+        }
+    }
+
+    public function cariListrik(Request $request, $id){
+        if($request->ajax()) {
+            $result = array();
+
+            $data = Tagihan::find($id);
+
+            $bulan = strtotime($data->bln_tagihan);
+
+            $result['kode']     = $data->kd_kontrol;
+            
+            $bulan1  = date("Y-m", strtotime("-6 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan1]])->first();
+            if($tagihan != NULL){
+                $result['bulan1']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan1'] = number_format($tagihan->ttl_listrik);
+            }
+            else{
+                $result['bulan1']      = '';
+                $result['totalbulan1'] = 0;
+            }
+
+            $bulan2  = date("Y-m", strtotime("-5 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan2]])->first();
+            if($tagihan != NULL){
+                $result['bulan2']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan2'] = number_format($tagihan->ttl_listrik);
+            }
+            else{
+                $result['bulan2']      = '';
+                $result['totalbulan2'] = 0;
+            }
+
+            $bulan3  = date("Y-m", strtotime("-4 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan3]])->first();
+            if($tagihan != NULL){
+                $result['bulan3']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan3'] = number_format($tagihan->ttl_listrik);
+            }
+            else{
+                $result['bulan3']      = '';
+                $result['totalbulan3'] = 0;
+            }
+            
+            $bulan4  = date("Y-m", strtotime("-3 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan4]])->first();
+            if($tagihan != NULL){
+                $result['bulan4']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan4'] = number_format($tagihan->ttl_listrik);
+            }
+            else{
+                $result['bulan4']      = '';
+                $result['totalbulan4'] = 0;
+            }
+
+            $bulan5  = date("Y-m", strtotime("-2 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan5]])->first();
+            if($tagihan != NULL){
+                $result['bulan5']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan5'] = number_format($tagihan->ttl_listrik);
+            }
+            else{
+                $result['bulan5']      = '';
+                $result['totalbulan5'] = 0;
+            }
+
+            $bulan6  = date("Y-m", strtotime("-1 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan6]])->first();
+            if($tagihan != NULL){
+                $result['bulan6']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan6'] = number_format($tagihan->ttl_listrik);
+            }
+            else{
+                $result['bulan6']      = '';
+                $result['totalbulan6'] = 0;
+            }
+
+            $result['bulanini']      = IndoDate::bulan($data->bln_tagihan," ");
+            $result['totalbulanini'] = number_format($data->ttl_listrik);
+            return response()->json(['result' => $result]);
+        }
+    }
+
+    public function cariAirBersih(Request $request, $id){
+        if($request->ajax()) {
+            $result = array();
+
+            $data = Tagihan::find($id);
+
+            $bulan = strtotime($data->bln_tagihan);
+
+            $result['kode']     = $data->kd_kontrol;
+            
+            $bulan1  = date("Y-m", strtotime("-6 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan1]])->first();
+            if($tagihan != NULL){
+                $result['bulan1']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan1'] = number_format($tagihan->ttl_airbersih);
+            }
+            else{
+                $result['bulan1']      = '';
+                $result['totalbulan1'] = 0;
+            }
+
+            $bulan2  = date("Y-m", strtotime("-5 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan2]])->first();
+            if($tagihan != NULL){
+                $result['bulan2']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan2'] = number_format($tagihan->ttl_airbersih);
+            }
+            else{
+                $result['bulan2']      = '';
+                $result['totalbulan2'] = 0;
+            }
+
+            $bulan3  = date("Y-m", strtotime("-4 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan3]])->first();
+            if($tagihan != NULL){
+                $result['bulan3']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan3'] = number_format($tagihan->ttl_airbersih);
+            }
+            else{
+                $result['bulan3']      = '';
+                $result['totalbulan3'] = 0;
+            }
+            
+            $bulan4  = date("Y-m", strtotime("-3 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan4]])->first();
+            if($tagihan != NULL){
+                $result['bulan4']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan4'] = number_format($tagihan->ttl_airbersih);
+            }
+            else{
+                $result['bulan4']      = '';
+                $result['totalbulan4'] = 0;
+            }
+
+            $bulan5  = date("Y-m", strtotime("-2 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan5]])->first();
+            if($tagihan != NULL){
+                $result['bulan5']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan5'] = number_format($tagihan->ttl_airbersih);
+            }
+            else{
+                $result['bulan5']      = '';
+                $result['totalbulan5'] = 0;
+            }
+
+            $bulan6  = date("Y-m", strtotime("-1 month", $bulan));
+            $tagihan = Tagihan::where([['kd_kontrol',$data->kd_kontrol],['bln_tagihan',$bulan6]])->first();
+            if($tagihan != NULL){
+                $result['bulan6']      = IndoDate::bulan($tagihan->bln_tagihan," ");
+                $result['totalbulan6'] = number_format($tagihan->ttl_airbersih);
+            }
+            else{
+                $result['bulan6']      = '';
+                $result['totalbulan6'] = 0;
+            }
+
+            $result['bulanini']      = IndoDate::bulan($data->bln_tagihan," ");
+            $result['totalbulanini'] = number_format($data->ttl_airbersih);
             return response()->json(['result' => $result]);
         }
     }

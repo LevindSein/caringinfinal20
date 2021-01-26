@@ -611,20 +611,6 @@ $(document).ready(function(){
 				if(data.success)
 				{
                     html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
-                    
-                    if ($('#myCheck2').is(':checked')){
-                        var myRadio = $('input[name="radioAlatListrik"]:checked').val();
-                        if(myRadio == 'pasang_listrik'){
-                            alert('Surat Pasang Listrik Telah Diajukan');
-                        }
-                    }
-
-                    if ($('#myCheck1').is(':checked')){
-                        var myRadio = $('input[name="radioAlatAir"]:checked').val();
-                        if(myRadio == 'pasang_airbersih'){
-                            alert('Surat Pasang Air Telah Diajukan');
-                        }
-                    }
 					
                     setTimeout(function(){
                         $('#myModal').modal('hide');

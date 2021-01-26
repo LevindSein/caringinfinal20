@@ -131,7 +131,10 @@ Route::middleware('ceklogin:tagihan')->group(function (){
     Route::post('tagihan/tambah', [TagihanController::class, 'tambah']);
     Route::get('tagihan/publish', [TagihanController::class, 'publish']);
     Route::post('tagihan/publish', [TagihanController::class, 'publishStore']);
+    Route::get('tagihan/pesan/{id}', [TagihanController::class, 'pesan']);
+    Route::post('tagihan/review', [TagihanController::class, 'reviewStore']);
     Route::post('tagihan/review/{id}', [TagihanController::class, 'review']);
+    Route::get('tagihan/notification', [TagihanController::class, 'notification']);
     Route::get('tagihan/listrik', [TagihanController::class, 'listrik'])->name('listrik');
     Route::get('tagihan/airbersih', [TagihanController::class, 'airbersih'])->name('airbersih');
     Route::post('tagihan/listrik', [TagihanController::class, 'listrikUpdate']);
@@ -251,3 +254,5 @@ Route::get('cari/alamat',[SearchController::class, 'cariAlamat']);
 Route::get('cari/alatlistrik',[SearchController::class, 'cariAlatListrik']);
 Route::get('cari/alatair',[SearchController::class, 'cariAlatAir']);
 Route::get('cari/tagihan/{id}',[SearchController::class, 'cariTagihan']);
+Route::get('cari/listrik/{id}',[SearchController::class, 'cariListrik']);
+Route::get('cari/airbersih/{id}',[SearchController::class, 'cariAirBersih']);

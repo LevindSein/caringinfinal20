@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    $('#notification').show();
     $('#tabelTagihan').DataTable({
 		processing: true,
 		serverSide: true,
@@ -80,7 +81,7 @@ $(document).ready(function(){
                 var keamananipk = 1;
                 var kebersihan = 1;
                 
-                if(data.result.sub_listrik != 0 ){
+                if(data.result.sub_listrik != 0 || data.result.listrik != null){
                     $('#divEditListrik').show();
                     $('#stt_listrik').val('ok');
                     $('#dayaListrik').val(data.result.daya_listrik.toLocaleString("en-US"));
@@ -134,7 +135,7 @@ $(document).ready(function(){
                     });
                 }
 
-                if(data.result.sub_airbersih !== 0 ){
+                if(data.result.sub_airbersih !== 0 || data.result.airbersih != null){
                     $('#divEditAirBersih').show();
                     $('#stt_airbersih').val('ok');
                     $('#awalAir').val(data.result.awal_airbersih.toLocaleString("en-US"));
@@ -177,7 +178,7 @@ $(document).ready(function(){
                     });
                 }
 
-                if(data.result.sub_keamananipk !== 0 ){
+                if(data.result.sub_keamananipk !== 0 || data.result.keamananipk != null){
                     $('#divEditKeamananIpk').show();
                     $('#stt_keamananipk').val('ok');
                     $('#keamananipk').val(data.result.sub_keamananipk.toLocaleString("en-US"));
@@ -219,7 +220,7 @@ $(document).ready(function(){
                     });
                 }
                 
-                if(data.result.sub_kebersihan !== 0 ){
+                if(data.result.sub_kebersihan !== 0 || data.result.kebersihan != null){
                     $('#divEditKebersihan').show();
                     $('#stt_kebersihan').val('ok');
                     $('#kebersihan').val(data.result.sub_kebersihan.toLocaleString("en-US"));
@@ -262,13 +263,13 @@ $(document).ready(function(){
                     });
                 }
                 
-                if(data.result.ttl_airkotor != 0 ){
+                if(data.result.ttl_airkotor != 0 || data.result.airkotor != null){
                     $('#divEditAirKotor').show();
                     $('#stt_airkotor').val('ok');
                     $('#airkotor').val(data.result.ttl_airkotor.toLocaleString("en-US"));
                 }
 
-                if(data.result.ttl_lain != 0 ){
+                if(data.result.ttl_lain != 0 || data.result.lain != null){
                     $('#divEditLain').show();
                     $('#stt_lain').val('ok');
                     $('#lain').val(data.result.ttl_lain.toLocaleString("en-US"));
@@ -289,6 +290,8 @@ $(document).ready(function(){
                         $("#action_btn").prop("disabled", false);
                     }
                 });
+                
+				$('#pesan').val(data.result.ket);
 				$('#hidden_id').val(id);
 				$('#action_btn').val('Update');
                 $('#myTagihan').modal('show');
@@ -312,12 +315,16 @@ $(document).ready(function(){
 				{
                     html = '<div class="alert alert-danger" id="error-alert"> <strong>Maaf ! </strong>' + data.errors + '</div>';
 				}
-				if(data.success)
+				else
 				{
-					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
+					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.result.success + '</div>';
                     $('#form_tagihan')[0].reset();
                     $('#myTagihan').modal('hide');
                     $('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
+
+                    if(data.result.notif == 0){
+                        $('#notification').hide();
+                    }
 				}
 				$('#form_result').html(html);
                 $("#success-alert,#error-alert,#info-alert,#warning-alert")

@@ -30,16 +30,24 @@ $(document).ready(function(){
     });
 
     var id;
+    
+    $('.alamatPemilik').select2();
+    $('.alamatPengguna').select2();
 
     $('#add_pedagang').click(function(){
 		$('.modal-title').text('Tambah Pedagang');
+        $('#alamatPemilik').prop('required', false);
+        $('#alamatPengguna').prop('required', false);
 		$('#action_btn').val('Tambah');
 		$('#action').val('Add');
 		$('#form_result').html('');
         $('#form_pedagang')[0].reset();
         $('#displayPemilik').hide();
         $('#displayPengguna').hide();
-        $('#alamatPemilik').select2("destroy").select2({
+        $('#username').val();
+        $('#form_pedagang')[0].reset();
+
+        $('#alamatPemilik').select2("destroy").val('').html('').select2({
             placeholder: '--- Pilih Kepemilikan ---',
             ajax: {
                 url: "/cari/alamat",
@@ -59,7 +67,7 @@ $(document).ready(function(){
             }
         });
 
-        $('#alamatPengguna').select2("destroy").select2({
+        $('#alamatPengguna').select2("destroy").val('').html('').select2({
             placeholder: '--- Pilih Tempat ---',
             ajax: {
                 url: "/cari/alamat",
@@ -80,7 +88,116 @@ $(document).ready(function(){
         });
 
 		$('#myModal').modal('show');
-	});
+    });
+    
+    $(document).on('click', '.edit', function(){
+		id = $(this).attr('id');
+        $('#hidden_id').val(id);
+        $('.modal-title').text('Edit Pedagang');
+        $('#alamatPemilik').prop('required', false);
+        $('#alamatPengguna').prop('required', false);
+        $('#action_btn').val('Update');
+        $('#action').val('Edit');
+		$('#form_result').html('');
+        $('#form_pedagang')[0].reset();
+        $('#displayPemilik').hide();
+        $('#displayPengguna').hide();
+        $('#username').val();
+        $('#form_pedagang')[0].reset();
+
+        var s1 = $('#alamatPemilik').select2("destroy").val('').html('').select2({
+            placeholder: '--- Pilih Kepemilikan ---',
+            ajax: {
+                url: "/cari/alamat",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (alamat) {
+                    return {
+                    results:  $.map(alamat, function (al) {
+                        return {
+                        text: al.kd_kontrol,
+                        id: al.id
+                        }
+                    })
+                    };
+                },
+                cache: true
+            }
+        });
+
+        var s2 = $('#alamatPengguna').select2("destroy").val('').html('').select2({
+            placeholder: '--- Pilih Tempat ---',
+            ajax: {
+                url: "/cari/alamat",
+                dataType: 'json',
+                delay: 250,
+                processResults: function (alamat) {
+                    return {
+                    results:  $.map(alamat, function (al) {
+                        return {
+                        text: al.kd_kontrol,
+                        id: al.id
+                        }
+                    })
+                    };
+                },
+                cache: true
+            }
+        });
+
+		$.ajax({
+			url :"/pedagang/"+id+"/edit",
+            cache:false,
+			dataType:"json",
+			success:function(data)
+			{
+				$('#ktp').val(data.result.ktp);
+                $('#nama').val(data.result.nama);
+                $('#username').val(data.result.username);
+                $('#anggota').val(data.result.anggota);
+                $('#email').val(data.result.email);
+                $('#hp').val(data.result.hp);
+
+                if(data.result.checkPemilik == 'checked'){
+                    $("#pemilik").prop("checked", true);
+                    $('#alamatPemilik').prop('required', true);
+                    $("#displayPemilik").show();
+
+                    var valPemilik = data.result.pemilik;
+
+                    valPemilik.forEach(function(e){
+                        if(!s1.find('option:contains(' + e + ')').length) 
+                            s1.append($('<option>').text(e));
+                    });
+                    s1.val(valPemilik).trigger("change"); 
+                }
+                else{
+                    $("#pemilik").prop("checked", false);
+                    $("#displayPemilik").hide();
+                }
+                
+                if(data.result.checkPengguna == 'checked'){
+                    $("#pengguna").prop("checked", true);
+                    $('#alamatPengguna').prop('required', true);
+                    $("#displayPengguna").show();
+
+                    var valPengguna = data.result.pengguna;
+                    
+                    valPengguna.forEach(function(e){
+                        if(!s2.find('option:contains(' + e + ')').length) 
+                            s2.append($('<option>').text(e));
+                    });
+                    s2.val(valPengguna).trigger("change"); 
+                }
+                else{
+                    $("#pengguna").prop("checked", false);
+                    $("#displayPengguna").hide();
+                }
+                
+                $('#myModal').modal('show');
+			}
+		})
+    });
 
     $('#form_pedagang').on('submit', function(event){
 		event.preventDefault();
@@ -109,54 +226,13 @@ $(document).ready(function(){
 				if(data.errors)
 				{
                     html = '<div class="alert alert-danger" id="error-alert"> <strong>Maaf ! </strong>' + data.errors + '</div>';
+                    console.log(data.errors);
 				}
 				if(data.success)
 				{
 					html = '<div class="alert alert-success" id="success-alert"> <strong>Sukses ! </strong>' + data.success + '</div>';
-					$('#form_pedagang')[0].reset();
-                    $('#tabelPedagang').DataTable().ajax.reload(function(){}, false);
-                    $('#displayPemilik').hide();
-                    $('#displayPengguna').hide();
-                    $('#alamatPemilik').select2("destroy").select2({
-                        placeholder: '--- Pilih Kepemilikan ---',
-                        ajax: {
-                            url: "/cari/alamat",
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function (alamat) {
-                                return {
-                                results:  $.map(alamat, function (al) {
-                                    return {
-                                    text: al.kd_kontrol,
-                                    id: al.id
-                                    }
-                                })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
-
-                    $('#alamatPengguna').select2("destroy").select2({
-                        placeholder: '--- Pilih Tempat ---',
-                        ajax: {
-                            url: "/cari/alamat",
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function (alamat) {
-                                return {
-                                results:  $.map(alamat, function (al) {
-                                    return {
-                                    text: al.kd_kontrol,
-                                    id: al.id
-                                    }
-                                })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
-				}
+                }
+                $('#tabelPedagang').DataTable().ajax.reload(function(){}, false);
 				$('#form_result').html(html);
                 $("#success-alert,#error-alert,#info-alert,#warning-alert")
                     .fadeTo(2000, 1000)
@@ -166,145 +242,6 @@ $(document).ready(function(){
                 $('#myModal').modal('hide');
 			}
 		});
-    });
-
-    $(document).on('click', '.edit', function(){
-		id = $(this).attr('id');
-		$('#form_result').html('');
-		$('#alamatPemilik').select2('val','');
-		$('#alamatPemilik').html('');
-		$('#alamatPengguna').select2('val','');
-		$('#alamatPengguna').html('');
-		$.ajax({
-			url :"/pedagang/"+id+"/edit",
-            cache:false,
-			dataType:"json",
-			success:function(data)
-			{
-				$('#ktp').val(data.result.ktp);
-                $('#nama').val(data.result.nama);
-                $('#username').val(data.result.username);
-                $('#password').val();
-                $('#anggota').val(data.result.anggota);
-                $('#email').val(data.result.email);
-                $('#hp').val(data.result.hp);
-
-                if(data.result.checkPemilik == 'checked'){
-                    $("#pemilik").prop("checked", true);
-                    $("#displayPemilik").show();
-                    $('#alamatPemilik').select2({
-                        placeholder: '--- Pilih Kepemilikan ---',
-                        ajax: {
-                            url: "/cari/alamat",
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function (alamat) {
-                                return {
-                                results:  $.map(alamat, function (al) {
-                                    return {
-                                    text: al.kd_kontrol,
-                                    id: al.id
-                                    }
-                                })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
-
-                    var s1 = $("#alamatPemilik").select2({
-                        placeholder: '--- Pilih Kepemilikan ---',
-                        ajax: {
-                            url: "/cari/alamat",
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function (alamat) {
-                                return {
-                                results:  $.map(alamat, function (al) {
-                                    return {
-                                    text: al.kd_kontrol,
-                                    id: al.id
-                                    }
-                                })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
-                    var valPemilik = data.result.pemilik;
-
-                    valPemilik.forEach(function(e){
-                        if(!s1.find('option:contains(' + e + ')').length) 
-                            s1.append($('<option>').text(e));
-                    });
-                    s1.val(valPemilik).trigger("change"); 
-                }
-                else{
-                    $("#pemilik").prop("checked", false);
-                    $("#displayPemilik").hide();
-                }
-                
-                if(data.result.checkPengguna == 'checked'){
-                    $("#pengguna").prop("checked", true);
-                    $("#displayPengguna").show();
-                    var s2 = $("#alamatPengguna").select2({
-                        placeholder: '--- Pilih Tempat ---',
-                        ajax: {
-                            url: "/cari/alamat",
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function (alamat) {
-                                return {
-                                results:  $.map(alamat, function (al) {
-                                    return {
-                                    text: al.kd_kontrol,
-                                    id: al.id
-                                    }
-                                })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
-                    var valPengguna = data.result.pengguna;
-                    
-                    valPengguna.forEach(function(e){
-                        if(!s2.find('option:contains(' + e + ')').length) 
-                            s2.append($('<option>').text(e));
-                    });
-                    s2.val(valPengguna).trigger("change"); 
-                }
-                else{
-                    $('#alamatPengguna').select2("destroy").select2({
-                        placeholder: '--- Pilih Tempat ---',
-                        ajax: {
-                            url: "/cari/alamat",
-                            dataType: 'json',
-                            delay: 250,
-                            processResults: function (alamat) {
-                                return {
-                                results:  $.map(alamat, function (al) {
-                                    return {
-                                    text: al.kd_kontrol,
-                                    id: al.id
-                                    }
-                                })
-                                };
-                            },
-                            cache: true
-                        }
-                    });
-                    $("#pengguna").prop("checked", false);
-                    $("#displayPengguna").hide();
-                }
-                
-				$('#hidden_id').val(id);
-				$('.modal-title').text('Edit Pedagang');
-				$('#action_btn').val('Update');
-				$('#action').val('Edit');
-                $('#myModal').modal('show');
-			}
-		})
     });
     
     function evaluate() {
@@ -322,19 +259,17 @@ $(document).ready(function(){
         .each(evaluate);
     
     $('#nama').on('input',function(){
-        var nama = $(this).val();
-        var username = nama.replace(/\s/g,'');
-        var username = username.slice(0, 7);
-        var number = Math.floor(1000 + Math.random() * 9000);
-        document.getElementById("username").value = username + number;
+        if($('#action').val() == 'Add'){
+            var nama = $(this).val();
+            var username = nama.replace(/\s/g,'');
+            var username = username.slice(0, 7);
+            var number = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById("username").value = username + number;
 
-        var anggota = 'BP3C' + Math.floor(100000 + Math.random() * 982718);
-        var anggota = anggota.slice(0, 10);
-        document.getElementById("anggota").value = anggota;
-
-        var pass = shuffle('abcdefghjkmnpqrstuvwxyz123456789');
-        var pass = pass.slice(0, 7);
-        document.getElementById("password").value = pass;
+            var anggota = 'BP3C' + Math.floor(100000 + Math.random() * 982718);
+            var anggota = anggota.slice(0, 10);
+            document.getElementById("anggota").value = anggota;
+        }
     });
 
     $(".toggle-password").click(function() {
@@ -390,46 +325,6 @@ $(document).ready(function(){
                 $('#ok_button').text('Hapus');
             }
         })
-    });
-
-    $('.alamatPemilik').select2({
-        placeholder: '--- Pilih Kepemilikan ---',
-        ajax: {
-            url: "/cari/alamat",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (alamat) {
-                return {
-                results:  $.map(alamat, function (al) {
-                    return {
-                    text: al.kd_kontrol,
-                    id: al.id
-                    }
-                })
-                };
-            },
-            cache: true
-        }
-    });
-
-    $('.alamatPengguna').select2({
-        placeholder: '--- Pilih Tempat ---',
-        ajax: {
-            url: "/cari/alamat",
-            dataType: 'json',
-            delay: 250,
-            processResults: function (alamat) {
-                return {
-                results:  $.map(alamat, function (al) {
-                    return {
-                    text: al.kd_kontrol,
-                    id: al.id
-                    }
-                })
-                };
-            },
-            cache: true
-        }
     });
     
     function checkPemilik() {

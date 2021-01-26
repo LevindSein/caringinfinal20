@@ -74,7 +74,6 @@ class PedagangController extends Controller
             'ktp'      => 'required',
             'nama'     => 'required',
             'username' => 'required',
-            'password' => 'required',
             'anggota'  => 'required',
             'hp'       => 'required',
         );
@@ -90,7 +89,7 @@ class PedagangController extends Controller
             'ktp'      => $request->ktp,
             'nama'     => ucwords($request->nama),
             'username' => strtolower($request->username),
-            'password' => md5(hash('gost',$request->password)),
+            'password' => md5(hash('gost','123456')),
             'anggota'  => strtoupper($request->anggota),
             'email'    => strtolower($request->email.'@gmail.com'),
             'role'     => 'nasabah',
@@ -112,7 +111,7 @@ class PedagangController extends Controller
         try{
             Pedagang::create($data);
 
-            $ped = Pedagang::where('ktp',$request->ktp)->first();
+            $ped = Pedagang::where('username',$request->username)->first();
 
             if($request->pemilik == "pemilik"){
                 $alamatPemilik = $request->alamatPemilik;
@@ -205,9 +204,7 @@ class PedagangController extends Controller
         $rules = array(
             'ktp'      => 'required',
             'nama'     => 'required',
-            'username' => 'required',
-            'anggota'  => 'required',
-            'hp'       => 'required',
+            'hp'       => 'required'
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -220,15 +217,8 @@ class PedagangController extends Controller
         $data = [
             'ktp'      => $request->ktp,
             'nama'     => ucwords($request->nama),
-            'username' => strtolower($request->username),
-            'anggota'  => strtoupper($request->anggota),
-            'email'    => strtolower($request->email.'@gmail.com'),
-            'role'     => 'nasabah',
+            'email'    => strtolower($request->email.'@gmail.com')
         ];
-       
-        if($request->password != NULL){
-            $data['password'] = md5(hash('gost',$request->password));
-        }
 
         if($request->email == NULL) {
             $data['email'] = NULL;
@@ -246,15 +236,10 @@ class PedagangController extends Controller
         try{
             Pedagang::whereId($request->hidden_id)->update($data);
 
+            $ped = Pedagang::find($request->hidden_id);
+
             if($request->pemilik == "pemilik"){
                 $alamatPemilik = $request->alamatPemilik;
-                foreach($alamatPemilik as $alamat){
-                    $tempat = TempatUsaha::find($alamat);
-                    if($tempat != NULL){
-                        $tempat->id_pemilik = $ped->id;
-                        $tempat->save();
-                    }
-                }
 
                 $tempat = TempatUsaha::where('id_pemilik',$request->hidden_id)->get();
                 if($tempat != NULL){
@@ -265,6 +250,14 @@ class PedagangController extends Controller
                             $hapus->save();
                         }
                     }   
+                }
+                
+                foreach($alamatPemilik as $alamat){
+                    $tempat = TempatUsaha::find($alamat);
+                    if($tempat != NULL){
+                        $tempat->id_pemilik = $ped->id;
+                        $tempat->save();
+                    }
                 }
             }
             else{
@@ -280,13 +273,6 @@ class PedagangController extends Controller
 
             if($request->pengguna == "pengguna"){
                 $alamatPengguna = $request->alamatPengguna;
-                foreach($alamatPengguna as $alamat){
-                    $tempat = TempatUsaha::find($alamat);
-                    if($tempat != NULL){
-                        $tempat->id_pengguna = $ped->id;
-                        $tempat->save();
-                    }
-                }
 
                 $tempat = TempatUsaha::where('id_pengguna',$request->hidden_id)->get();
                 if($tempat != NULL){
@@ -297,6 +283,14 @@ class PedagangController extends Controller
                             $hapus->save();
                         }
                     }   
+                }
+
+                foreach($alamatPengguna as $alamat){
+                    $tempat = TempatUsaha::find($alamat);
+                    if($tempat != NULL){
+                        $tempat->id_pengguna = $ped->id;
+                        $tempat->save();
+                    }
                 }
             }
             else{
@@ -312,7 +306,8 @@ class PedagangController extends Controller
             return response()->json(['success' => 'Data Berhasil Diedit.']);
         }
         catch(\Exception $e){
-            return response()->json(['errors' => 'Data Gagal Diedit.']);
+            // return response()->json(['errors' => 'Data Gagal Diedit.']);
+            return response()->json(['errors' => $e]);
         }
     }
 

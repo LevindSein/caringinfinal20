@@ -56,6 +56,20 @@ class TagihanController extends Controller
         if(Session::get('role') == 'admin')
             $wherein = Session::get('otoritas')[0]->blok;
 
+        // Notification
+        $notif = 0;
+        if(Session::get('role') == 'admin'){
+            $wherein = Session::get('otoritas')[0]->blok;
+            $notif = Tagihan::where([['bln_tagihan','>=',$periode],['review',0]])->whereIn('blok',$wherein)->count();
+        }
+        else{
+            $notif = Tagihan::where([['bln_tagihan','>=',$periode],['review',0]])->count();
+        }
+
+        if($notif > 0){
+            $notif = 1;
+        }
+
         if($request->ajax())
         {
             if(Session::get('role') == 'admin'){
@@ -68,7 +82,10 @@ class TagihanController extends Controller
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->stt_publish === 0){
-                        $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                        if($data->review === 0)
+                            $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                        else
+                            $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#000000;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
@@ -337,6 +354,7 @@ class TagihanController extends Controller
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->whereIn('tagihan.blok',$wherein)
                                     ->count(),
+                'notif'         => $notif,
             ]);
         }
         else{
@@ -348,6 +366,7 @@ class TagihanController extends Controller
                                     ->count(),
                 'air_badge'     => Tagihan::where('tagihan.stt_airbersih',0)
                                     ->count(),
+                'notif'         => $notif,
             ]);
         }
     }
@@ -360,6 +379,20 @@ class TagihanController extends Controller
         
         if(Session::get('role') == 'admin')
             $wherein = Session::get('otoritas')[0]->blok;
+
+        // Notification
+        $notif = 0;
+        if(Session::get('role') == 'admin'){
+            $wherein = Session::get('otoritas')[0]->blok;
+            $notif = Tagihan::where([['bln_tagihan','>=',$periode],['review',0]])->whereIn('blok',$wherein)->count();
+        }
+        else{
+            $notif = Tagihan::where([['bln_tagihan','>=',$periode],['review',0]])->count();
+        }
+
+        if($notif > 0){
+            $notif = 1;
+        }
         
         if($request->ajax())
         {
@@ -373,14 +406,15 @@ class TagihanController extends Controller
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     if($data->stt_publish === 0){
-                        $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                        if($data->review === 0)
+                            $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                        else
+                            $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#000000;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
-                        // $button = '<span class="text-center" style="color:#1cc88a;">Published</span>';
-                        // if(Session::get('role') == 'master')
-                            $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
+                        $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
                     }
                     return $button;
                 })
@@ -644,6 +678,7 @@ class TagihanController extends Controller
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->whereIn('tagihan.blok',$wherein)
                                     ->count(),
+                'notif'         => $notif,
             ]);
         }
         else{
@@ -657,6 +692,7 @@ class TagihanController extends Controller
                 'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
                                     ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
                                     ->count(),
+                'notif'         => $notif,
             ]);
         }
     }
@@ -704,6 +740,14 @@ class TagihanController extends Controller
         if(request()->ajax())
         {
             $data = Tagihan::findOrFail($id);
+            
+            $tempat = TempatUsaha::where('kd_kontrol',$data->kd_kontrol)->first();
+            $data['listrik'] = $tempat->trf_listrik;
+            $data['airbersih'] = $tempat->trf_airbersih;
+            $data['keamananipk'] = $tempat->trf_keamananipk;
+            $data['kebersihan'] = $tempat->trf_kebersihan;
+            $data['airkotor'] = $tempat->trf_airkotor;
+            $data['lain'] = $tempat->trf_lain;
 
             return response()->json(['result' => $data]);
         }
@@ -862,8 +906,45 @@ class TagihanController extends Controller
                 $tagihan->save();
             }
 
+            $tagihan = Tagihan::find($id);
+            $tagihan->review   = 2;
+            $tagihan->reviewer = "Checked by ".Session::get('username');
+            $tagihan->ket      = $request->pesan;
+            $tagihan->save();
+
             Tagihan::totalTagihan($id);
-            return response()->json(['success' => 'Data Berhasil Diedit.']);
+
+            //Notification
+            $now = date("Y-m-d",time());
+            $check = date("Y-m-25",time());
+
+            if($now < $check){
+                $sekarang = date("Y-m", time());
+                $time     = strtotime($sekarang);
+                $periode  = date("Y-m", time());
+            }
+            else if($now >= $check){
+                $sekarang = date("Y-m", time());
+                $time     = strtotime($sekarang);
+                $periode  = date("Y-m", strtotime("+1 month", $time));
+            }
+            $notif = 0;
+            if(Session::get('role') == 'admin'){
+                $wherein = Session::get('otoritas')[0]->blok;
+                $notif = Tagihan::where([['bln_tagihan','>=',$periode],['review',0]])->whereIn('blok',$wherein)->count();
+            }
+            else{
+                $notif = Tagihan::where([['bln_tagihan','>=',$periode],['review',0]])->count();
+            }
+
+            if($notif > 0){
+                $notif = 1;
+            }
+
+            $data = array();
+            $data['success'] = 'Data Berhasil Diedit';
+            $data['notif']   = $notif; 
+            return response()->json(['result' => $data]);
         }
         catch(\Exception $e){
             return response()->json(['errors' => 'Data Gagal Diedit.']);
@@ -1195,7 +1276,7 @@ class TagihanController extends Controller
 
         $this->total($request->hidden_id);
 
-        return redirect()->route('airbersih');
+        return redirect()->route('airbersih',['tagihan_blok'=>$blok]);
     }
 
     public function total($id){
@@ -1322,11 +1403,11 @@ class TagihanController extends Controller
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
                     $hasil = number_format($data->ttl_listrik);
                     if($warna == 1 || $warna == 2)
-                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totallistrik" id="'.$data->id.'"><span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span></a>';
                     else if($warna == 3)
-                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totallistrik" id="'.$data->id.'"><span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span></a>';
                     else
-                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totallistrik" id="'.$data->id.'"><span style="font-size:14px;color:#000000;"><b>'.$hasil.'</b></span></a>';
                 })
                 ->editColumn('awal_airbersih', function ($data) {
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
@@ -1362,11 +1443,11 @@ class TagihanController extends Controller
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
                     $hasil = number_format($data->ttl_airbersih);
                     if($warna == 1 || $warna == 2)
-                        return '<span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totalairbersih" id="'.$data->id.'"><span style="color:#f6c23e;font-size:14px;" class="listrik-hover";"><b>'.$hasil.'</b></span></a>';
                     else if($warna == 3)
-                        return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totalairbersih" id="'.$data->id.'"><span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span></a>';
                     else
-                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                        return '<a href="javascript:void(0)" class="totalairbersih" id="'.$data->id.'"><span style="font-size:14px;color:#000000;"><b>'.$hasil.'</b></span></a>';
                 })
                 ->editColumn('dis_keamananipk', function ($data) {
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
@@ -1386,7 +1467,7 @@ class TagihanController extends Controller
                     else if($warna == 3)
                         return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
                     else
-                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                        return '<span style="font-size:14px;color:#000000;"><b>'.$hasil.'</b></span>';
                 })
                 ->editColumn('dis_kebersihan', function ($data) {
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
@@ -1406,7 +1487,7 @@ class TagihanController extends Controller
                     else if($warna == 3)
                         return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
                     else
-                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                        return '<span style="font-size:14px;color:#000000;"><b>'.$hasil.'</b></span>';
                 })
                 ->editColumn('ttl_airkotor', function ($data) {
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
@@ -1416,7 +1497,7 @@ class TagihanController extends Controller
                     else if($warna == 3)
                         return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
                     else
-                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                        return '<span style="font-size:14px;color:#000000;"><b>'.$hasil.'</b></span>';
                 })
                 ->editColumn('ttl_lain', function ($data) {
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
@@ -1426,7 +1507,7 @@ class TagihanController extends Controller
                     else if($warna == 3)
                         return '<span style="color:#e74a3b;font-size:14px;background-color:rgba(255, 169, 189, 0.2);"><b>'.$hasil.'</b></span>';
                     else
-                        return '<span style="font-size:14px;"><b>'.$hasil.'</b></span>';
+                        return '<span style="font-size:14px;color:#000000;"><b>'.$hasil.'</b></span>';
                 })
                 ->editColumn('ttl_tagihan', function ($data) {
                     $warna = max($data->warna_airbersih,$data->warna_listrik);
@@ -1444,6 +1525,9 @@ class TagihanController extends Controller
                 ->addColumn('verifikasi', function($data){
                     if($data->review === 0){
                         $button = '<button type="button" title="Verifikasi" name="verifikasi" id="'.$data->id.'" class="verification btn btn-sm btn-danger">checking</button><br><label>'.$data->reviewer.'</label>';
+                    }
+                    else if($data->review === 2){
+                        $button = '<button type="button" title="Verifikasi" name="verifikasi" id="'.$data->id.'" class="verification btn btn-sm btn-primary">checked</button><br><label>'.$data->reviewer.'</label>';
                     }
                     else{
                         $button = '<button type="button" title="Verifikasi" name="verifikasi" id="'.$data->id.'" class="verification btn btn-sm btn-success">verified</button><br><label>'.$data->reviewer.'</label>';
@@ -1493,25 +1577,360 @@ class TagihanController extends Controller
         }
     }
 
-    public function review(Request $request,$id){
+    public function pesan(Request $request,$id){
         if($request->ajax()){
             try{
                 $tagihan = Tagihan::find($id);
-                $review = $tagihan->review;
-                if($review === 1){
-                    $hasil = 0;
-                }
-                else if($review === 0){
-                    $hasil = 1;
-                }
-                $tagihan->review = $hasil;
-                $tagihan->reviewer = Session::get('username');
-                $tagihan->save();
-                return response()->json(['success' => 'Review Sukses']);
+                $data = array();
+                $data['pesan']  = $tagihan->ket;
+                $data['status'] = $tagihan->review;
+                return response()->json(['result' => $data]);
             }
             catch(\Exception $e){
-                return response()->json(['errors' => 'Oops! Review Gagal']);
+                return response()->json(['errors' => 'Oops! Ambil Data Gagal']);
             }
+        }
+    }
+
+
+    public function reviewStore(Request $request){
+        if($request->ajax()){
+            $id = $request->hidden_id;
+            try{
+                //1 = Verified
+                //0 = Checking
+                //2 = Edited
+                $id = $request->hidden_id;
+                $tagihan = Tagihan::find($id);
+                $tagihan->ket      =  "(" . substr(Session::get('username'),0,6) . " at " . date('d/m/Y h:i',time()) . ") : " . $request->pesan;
+                $tagihan->review   = 0;
+                $tagihan->reviewer = "by ".Session::get('username');
+                $tagihan->save();
+                return response()->json(['success' => 'Pengecekan Diajukan']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => "Oops ! Pengajuan Check Tagihan Gagal"]);
+            }
+        }
+    }
+
+    public function review(Request $request, $id){
+        if($request->ajax()){
+            try{
+                //1 = Verified
+                //0 = Checking
+                //2 = Edited
+                $tagihan = Tagihan::find($id);
+                $tagihan->review = 1;
+                $tagihan->reviewer = "Verified by ".Session::get('username');
+                $tagihan->save();
+                return response()->json(['success' => 'Tagihan Verified']);
+            }
+            catch(\Exception $e){
+                return response()->json(['errors' => 'Oops! Verifikasi Gagal']);
+            }
+        }
+    }
+
+    public function notification(Request $request){
+        if(Session::get('role') == 'admin')
+            $wherein = Session::get('otoritas')[0]->blok;
+
+        if($request->ajax())
+        {
+            if(Session::get('role') == 'admin'){
+                $wherein = Session::get('otoritas')[0]->blok;
+                $data = Tagihan::where('review',0)->whereIn('blok',$wherein);
+            }
+            else{
+                $data = Tagihan::where('review',0);
+            }
+
+            return DataTables::of($data)
+                ->addColumn('action', function($data){
+                    if($data->stt_publish === 0){
+                        if($data->review === 0)
+                            $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;"></i></a>';
+                        else
+                            $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#000000;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
+                    }
+                    else{
+                        $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
+                    }
+                    return $button;
+                })
+                ->editColumn('kd_kontrol', function ($data) {
+                    $hasil = $data->kd_kontrol;
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->kd_kontrol === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('nama', function ($data) {
+                    $hasil = $data->nama;
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->nama === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('daya_listrik', function ($data) {
+                    $hasil = number_format($data->daya_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->daya_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('awal_listrik', function ($data) {
+                    $hasil = number_format($data->awal_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->awal_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('akhir_listrik', function ($data) {
+                    $hasil = number_format($data->akhir_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->akhir_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('pakai_listrik', function ($data) {
+                    $hasil = number_format($data->pakai_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->pakai_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('ttl_listrik', function ($data) {
+                    $hasil = number_format($data->ttl_listrik);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_listrik === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('awal_airbersih', function ($data) {
+                    $hasil = number_format($data->awal_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->awal_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('akhir_airbersih', function ($data) {
+                    $hasil = number_format($data->akhir_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->akhir_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('pakai_airbersih', function ($data) {
+                    $hasil = number_format($data->pakai_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->pakai_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('ttl_airbersih', function ($data) {
+                    $hasil = number_format($data->ttl_airbersih);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_airbersih === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('ttl_keamananipk', function ($data) {
+                    $hasil = number_format($data->ttl_keamananipk);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_keamananipk === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('ttl_kebersihan', function ($data) {
+                    $hasil = number_format($data->ttl_kebersihan);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_kebersihan === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('ttl_airkotor', function ($data) {
+                    $hasil = number_format($data->ttl_airkotor);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_airkotor === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('ttl_lain', function ($data) {
+                    $hasil = number_format($data->ttl_lain);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_lain === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->editColumn('ttl_tagihan', function ($data) {
+                    $hasil = number_format($data->ttl_tagihan);
+                    $warna = max($data->warna_airbersih, $data->warna_listrik);
+                    if ($data->ttl_tagihan === NULL)
+                        return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
+                    else {
+                        if($warna == 1 || $warna == 2)
+                            return '<span class="text-center" style="color:#f6c23e;">'.$hasil.'</span>';
+                        else if($warna == 3)
+                            return '<span class="text-center" style="color:#e74a3b;">'.$hasil.'</span>';
+                        else
+                            return $hasil;
+                    }
+                })
+                ->rawColumns([
+                    'action',
+                    'los',
+                    'kd_kontrol',
+                    'nama',
+                    'daya_listrik',
+                    'awal_listrik',
+                    'akhir_listrik',
+                    'pakai_listrik',
+                    'ttl_listrik',
+                    'awal_airbersih',
+                    'akhir_airbersih',
+                    'pakai_airbersih',
+                    'ttl_airbersih',
+                    'ttl_keamananipk',
+                    'ttl_kebersihan',
+                    'ttl_airkotor',
+                    'ttl_lain',
+                    'ttl_tagihan',
+                ])
+                ->make(true);
+        }
+
+        if(Session::get('role') == 'admin'){
+            return view('tagihan.notification',[
+                'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
+                'blok'          => Blok::select('nama')->whereIn('nama',$wherein)->orderBy('nama')->get(),
+                'listrik_badge' => Tagihan::where([['tagihan.stt_listrik',0],['tempat_usaha.trf_listrik',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->whereIn('tagihan.blok',$wherein)
+                                    ->count(),
+                'air_badge'     => Tagihan::where([['tagihan.stt_airbersih',0],['tempat_usaha.trf_airbersih',1]])
+                                    ->leftJoin('tempat_usaha','tagihan.kd_kontrol','=','tempat_usaha.kd_kontrol')
+                                    ->whereIn('tagihan.blok',$wherein)
+                                    ->count(),
+            ]);
+        }
+        else{
+            return view('tagihan.notification',[
+                'tahun'         => Tagihan::select('thn_tagihan')->groupBy('thn_tagihan')->orderBy('thn_tagihan','asc')->get(),
+                'blok'          => Blok::select('nama')->orderBy('nama')->get(),
+                'listrik_badge' => Tagihan::where('stt_listrik',0)
+                                    ->count(),
+                'air_badge'     => Tagihan::where('tagihan.stt_airbersih',0)
+                                    ->count(),
+            ]);
         }
     }
 
@@ -1636,7 +2055,7 @@ class TagihanController extends Controller
                             $tagihan->beban_listrik = $beban_listrik;
                             $tagihan->bpju_listrik = $bpju_listrik;
 
-                            $tagihan->sub_listrik = round($ttl_listrik  + ($ttl_listrik * (($tarif->trf_ppn) / 100)));
+                            $tagihan->sub_listrik = round($ttl_listrik  + ($ttl_listrik * ($tarif->trf_ppn / 100)));
 
                             $tempat = TempatUsaha::where('kd_kontrol',$record->kd_kontrol)->first();
                             $diskon = 0;
@@ -1745,7 +2164,7 @@ class TagihanController extends Controller
                             $tagihan->pemeliharaan_airbersih = $pemeliharaan_airbersih;
                             $tagihan->beban_airbersih = $beban_airbersih;
                             $tagihan->arkot_airbersih = $arkot_airbersih;
-                            $tagihan->sub_airbersih = round($ttl_airbersih + ($ttl_airbersih * (($tarif->trf_ppn) / 100)));
+                            $tagihan->sub_airbersih = round($ttl_airbersih + ($ttl_airbersih * ($tarif->trf_ppn / 100)));
 
                             $tempat = TempatUsaha::where('kd_kontrol',$record->kd_kontrol)->first();
                             $diskon = 0;
@@ -1760,19 +2179,19 @@ class TagihanController extends Controller
                                         $diskon = ($tagihan->sub_airbersih * $diskon) / 100;
                                     }
                                     else{
-                                        $disc = $tagihan->sub_airbersih;
+                                        $disc = 0;
                                         $diskonArray = $diskon->value;
                                         if(in_array('byr',$diskonArray)){
-                                            $disc = $disc - $tagihan->byr_airbersih;
+                                            $disc = $disc + $tagihan->byr_airbersih;
                                         }
                                         if(in_array('beban',$diskonArray)){
-                                            $disc = $disc - $tagihan->beban_airbersih;
+                                            $disc = $disc + $tagihan->beban_airbersih;
                                         }
                                         if(in_array('pemeliharaan',$diskonArray)){
-                                            $disc = $disc - $tagihan->pemeliharaan_airbersih;
+                                            $disc = $disc + $tagihan->pemeliharaan_airbersih;
                                         }
                                         if(in_array('arkot',$diskonArray)){
-                                            $disc = $disc - $tagihan->arkot_airbersih;
+                                            $disc = $disc + $tagihan->arkot_airbersih;
                                         }
                                         if(is_object($diskonArray[count($diskonArray) - 1])){
                                             $charge = $diskonArray[count($diskonArray) - 1]->charge;
@@ -1784,9 +2203,11 @@ class TagihanController extends Controller
                                             if($charge[1] == 'byr'){
                                                 $sale = $tagihan->byr_airbersih * ($persen / 100); 
                                             }
-                                            $disc = $disc - $sale;
+                                            $disc = $disc + $sale;
                                         }
                                         
+                                        $disc   = $disc + ($disc * ($tarif->trf_ppn / 100));
+                                        $disc   = $tagihan->sub_airbersih - $disc;
                                         $diskon = $disc;
                                     }
                                 }

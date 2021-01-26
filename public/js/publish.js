@@ -96,62 +96,73 @@ $(document).ready(function () {
 
     $(document).on('click', '.verification', function(){
         id = $(this).attr('id');
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-		$.ajax({
-			url :"/tagihan/review/"+id,
+        $.ajax({
+			url: "/tagihan/pesan/" + id,
             cache:false,
-			method:"POST",
+			method:"GET",
 			dataType:"json",
 			success:function(data)
 			{
                 if(data.errors){
                     alert(data.errors);
                 }
-                if(data.success){
-                    $('#tabelPublish').DataTable().ajax.reload(function(){}, false);
+                else{
+                    if(data.result.status == 1){
+                        $('#pesan').val(data.result.pesan);
+                        $('#hidden_id').val(id);
+                        $('#myChecking').modal('show');
+                    }
+                    else if(data.result.status == 2){
+                        $.ajaxSetup({
+                            headers: {
+                              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        });
+                        $.ajax({
+                            url :"/tagihan/review/" + id,
+                            cache:false,
+                            method:"POST",
+                            dataType:"json",
+                            success:function(data)
+                            {
+                                if(data.errors){
+                                    alert(data.errors);
+                                }
+                                if(data.success){
+                                    $('#tabelPublish').DataTable().ajax.reload(function(){}, false);
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        alert("Pengecekan Sedang Dilakukan, Tunggu beberapa saat lagi");
+                    }
                 }
-            }
-        });
-    });
-
-    $(document).on('click', '#review', function(){
-        $('#process').show();
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-		$.ajax({       
-			url: "/tagihan/review",
-            cache:false,
-			method:"POST",
-			dataType:"json",
-			success:function(data)
-			{
-				if(data.errors)
-				{
-                    $('#process').hide();
-                    alert(data.errors);
-                    // console.log(data.errors);
-                    location.reload();
-				}
-				if(data.success)
-				{
-                    $('#process').hide();
-                    alert(data.success);
-                    location.reload();
-                }
-            },
-            error: function(data){
-                alert('Oops! Kesalahan Sistem');
-                $('#process').hide();
-                location.reload();
             }
 		});
+    });
+
+    $(document).on('submit', '#form_checking', function(event){
+        event.preventDefault();
+        $.ajax({
+        	url :"/tagihan/review",
+            cache:false,
+        	method:"POST",
+			data:$(this).serialize(),
+        	dataType:"json",
+        	success:function(data)
+        	{
+                if(data.errors){
+                    alert(data.errors);
+                }
+                if(data.success){
+                    alert(data.success);
+                    $('#tabelPublish').DataTable().ajax.reload(function(){}, false);
+                }
+
+                $('#myChecking').modal('hide');
+            }
+        });
     });
 
     $(document).on('click', '.totaltagihan', function(){
@@ -162,11 +173,20 @@ $(document).ready(function () {
         $('#totalbulan2').html('');
         $('#bulan3').html('');
         $('#totalbulan3').html('');
+        $('#bulan4').html('');
+        $('#totalbulan4').html('');
+        $('#bulan5').html('');
+        $('#totalbulan5').html('');
+        $('#bulan6').html('');
+        $('#totalbulan6').html('');
         $('#bulanini').html('');
         $('#totalbulanini').html('');
         $('#divBulan1').hide();
         $('#divBulan2').hide();
         $('#divBulan3').hide();
+        $('#divBulan4').hide();
+        $('#divBulan5').hide();
+        $('#divBulan6').hide();
         $.ajax({       
 			url: "/cari/tagihan/" + id,
             cache:false,
@@ -174,7 +194,7 @@ $(document).ready(function () {
 			dataType:"json",
 			success:function(data)
 			{
-                $('.modal-title').html(data.result.kode);
+                $('.modal-title').html(data.result.kode + " (Total Tagihan)");
                 if(data.result.totalbulan1 != 0){
                     $('#divBulan1').show();
                     $('#bulan1').html(data.result.bulan1);
@@ -191,6 +211,169 @@ $(document).ready(function () {
                     $('#divBulan3').show();
                     $('#bulan3').html(data.result.bulan3);
                     $('#totalbulan3').html("RP. " + data.result.totalbulan3);
+                }
+                if(data.result.totalbulan4 != 0){
+                    $('#divBulan4').show();
+                    $('#bulan4').html(data.result.bulan4);
+                    $('#totalbulan4').html("RP. " + data.result.totalbulan4);
+                }
+
+                if(data.result.totalbulan5 != 0){
+                    $('#divBulan5').show();
+                    $('#bulan5').html(data.result.bulan5);
+                    $('#totalbulan5').html("RP. " + data.result.totalbulan5);
+                }
+                
+                if(data.result.totalbulan6 != 0){
+                    $('#divBulan6').show();
+                    $('#bulan6').html(data.result.bulan6);
+                    $('#totalbulan6').html("RP. " + data.result.totalbulan6);
+                }
+
+                $('#bulanini').html(data.result.bulanini);
+                $('#totalbulanini').html("RP. " + data.result.totalbulanini);
+                
+                $('#myModal').modal('show');
+            }
+		});
+    });
+
+    $(document).on('click', '.totallistrik', function(){
+        id = $(this).attr('id');
+        $('#bulan1').html('');
+        $('#totalbulan1').html('');
+        $('#bulan2').html('');
+        $('#totalbulan2').html('');
+        $('#bulan3').html('');
+        $('#totalbulan3').html('');
+        $('#bulan4').html('');
+        $('#totalbulan4').html('');
+        $('#bulan5').html('');
+        $('#totalbulan5').html('');
+        $('#bulan6').html('');
+        $('#totalbulan6').html('');
+        $('#bulanini').html('');
+        $('#totalbulanini').html('');
+        $('#divBulan1').hide();
+        $('#divBulan2').hide();
+        $('#divBulan3').hide();
+        $('#divBulan4').hide();
+        $('#divBulan5').hide();
+        $('#divBulan6').hide();
+        $.ajax({       
+			url: "/cari/listrik/" + id,
+            cache:false,
+			method:"GET",
+			dataType:"json",
+			success:function(data)
+			{
+                $('.modal-title').html(data.result.kode + " (Listrik)");
+                if(data.result.totalbulan1 != 0){
+                    $('#divBulan1').show();
+                    $('#bulan1').html(data.result.bulan1);
+                    $('#totalbulan1').html("RP. " + data.result.totalbulan1);
+                }
+
+                if(data.result.totalbulan2 != 0){
+                    $('#divBulan2').show();
+                    $('#bulan2').html(data.result.bulan2);
+                    $('#totalbulan2').html("RP. " + data.result.totalbulan2);
+                }
+                
+                if(data.result.totalbulan3 != 0){
+                    $('#divBulan3').show();
+                    $('#bulan3').html(data.result.bulan3);
+                    $('#totalbulan3').html("RP. " + data.result.totalbulan3);
+                }
+                if(data.result.totalbulan4 != 0){
+                    $('#divBulan4').show();
+                    $('#bulan4').html(data.result.bulan4);
+                    $('#totalbulan4').html("RP. " + data.result.totalbulan4);
+                }
+
+                if(data.result.totalbulan5 != 0){
+                    $('#divBulan5').show();
+                    $('#bulan5').html(data.result.bulan5);
+                    $('#totalbulan5').html("RP. " + data.result.totalbulan5);
+                }
+                
+                if(data.result.totalbulan6 != 0){
+                    $('#divBulan6').show();
+                    $('#bulan6').html(data.result.bulan6);
+                    $('#totalbulan6').html("RP. " + data.result.totalbulan6);
+                }
+
+                $('#bulanini').html(data.result.bulanini);
+                $('#totalbulanini').html("RP. " + data.result.totalbulanini);
+                
+                $('#myModal').modal('show');
+            }
+		});
+    });
+
+    $(document).on('click', '.totalairbersih', function(){
+        id = $(this).attr('id');
+        $('#bulan1').html('');
+        $('#totalbulan1').html('');
+        $('#bulan2').html('');
+        $('#totalbulan2').html('');
+        $('#bulan3').html('');
+        $('#totalbulan3').html('');
+        $('#bulan4').html('');
+        $('#totalbulan4').html('');
+        $('#bulan5').html('');
+        $('#totalbulan5').html('');
+        $('#bulan6').html('');
+        $('#totalbulan6').html('');
+        $('#bulanini').html('');
+        $('#totalbulanini').html('');
+        $('#divBulan1').hide();
+        $('#divBulan2').hide();
+        $('#divBulan3').hide();
+        $('#divBulan4').hide();
+        $('#divBulan5').hide();
+        $('#divBulan6').hide();
+        $.ajax({       
+			url: "/cari/airbersih/" + id,
+            cache:false,
+			method:"GET",
+			dataType:"json",
+			success:function(data)
+			{
+                $('.modal-title').html(data.result.kode + " (Air Bersih)");
+                if(data.result.totalbulan1 != 0){
+                    $('#divBulan1').show();
+                    $('#bulan1').html(data.result.bulan1);
+                    $('#totalbulan1').html("RP. " + data.result.totalbulan1);
+                }
+
+                if(data.result.totalbulan2 != 0){
+                    $('#divBulan2').show();
+                    $('#bulan2').html(data.result.bulan2);
+                    $('#totalbulan2').html("RP. " + data.result.totalbulan2);
+                }
+                
+                if(data.result.totalbulan3 != 0){
+                    $('#divBulan3').show();
+                    $('#bulan3').html(data.result.bulan3);
+                    $('#totalbulan3').html("RP. " + data.result.totalbulan3);
+                }
+                if(data.result.totalbulan4 != 0){
+                    $('#divBulan4').show();
+                    $('#bulan4').html(data.result.bulan4);
+                    $('#totalbulan4').html("RP. " + data.result.totalbulan4);
+                }
+
+                if(data.result.totalbulan5 != 0){
+                    $('#divBulan5').show();
+                    $('#bulan5').html(data.result.bulan5);
+                    $('#totalbulan5').html("RP. " + data.result.totalbulan5);
+                }
+                
+                if(data.result.totalbulan6 != 0){
+                    $('#divBulan6').show();
+                    $('#bulan6').html(data.result.bulan6);
+                    $('#totalbulan6').html("RP. " + data.result.totalbulan6);
                 }
 
                 $('#bulanini').html(data.result.bulanini);

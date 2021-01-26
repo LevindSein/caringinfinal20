@@ -15,6 +15,16 @@
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary">Tagihan Periode {{$periode}}</h6><input type="hidden" id="periode" value="{{$periode}}"/>
             <div>
+                @if($notif == 1)
+                <a
+                    id="notification"
+                    href="{{url('tagihan/notification')}}"
+                    type="submit"
+                    class="btn btn-sm btn-danger"><b>
+                    <i class="fas fa-fw fa-bell fa-sm text-white faa-ring animated"></i></b>
+                </a>
+                &nbsp;
+                @endif
                 <a
                     href="{{url('tagihan')}}"
                     type="submit"
@@ -98,7 +108,7 @@
                             type="submit">
                             <i class="fas fa-fw fa-dollar-sign fa-sm text-gray-500"></i> Pembayaran
                         </a>
-                        <div class="dropdown-divider"></div>
+                        <!-- <div class="dropdown-divider"></div>
                         <div class="dropdown-header">Tagihan:</div>
                         <button 
                             id="tambah_manual"
@@ -108,7 +118,7 @@
                             data-target="#myManual"
                             type="submit">
                             <i class="fas fa-fw fa-plus fa-sm text-gray-500"></i> Manual
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </div>
@@ -542,6 +552,11 @@
                                 </div>
                             </div>
                             <hr>
+                        </div>
+
+                        <div class="form-group col-lg-12">
+                            <label for="pesan">Pesan</label>
+                            <textarea autocomplete="off" name="pesan" class="form-control" id="pesan"></textarea>
                         </div>
                     </div>
                 </div>
