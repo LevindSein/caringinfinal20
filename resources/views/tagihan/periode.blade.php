@@ -49,7 +49,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive ">
-                @if(Session::get('otoritas')->publish && Session::get('otoritas')->tagihan == false)
+                @if(Session::get('otoritas') != NULL && (Session::get('otoritas')->publish && Session::get('otoritas')->tagihan == false))
                 <table
                     class="table"
                     id="tabelTagihan"
@@ -502,7 +502,7 @@
 
 @section('js')
 <!-- Tambah Content pada Body JS -->
-@if(Session::get('otoritas')->publish && Session::get('otoritas')->tagihan == false)
+@if(Session::get('otoritas') != NULL && (Session::get('otoritas')->publish && Session::get('otoritas')->tagihan == false))
 <script src="{{asset('js/tagihan-periode-1.js')}}"></script>
 @else
 <script src="{{asset('js/tagihan-periode.js')}}"></script>
