@@ -1,5 +1,6 @@
 @extends('layout.kasir')
 @section('content')
+<title>Restore Tagihan | BP3C</title>
 <div class="form-group">
     <h3 style="color:#16aaff;font-weight:700;text-align:center;">RESTORE TAGIHAN</h3>
 </div>

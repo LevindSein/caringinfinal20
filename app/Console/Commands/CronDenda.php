@@ -8,6 +8,7 @@ use App\Models\TempatUsaha;
 use App\Models\TarifAirBersih;
 use App\Models\TarifListrik;
 use Exception;
+use Carbon\Carbon;
 
 class CronDenda extends Command
 {
@@ -42,18 +43,20 @@ class CronDenda extends Command
      */
     public function handle()
     {
+        $today = Carbon::now();
+        $today = strtotime($today);
         try{
-            $dataset = Tagihan::where([['stt_lunas',0],['bln_tagihan','<=',date('Y-m',time())]])->get();
+            $dataset = Tagihan::where([['stt_lunas',0],['bln_tagihan','<=',date('Y-m',$today)]])->get();
 
             foreach($dataset as $t){
-                $sekarang = date('Y-m-d',time());
+                $sekarang = date('Y-m-d',$today);
                 $denda    = $t->tgl_expired;
                 if($sekarang > $denda){
                     if($t->stt_prabayar === 1){
                         $expired = $t->tgl_expired;
                         $expired = date('Y-m-d',strtotime($expired . "+1 days"));
 
-                        if(date('Y-m-d',time()) > $expired){
+                        if(date('Y-m-d',$today) > $expired){
                             if($t->stt_lunas === 0){
                                 $t->stt_prabayar = 0;
                                 $t->save();
@@ -67,7 +70,7 @@ class CronDenda extends Command
                         $listrik = TarifListrik::first();
 
                         $date1 = $t->tgl_expired;
-                        $date2 = date('Y-m-d',time());
+                        $date2 = date('Y-m-d',$today);
                         
                         $ts1 = strtotime($date1);
                         $ts2 = strtotime($date2);

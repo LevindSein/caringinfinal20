@@ -33,6 +33,8 @@ use DataTables;
 use Validator;
 use Exception;
 
+use Carbon\Carbon;
+
 class KasirController extends Controller
 {
     public function __construct()
@@ -102,10 +104,10 @@ class KasirController extends Controller
 
         return view('kasir.index',[
             'platform'=>$platform,
-            'month'=>date("m", time()),
-            'tahun'=>date("Y", time()),
+            'month'=>date("m", strtotime(Carbon::now())),
+            'tahun'=>date("Y", strtotime(Carbon::now())),
             'dataTahun'=>$dataTahun,
-            'bulan'=>IndoDate::bulan(date("Y-m", time()),' '),
+            'bulan'=>IndoDate::bulan(date("Y-m", strtotime(Carbon::now())),' '),
         ]);
     }
 
@@ -189,14 +191,14 @@ class KasirController extends Controller
     }
 
     public function rincian(Request $request, $kontrol){
-        $bulan = date("Y-m", time());
+        $bulan = date("Y-m", strtotime(Carbon::now()));
 
         if($request->ajax()){
             $dataset = array();
 
             //Periode ini -----------------------------------------
             
-            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','>=',date('Y-m',time())]])->orderBy('bln_tagihan','asc')->get();
+            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['bln_tagihan','>=',date('Y-m',strtotime(Carbon::now()))]])->orderBy('bln_tagihan','asc')->get();
             $dataset['listrik'] = 0;
             $dataset['airbersih'] = 0;
             $dataset['keamananipk'] = 0;
@@ -270,7 +272,7 @@ class KasirController extends Controller
             
             //Periode Lalu ----------------------------------------
 
-            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['stt_denda','!=',NULL],['bln_tagihan','<',date('Y-m',time())]])->get();
+            $data = Tagihan::where([['kd_kontrol',$kontrol],['stt_lunas',0],['stt_publish',1],['stt_denda','!=',NULL],['bln_tagihan','<',date('Y-m',strtotime(Carbon::now()))]])->get();
             $dataset['tunglistrik'] = 0;
             $dataset['tungairbersih'] = 0;
             $dataset['tungkeamananipk'] = 0;
@@ -335,7 +337,7 @@ class KasirController extends Controller
                     $airbersih = $airbersih + $d->den_airbersih;
 
                     if($d->no_faktur === NULL){
-                        $faktur = Sinkronisasi::where('sinkron', date('Y-m-01',time()))->first();
+                        $faktur = Sinkronisasi::where('sinkron', date('Y-m-01',strtotime(Carbon::now())))->first();
                         $tgl_faktur = $faktur->sinkron;
                         $nomor = $faktur->faktur + 1;
                         $faktur->faktur = $nomor;
@@ -404,9 +406,9 @@ class KasirController extends Controller
             $id = $request->tempatId;
             $tagihan = Tagihan::where([['kd_kontrol',$id],['stt_lunas',0],['stt_publish',1]])->get();
             foreach($tagihan as $d){
-                $tanggal = date("Y-m-d", time());
-                $bulan = date("Y-m", time());
-                $tahun = date("Y", time());
+                $tanggal = date("Y-m-d", strtotime(Carbon::now()));
+                $bulan = date("Y-m", strtotime(Carbon::now()));
+                $tahun = date("Y", strtotime(Carbon::now()));
     
                 //--------------------------------------------------------------
                 $pembayaran = new Pembayaran;
@@ -431,6 +433,14 @@ class KasirController extends Controller
                     $pembayaran->byr_listrik = $d->sel_listrik;
                     $pembayaran->byr_denlistrik = $d->den_listrik;
                     $pembayaran->sel_listrik = 0;
+
+                    $total = $total + $pembayaran->byr_listrik;
+                    $selisih = $selisih - $pembayaran->byr_listrik;
+                }
+                else{
+                    $pembayaran->byr_listrik = 0;
+                    $pembayaran->byr_denlistrik = 0;
+                    $pembayaran->sel_listrik = $d->sel_listrik;
 
                     $total = $total + $pembayaran->byr_listrik;
                     $selisih = $selisih - $pembayaran->byr_listrik;
@@ -647,7 +657,10 @@ class KasirController extends Controller
 
         $nama            = Session::get('username');
 
-        $bulan           = IndoDate::bulanS(date('Y-m',time()), ' ');
+        $bulan           = IndoDate::bulanS(date('Y-m',strtotime(Carbon::now())), ' ');
+
+        $dirfile = storage_path('app\public\logo_struk.png');
+        $logo = EscposImage::load($dirfile,false);
 
         $profile   = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
@@ -656,14 +669,7 @@ class KasirController extends Controller
         try{
             if(Session::get('printer') == 'panda'){
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> setFont(Printer::FONT_A);
-                $printer -> setEmphasis(true);
-                $printer -> text("BADAN PENGELOLA PUSAT\nPERDAGANGAN CARINGIN\n");
-                $printer -> setEmphasis(false);
-                $printer -> selectPrintMode();
-                $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> setFont(Printer::FONT_B);
-                $printer -> feed();
+                $printer -> bitImageColumnFormat($logo);
                 $printer -> setJustification(Printer::JUSTIFY_LEFT);
                 $printer -> setEmphasis(true);
                 $printer -> text("Nama    : $pedagang\n");
@@ -786,7 +792,7 @@ class KasirController extends Controller
                 $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------\n");
                 $printer -> text("Nomor : $faktur\n");
-                $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
+                $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',strtotime(Carbon::now()))."\n");
                 $printer -> text("Kuitansi ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
                 $printer -> text("Ksr : $nama\n");
                 $printer -> feed();
@@ -796,14 +802,7 @@ class KasirController extends Controller
             }
             else{
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> setFont(Printer::FONT_A);
-                $printer -> setEmphasis(true);
-                $printer -> text("BADAN PENGELOLA PUSAT\nPERDAGANGAN CARINGIN\n");
-                $printer -> setEmphasis(false);
-                $printer -> selectPrintMode();
-                $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> setFont(Printer::FONT_B);
-                $printer -> feed();
+                $printer -> bitImageColumnFormat($logo);
                 $printer -> setJustification(Printer::JUSTIFY_LEFT);
                 $printer -> setEmphasis(true);
                 $printer -> text("Nama    : $pedagang\n");
@@ -926,7 +925,7 @@ class KasirController extends Controller
                 $printer -> setFont(Printer::FONT_B);
                 $printer -> text("----------------------------------------\n");
                 $printer -> text("Nomor : $faktur\n");
-                $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',time())."\n");
+                $printer -> text("Dibayar pada ".date('d/m/Y H:i:s',strtotime(Carbon::now()))."\n");
                 $printer -> text("Kuitansi ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
                 $printer -> text("Ksr : $nama\n");
                 $printer -> feed();
@@ -1038,9 +1037,9 @@ class KasirController extends Controller
             $id = $request->tempatId;
             $tagihan = Tagihan::where([['kd_kontrol',$id],['stt_lunas',0],['stt_publish',1],['bln_tagihan',Session::get('periode')]])->get();
             foreach($tagihan as $d){
-                $tanggal = date("Y-m-d", time());
-                $bulan = date("Y-m", time());
-                $tahun = date("Y", time());
+                $tanggal = date("Y-m-d", strtotime(Carbon::now()));
+                $bulan = date("Y-m", strtotime(Carbon::now()));
+                $tahun = date("Y", strtotime(Carbon::now()));
     
                 //--------------------------------------------------------------
                 $pembayaran = new Pembayaran;
@@ -1194,7 +1193,7 @@ class KasirController extends Controller
 
     public function penerimaan(Request $request){
         $tanggal = $request->tanggal;
-        $cetak   = IndoDate::tanggal(date('Y-m-d',time()),' ');
+        $cetak   = IndoDate::tanggal(date('Y-m-d',strtotime(Carbon::now())),' ');
         $shift   = $request->shift;
 
         if($shift == 2){
@@ -1340,7 +1339,7 @@ class KasirController extends Controller
             $data = Pembayaran::select('kd_kontrol')
             ->groupBy('kd_kontrol')
             ->orderBy('kd_kontrol','asc')
-            ->where([['tgl_bayar',date('Y-m-d',time())],['id_kasir',Session::get('userId')]]);
+            ->where([['tgl_bayar',date('Y-m-d',strtotime(Carbon::now()))],['id_kasir',Session::get('userId')]]);
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     $button = '<a type="button" title="Restore" name="restore" id="'.$data->kd_kontrol.'" class="restore btn btn-sm btn-primary">Restore</a>';
@@ -1365,7 +1364,7 @@ class KasirController extends Controller
                     }
                 })
                 ->addColumn('tagihan', function($data){
-                    $tagihan = Pembayaran::where([['kd_kontrol',$data->kd_kontrol],['tgl_bayar',date('Y-m-d',time())]])
+                    $tagihan = Pembayaran::where([['kd_kontrol',$data->kd_kontrol],['tgl_bayar',date('Y-m-d',strtotime(Carbon::now()))]])
                     ->select(DB::raw('SUM(realisasi) as tagihan'))->get();
                     if($tagihan != NULL){
                         return number_format($tagihan[0]->tagihan);
@@ -1383,7 +1382,7 @@ class KasirController extends Controller
     public function restoreStore(Request $request, $kontrol){
         if($request->ajax()){
             try{
-                $pembayaran = Pembayaran::where([['kd_kontrol',$kontrol],['tgl_bayar',date('Y-m-d',time())]])->get();
+                $pembayaran = Pembayaran::where([['kd_kontrol',$kontrol],['tgl_bayar',date('Y-m-d',strtotime(Carbon::now()))]])->get();
                 foreach($pembayaran as $p){
                     $tagihan = Tagihan::find($p->id_tagihan);
                     if($tagihan != NULL){
@@ -1506,7 +1505,7 @@ class KasirController extends Controller
     }
 
     public function harian(Request $request){
-        $tanggal = date('Y-m-d',time());
+        $tanggal = date('Y-m-d',strtotime(Carbon::now()));
         $tanggal = IndoDate::tanggal($tanggal,' ');
         $agent = new Agent();
         if($agent->isDesktop()){
@@ -1517,7 +1516,7 @@ class KasirController extends Controller
         }
 
         if($request->ajax()){
-            $data = Harian::where([['tgl_bayar',date('Y-m-d',time())],['id_kasir',Session::get('userId')]])->orderBy('id','desc');
+            $data = Harian::where([['tgl_bayar',date('Y-m-d',strtotime(Carbon::now()))],['id_kasir',Session::get('userId')]])->orderBy('id','desc');
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     $button  = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#4e73df;;font-size:12px"></i></a>';
@@ -1605,9 +1604,9 @@ class KasirController extends Controller
                 if($val == 'add'){
                     $data = new Harian;
 
-                    $data->tgl_bayar = date('Y-m-d',time());
-                    $data->bln_bayar = date('Y-m',time());
-                    $data->thn_bayar = date('Y',time());
+                    $data->tgl_bayar = date('Y-m-d',strtotime(Carbon::now()));
+                    $data->bln_bayar = date('Y-m',strtotime(Carbon::now()));
+                    $data->thn_bayar = date('Y',strtotime(Carbon::now()));
                     $data->nama = ucwords($request->nama);
                     $data->id_kasir = Session::get('userId');
                     $data->kasir = Session::get('username');
@@ -1759,7 +1758,7 @@ class KasirController extends Controller
         $tanggal = $request->tgl_penerimaan;
         $tgl = $tanggal;
         $tanggal = IndoDate::tanggal($tanggal, ' ');
-        $cetak = IndoDate::tanggal(date('Y-m-d',time()),' ');
+        $cetak = IndoDate::tanggal(date('Y-m-d',strtotime(Carbon::now())),' ');
 
         $dataset = Harian::where([['tgl_bayar',$tgl],['id_kasir',Session::get('userId')]])->get();
 
@@ -1774,7 +1773,7 @@ class KasirController extends Controller
         $tanggal = $request->tgl_utama;
         $tgl = $tanggal;
         $tanggal = IndoDate::tanggal($tanggal, ' ');
-        $cetak = IndoDate::tanggal(date('Y-m-d',time()),' ');
+        $cetak = IndoDate::tanggal(date('Y-m-d',strtotime(Carbon::now())),' ');
 
         $data  = User::where('role','kasir')->get();
         $i = 0;
@@ -1811,7 +1810,7 @@ class KasirController extends Controller
     }
 
     public function getsisa(Request $request){
-        $bulan   = IndoDate::bulan(date('Y-m',time()),' ');
+        $bulan   = IndoDate::bulan(date('Y-m',strtotime(Carbon::now())),' ');
         
         if($request->sisatagihan == 'all'){
             $dataset = Tagihan::where([['stt_lunas',0],['stt_publish',1],['sel_tagihan','>',0]])->select('blok')->groupBy('blok')->orderBy('blok','asc')->get();
@@ -1928,13 +1927,13 @@ class KasirController extends Controller
     }
 
     public function getselesai(){
-        $bulan = IndoDate::bulan(date('Y-m',time()),' ');
-        $data = Pembayaran::where('bln_bayar',date('Y-m',time()))->select('kd_kontrol')->groupBy('kd_kontrol')->orderBy('kd_kontrol','asc')->get();
+        $bulan = IndoDate::bulan(date('Y-m',strtotime(Carbon::now())),' ');
+        $data = Pembayaran::where('bln_bayar',date('Y-m',strtotime(Carbon::now())))->select('kd_kontrol')->groupBy('kd_kontrol')->orderBy('kd_kontrol','asc')->get();
         $dataset = array();
         $i = 0;
         foreach($data as $d){
             $dataset[$i]['kd_kontrol'] = $d->kd_kontrol;
-            $tagihan = Pembayaran::where([['kd_kontrol',$d->kd_kontrol],['bln_bayar',date('Y-m',time())]])
+            $tagihan = Pembayaran::where([['kd_kontrol',$d->kd_kontrol],['bln_bayar',date('Y-m',strtotime(Carbon::now()))]])
             ->select(
                 DB::raw('SUM(realisasi) as tagihan'),
                 DB::raw('SUM(byr_listrik) as listrik'),

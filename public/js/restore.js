@@ -17,7 +17,7 @@ $(document).ready(function () {
         pageLength: 10,
         stateSave: true,
         scrollX: true,
-        scrollY: "300px",
+        scrollY: "35vh",
         lengthMenu: [[10,25,50,100,-1], [10,25,50,100,"All"]],
         deferRender: true,
         // dom : "r<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",

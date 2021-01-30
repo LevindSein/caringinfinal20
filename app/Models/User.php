@@ -23,6 +23,8 @@ class User extends Authenticatable
         'nama', 
         'anggota', 
         'ktp', 
+        'npwp', 
+        'alamat',
         'email', 
         'hp', 
         'password', 

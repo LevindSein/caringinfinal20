@@ -26,6 +26,8 @@ use App\Http\Controllers\DownloadController;
 use App\Models\User;
 use App\Models\LoginLog;
 
+use Illuminate\Support\Facades\Validator;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,7 +48,17 @@ Route::get('login',function(){
 })->name('login');
 
 //LOGIN
-Route::post('storelogin')->middleware('ceklogin:home');
+Route::post('storelogin',function(){
+    $error = Validator::make($request->all(), [
+        'username' => ['required', 'string', 'min:4', 'max:30', 'unique:App\Models\User,username', 'alpha_dash'],
+        'password' => ['required', 'min:6'],
+    ]);
+
+    if($error->fails())
+    {
+        return redirect()->route('login')->with('error','Username atau Password Salah');
+    }
+})->middleware('ceklogin:home');
 //LOGOUT
 Route::get('logout',function(){
     Session::flush();
@@ -112,6 +124,7 @@ Route::middleware('ceklogin:tempatusaha')->group(function (){
 });
 
 Route::middleware('ceklogin:tagihan')->group(function (){
+    Route::get('tagihan/manual/{id}', [TagihanController::class, 'manual']);
     Route::post('tagihan/sinkronisasi', function(Request $request){
         if($request->ajax()){
             try{
@@ -141,7 +154,7 @@ Route::middleware('ceklogin:tagihan')->group(function (){
     Route::post('tagihan/airbersih', [TagihanController::class, 'airbersihUpdate']);
     Route::get('tagihan/print', [TagihanController::class, 'print']);
     Route::post('tagihan/update', [TagihanController::class, 'update']);
-    Route::get('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
+    Route::post('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
     Route::resource('tagihan', TagihanController::class);
 });
 

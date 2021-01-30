@@ -164,8 +164,6 @@ class TempatController extends Controller
     public function store(Request $request)
     {
         try{
-            $tanggal = date("Y-m-d", time());
-
             //deklarasi model
             $tempat = new TempatUsaha;
 
@@ -486,8 +484,6 @@ class TempatController extends Controller
     public function update(Request $request)
     {
         try{
-            $tanggal = date("Y-m-d", time());
-
             //deklarasi model
             $tempat = TempatUsaha::find($request->hidden_id);
 

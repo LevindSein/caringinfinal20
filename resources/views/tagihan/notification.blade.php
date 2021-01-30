@@ -21,96 +21,6 @@
                     class="btn btn-sm btn-primary"><b>
                     <i class="fas fa-fw fa-home fa-sm text-white"></i></b>
                 </a>
-                &nbsp;
-                <button 
-                    type="button"
-                    name="add_listrik"
-                    id="add_listrik" 
-                    class="btn btn-sm btn-warning"><b>
-                    <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Listrik </b> <span class="badge badge-pill badge-light">{{$listrik_badge}}</span>
-                </button>
-                &nbsp;
-                <button 
-                    type="button"
-                    name="add_air"
-                    id="add_air" 
-                    class="btn btn-sm btn-info"><b>
-                    <i class="fas fa-fw fa-plus fa-sm text-white-50"></i> Air Bersih </b> <span class="badge badge-pill badge-light">{{$air_badge}}</span>
-                </button>
-                &nbsp;
-                <div class="dropdown no-arrow" style="display:inline-block">
-                    <a 
-                        class="dropdown-toggle btn btn-sm btn-success" 
-                        href="#" 
-                        role="button" 
-                        data-toggle="dropdown"
-                        aria-haspopup="true" 
-                        aria-expanded="false"><b>
-                        Menu
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw"></i></b>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Tagihan:</div>
-                        <button
-                            class="dropdown-item" 
-                            id="publish"
-                            type="submit">
-                            <i class="fas fa-fw fa-paper-plane fa-sm text-gray-500"></i> Publish
-                        </button>
-                        <button
-                            class="dropdown-item" 
-                            id="sinkronisasi"
-                            type="submit">
-                            <i class="fas fa-fw fa-sync fa-sm text-gray-500"></i> Sinkronisasi
-                        </button>
-                        <div class="dropdown-divider"></div>
-                        <div class="dropdown-header">Periode:</div>
-                        <a 
-                            class="dropdown-item" 
-                            href="#"
-                            data-toggle="modal" 
-                            data-target="#myModal" 
-                            type="submit">
-                            <i class="fas fa-fw fa-search fa-sm text-gray-500"></i> Cari Tagihan
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <div class="dropdown-header">Edaran:</div>
-                        <a 
-                            class="dropdown-item"
-                            href="{{url('tagihan/print')}}"
-                            type="submit" 
-                            target="_blank">
-                            <i class="far fa-fw fa-file fa-sm text-gray-500"></i> Form Pendataan
-                        </a>
-                        <a 
-                            class="dropdown-item" 
-                            href="#" 
-                            data-toggle="modal" 
-                            data-target="#myPemberitahuan" 
-                            type="submit">
-                            <i class="fas fa-fw fa-exclamation fa-sm text-gray-500"></i> Pemberitahuan
-                        </a>
-                        <a 
-                            class="dropdown-item" 
-                            href="#" 
-                            data-toggle="modal" 
-                            data-target="#myPembayaran"
-                            type="submit">
-                            <i class="fas fa-fw fa-dollar-sign fa-sm text-gray-500"></i> Pembayaran
-                        </a>
-                        <!-- <div class="dropdown-divider"></div>
-                        <div class="dropdown-header">Tagihan:</div>
-                        <button 
-                            id="tambah_manual"
-                            class="dropdown-item" 
-                            href="#" 
-                            data-toggle="modal" 
-                            data-target="#myManual"
-                            type="submit">
-                            <i class="fas fa-fw fa-plus fa-sm text-gray-500"></i> Manual
-                        </button> -->
-                    </div>
-                </div>
             </div>
         </div>
         <div class="card-body">
@@ -159,171 +69,87 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5>Apakah yakin hapus data tagihan?</h5>
+                <h5>Hapus Data Tagihan ?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
             <span id="confirm_result"></span>
-            <div class="modal-body-short">Pilih "Hapus" di bawah ini jika anda yakin untuk menghapus data tagihan.</div>
-            <div class="modal-footer">
-            	<button type="button" name="ok_button" id="ok_button" class="btn btn-danger">Hapus</button>
-                <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div
-    class="modal fade"
-    id="myModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Cari Periode Tagihan</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <form class="user" action="{{url('tagihan/periode')}}" method="GET">
-                <div class="modal-body-short">
-                    <div class="form-group">
-                        <label for="bulan">Bulan</label>
-                        <select class="form-control" name="bulan" id="bulan" required>
-                            <option selected hidden value="">Pilih Bulan</option>
-                            <option value="01">Januari</option>
-                            <option value="02">Februari</option>
-                            <option value="03">Maret</option>
-                            <option value="04">April</option>
-                            <option value="05">Mei</option>
-                            <option value="06">Juni</option>
-                            <option value="07">Juli</option>
-                            <option value="08">Agustus</option>
-                            <option value="09">September</option>
-                            <option value="10">Oktober</option>
-                            <option value="11">November</option>
-                            <option value="12">Desember</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="tahun">Tahun</label>
-                        <select class="form-control" name="tahun" id="tahun" required>
-                            @foreach($tahun as $t)
-                            <option value="{{$t->thn_tagihan}}">{{$t->thn_tagihan}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary btn-sm" value="Submit" />
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div
-    class="modal fade"
-    id="myPemberitahuan"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Print Pemberitahuan</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <form id="cetakPemberitahuan">
-                <div class="modal-body-short">
-                    <div class="form-group">
-                        <label for="blok">Pilih Blok</label>
-                        <select class="form-control" name="blokPemberitahuan" id="blokPemberitahuan" required>
-                            <option selected hidden value="">Pilih Blok</option>
-                            @foreach($blok as $b)
-                            <option value="{{$b->nama}}">{{$b->nama}}</option>
-                            @endforeach
-                        </select>
+            <form id="form_destroy">
+            @csrf
+                <div class="modal-body-short">Pilih "Hapus" di bawah ini jika anda yakin untuk menghapus data tagihan.<br><br>
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap:wrap;">
+                        <div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="checkListrik"
+                                    id="checkListrik"
+                                    value="listrik">
+                                <label for="checkListrik">
+                                    Listrik
+                                </label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="checkAirBersih"
+                                    id="checkAirBersih"
+                                    value="airbersih">
+                                <label for="checkAirBersih">
+                                    Air Bersih
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="checkKeamananIpk"
+                                    id="checkKeamananIpk"
+                                    value="keamananipk">
+                                <label for="checkKeamananIpk">
+                                    Keamanan IPK
+                                </label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="checkKebersihan"
+                                    id="checkKebersihan"
+                                    value="kebersihan">
+                                <label for="checkKebersihan">
+                                    Kebersihan
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="checkAirKotor"
+                                    id="checkAirKotor"
+                                    value="airkotor">
+                                <label for="checkAirKotor">
+                                    Air Kotor
+                                </label>
+                            </div>
+                            <div>
+                                <input
+                                    type="checkbox"
+                                    name="checkLain"
+                                    id="checkLain"
+                                    value="lain">
+                                <label for="checkLain">
+                                    Lain Lain
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm">Cetak Pemberitahuan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div
-    class="modal fade"
-    id="myPembayaran"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Print Pembayaran</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <form id="cetakPembayaran">
-                <div class="modal-body-short">
-                    <div class="form-group">
-                        <label for="blok">Pilih Blok</label>
-                        <select class="form-control" name="blokPembayaran" id="blokPembayaran" required>
-                            <option selected hidden value="">Pilih Blok</option>
-                            @foreach($blok as $b)
-                            <option value="{{$b->nama}}">{{$b->nama}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm">Cetak Pembayaran</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<div
-    class="modal fade"
-    id="tagihanku"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Tagihan</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <form id="form_tagihanku" action="" method="GET">
-                <div class="modal-body-short">
-                    <div class="form-group">
-                        <label for="blok">Pilih Blok</label>
-                        <select class="form-control" name="tagihan_blok" id="tagihan_blok" required>
-                            @foreach($blok as $b)
-                            <option value="{{$b->nama}}">{{$b->nama}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                    <input type="submit" name="ok_button" id="ok_button" class="btn btn-danger" value="Hapus" />
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Batal</button>
                 </div>
             </form>
         </div>
@@ -561,203 +387,92 @@
 
 <div
     class="modal fade"
-    id="myManual"
+    id="myChecking"
+    tabindex="-1"
     role="dialog"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="edit_tagihan">Tambah Tagihan Manual</h5>
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form class="user" id="form_manual" method="POST">
-            @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="form-group col-lg-12">
-                            <label for="kontrol">Kontrol</label>
-                            <div class="form-group">
-                                <select class="kontrol_manual form-control" name="kontrol_manual" id="kontrol_manual" required></select>
-                            </div>
+            <div class="modal-body-short">
+                <div id="divBulan1">
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                        <div>
+                            <h5><strong><span id="bulan1"></span></strong></h5>
                         </div>
-                        <div class="form-group col-lg-12">
-                            <label for="pengguna_manual">Pengguna </label>
-                            <div class="form-group">
-                                <select class="pengguna_manual form-control" name="pengguna_manual" id="pengguna_manual" required></select>
-                            </div>
+                        <div>
+                            <h5><strong><span id="totalbulan1"></span></strong></h5>
                         </div>
-                        <hr>
-                        <div class="form-group col-lg-12">
-                            <label for="dayaListrik_manual">Daya Listrik</label>
-                            <input
-                                autocomplete="off"
-                                type="text" 
-                                pattern="^[\d,]+$"
-                                name="dayaListrik_manual"
-                                class="form-control"
-                                id="dayaListrik_manual">
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="awalListrik_manual">Stand Awal Listrik</label>
-                            <input
-                                autocomplete="off"
-                                type="text" 
-                                pattern="^[\d,]+$"
-                                name="awalListrik_manual"
-                                class="form-control"
-                                id="awalListrik_manual">
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="akhirListrik_manual">Stand Akhir Listrik</label>
-                            <input
-                                autocomplete="off"
-                                type="text" 
-                                pattern="^[\d,]+$"
-                                name="akhirListrik_manual"
-                                class="form-control"
-                                id="akhirListrik_manual">
-                        </div>
-                        <hr>
-                        <div class="form-group col-lg-12">
-                            <label for="awalAir">Stand Awal Air</label>
-                            <input
-                                autocomplete="off"
-                                type="text" 
-                                pattern="^[\d,]+$"
-                                name="awalAir_manual"
-                                class="form-control"
-                                id="awalAir_manual">
-                        </div>
-                        <div class="form-group col-lg-12">
-                            <label for="akhirAir">Stand Akhir Air</label>
-                            <input
-                                autocomplete="off"
-                                type="text" 
-                                pattern="^[\d,]+$"
-                                name="akhirAir_manual"
-                                class="form-control"
-                                id="akhirAir_manual">
-                        </div>
-                        <hr>
-                        
-                        <div class="form-group col-lg-12">
-                            <label for="keamananipk_manual">Keamanan & IPK</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                </div>
-                                <input 
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="keamananipk_manual"
-                                    class="form-control"
-                                    id="keamananipk_manual"
-                                    aria-describedby="inputGroupPrepend">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-10">
-                            <label for="dis_keamananipk_manual">Diskon Keamanan & IPK</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                </div>
-                                <input
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="dis_keamananipk_manual"
-                                    class="form-control"
-                                    id="dis_keamananipk_manual"
-                                    aria-describedby="inputGroupPrepend">
-                            </div>
-                        </div>
-                        <hr>
-                        
-                        <div class="form-group col-lg-12">
-                            <label for="kebersihan_manual">Kebersihan</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                </div>
-                                <input
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="kebersihan_manual"
-                                    class="form-control"
-                                    id="kebersihan_manual"
-                                    aria-describedby="inputGroupPrepend">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-10">
-                            <label for="dis_kebersihan_manual">Diskon Kebersihan</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                </div>
-                                <input
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="dis_kebersihan_manual"
-                                    class="form-control"
-                                    id="dis_kebersihan_manual"
-                                    aria-describedby="inputGroupPrepend">
-                            </div>
-                        </div>
-                        <hr>
-                        
-                        <div class="form-group col-lg-12">
-                            <label for="airkotor_manual">Air Kotor</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                </div>
-                                <input
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="airkotor_manual"
-                                    class="form-control"
-                                    id="airkotor_manual"
-                                    aria-describedby="inputGroupPrepend">
-                            </div>
-                        </div>
-                        <hr>
-                        
-                        <div class="form-group col-lg-12">
-                            <label for="lain_manual">Lain - Lain</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupPrepend">Rp.</span>
-                                </div>
-                                <input
-                                    autocomplete="off"
-                                    type="text" 
-                                    pattern="^[\d,]+$"
-                                    name="lain_manual"
-                                    class="form-control"
-                                    id="lain_manual"
-                                    aria-describedby="inputGroupPrepend">
-                            </div>
-                        </div>
-                        <hr>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <input type="hidden" id="stt_listrik_manual" name="stt_listrik_manual" value="" />
-                    <input type="hidden" id="stt_airbersih_manual" name="stt_airbersih_manual" value="" />
-                    <input type="hidden" id="stt_keamananipk_manual" name="stt_keamananipk_manual" value="" />
-                    <input type="hidden" id="stt_kebersihan_manual" name="stt_kebersihan_manual" value="" />
-                    <input type="hidden" id="stt_airkotor_manual" name="stt_airkotor_manual" value="" />
-                    <input type="hidden" id="stt_lain_manual" name="stt_lain_manual" value="" />
-                    <input type="submit" id="action_btn_manual" class="btn btn-primary btn-sm" value="Tambah Tagihan" />
+                <div id="divBulan2">
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                        <div>
+                            <h5><strong><span id="bulan2"></span></strong></h5>
+                        </div>
+                        <div>
+                            <h5><strong><span id="totalbulan2"></span></strong></h5>
+                        </div>
+                    </div>
                 </div>
-            </form>
+                <div id="divBulan3">
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                        <div>
+                            <h5><strong><span id="bulan3"></span></strong></h5>
+                        </div>
+                        <div>
+                            <h5><strong><span id="totalbulan3"></span></strong></h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="divBulan4">
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                        <div>
+                            <h5><strong><span id="bulan4"></span></strong></h5>
+                        </div>
+                        <div>
+                            <h5><strong><span id="totalbulan4"></span></strong></h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="divBulan5">
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                        <div>
+                            <h5><strong><span id="bulan5"></span></strong></h5>
+                        </div>
+                        <div>
+                            <h5><strong><span id="totalbulan5"></span></strong></h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="divBulan6">
+                    <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                        <div>
+                            <h5><strong><span id="bulan6"></span></strong></h5>
+                        </div>
+                        <div>
+                            <h5><strong><span id="totalbulan6"></span></strong></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 justify-content-between" style="display:flex;flex-wrap: wrap;">
+                    <div>
+                        <h4><strong><span id="bulanini" style="color:#3f6ad8;"></span></strong></h4>
+                    </div>
+                    <div>
+                        <h4><strong><span id="totalbulanini" style="color:#3f6ad8;"></span></strong></h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="okbutton btn btn-primary btn-sm" data-dismiss="modal">OK</button>
+            </div>
         </div>
     </div>
 </div>

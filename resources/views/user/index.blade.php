@@ -407,6 +407,17 @@
                                     Data Usaha
                                 </label>
                             </div>
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    name="kelola[]"
+                                    id="publish"
+                                    value="publish">
+                                <label class="form-check-label" for="publish">
+                                    Publishing
+                                </label>
+                            </div>
                         </div>
                         <div>
                             <div class="form-check">

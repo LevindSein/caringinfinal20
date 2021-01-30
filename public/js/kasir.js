@@ -1,6 +1,8 @@
 //Show Tagihan
 $(document).ready(function () {
-    $('#tabelKasir').DataTable({
+    var scrollPosition;
+    var rowIndex;
+    var dtable = $('#tabelKasir').DataTable({
         processing: true,
 		serverSide: true,
 		ajax: {
@@ -17,11 +19,20 @@ $(document).ready(function () {
         pageLength: 10,
         stateSave: true,
         scrollX: true,
-        scrollY: "300px",
+        scrollY: "35vh",
         lengthMenu: [[10,25,50,100,-1], [10,25,50,100,"All"]],
         deferRender: true,
         // dom : "r<'row'<'col-sm-12 col-md-6'><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         responsive : true,
+        "preDrawCallback": function( settings ) {
+            scrollPosition = $(".dataTables_scrollBody").scrollTop();
+        },
+        "drawCallback": function( settings ) {
+            $(".dataTables_scrollBody").scrollTop(scrollPosition);
+            if(typeof rowIndex != 'undefined') {
+                dtable.row(rowIndex).nodes().to$().addClass('row_selected');                       
+            }
+        },
     }).columns.adjust().draw();
 
     $(document).on('click', '.bayar', function(){

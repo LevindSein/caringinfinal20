@@ -408,24 +408,25 @@ class UserController extends Controller
     {
         if(request()->ajax())
         {
-            $data = User::findOrFail($id);
+            $data = User::find($id);
 
             if($data->otoritas == NULL){
-                $data['blok'] = $data->otoritas;
+                $data['blok'] = NULL;
             }
             else{
                 $otoritas  = json_decode($data->otoritas);
-                $data['bloks'] = $otoritas[0]->blok;
-                $data['pedagang'] = $otoritas[1]->pedagang;
-                $data['tempatusaha'] = $otoritas[2]->tempatusaha;
-                $data['tagihan'] = $otoritas[3]->tagihan;
-                $data['blok'] = $otoritas[4]->blok;
-                $data['pemakaian'] = $otoritas[5]->pemakaian;
-                $data['pendapatan'] = $otoritas[6]->pendapatan;
-                $data['datausaha'] = $otoritas[7]->datausaha;
-                $data['alatmeter'] = $otoritas[8]->alatmeter;
-                $data['tarif'] = $otoritas[9]->tarif;
-                $data['harilibur'] = $otoritas[10]->harilibur;
+                $data['bloks'] = $otoritas->otoritas;
+                $data['pedagang'] = $otoritas->pedagang;
+                $data['tempatusaha'] = $otoritas->tempatusaha;
+                $data['tagihan'] = $otoritas->tagihan;
+                $data['blok'] = $otoritas->blok;
+                $data['pemakaian'] = $otoritas->pemakaian;
+                $data['pendapatan'] = $otoritas->pendapatan;
+                $data['datausaha'] = $otoritas->datausaha;
+                $data['publish'] = $otoritas->publish;
+                $data['alatmeter'] = $otoritas->alatmeter;
+                $data['tarif'] = $otoritas->tarif;
+                $data['harilibur'] = $otoritas->harilibur;
             }
 
             return response()->json(['result' => $data]);
@@ -441,18 +442,19 @@ class UserController extends Controller
      */
     public function otoritas(Request $request)
     {
-        $pilihanKelola = array('pedagang','tempatusaha','tagihan','blok','pemakaian','pendapatan','datausaha','alatmeter','tarif','harilibur');
+        $pilihanKelola = array('pedagang','tempatusaha','tagihan','blok','pemakaian','pendapatan','datausaha','publish','alatmeter','tarif','harilibur');
 
-        $kelola[] = ['blok' => $request->blokOtoritas];
+        $kelola = array();
+        $kelola['otoritas'] = $request->blokOtoritas;
 
         try{
             if($request->blokOtoritas != NULL){
                 for($i=0; $i<count($pilihanKelola); $i++){
                     if(in_array($pilihanKelola[$i],$request->kelola)){
-                        $kelola[] = [$pilihanKelola[$i] => true];
+                        $kelola[$pilihanKelola[$i]] = true;
                     }
                     else{
-                        $kelola[] = [$pilihanKelola[$i] => false];
+                        $kelola[$pilihanKelola[$i]] = false;
                     }
                 }
         

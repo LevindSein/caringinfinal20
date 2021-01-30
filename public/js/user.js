@@ -390,6 +390,7 @@ $(document).ready(function(){
         $("#pemakaian").prop("checked", false);
         $("#pendapatan").prop("checked", false);
         $("#datausaha").prop("checked", false);
+        $("#publish").prop("checked", false);
         $("#alatmeter").prop("checked", false);
         $("#tarif").prop("checked", false);
         $("#harilibur").prop("checked", false);
@@ -450,6 +451,8 @@ $(document).ready(function(){
 
                     if(data.result.datausaha == true) $("#datausaha").prop("checked", true);
                     
+                    if(data.result.publish == true) $("#publish").prop("checked", true);
+
                     if(data.result.alatmeter == true) $("#alatmeter").prop("checked", true);
                     
                     if(data.result.tarif == true) $("#tarif").prop("checked", true);

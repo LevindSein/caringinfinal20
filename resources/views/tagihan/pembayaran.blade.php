@@ -1,3 +1,4 @@
+<?php use Carbon\Carbon; ?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -269,7 +270,7 @@
                             <td class="tg-7jio" colspan="5"><i>{{$d['terbilang']}}</i></td>
                         </tr>
                         <tr>
-                            <td class="tg-0r89" colspan="5">No.Faktur : {{$d['faktur']}}<br>Dibayar pada {{date('d/m/Y H:i:s',time())}}</td>
+                            <td class="tg-0r89" colspan="5">No.Faktur : {{$d['faktur']}}<br>Dibayar pada {{date('d/m/Y H:i:s',strtotime(Carbon::now()))}}</td>
                         </tr>
                         <tr>
                             <td class="tg-zd55" colspan="5">Segi pembayaran ini adalah bukti transaksi yang sah, harap disimpan. Pembayaran sudah termasuk PPN</td>

@@ -1,5 +1,7 @@
 $(document).ready(function () {
-    $('#tabelPublish').DataTable({
+    var scrollPosition;
+    var rowIndex;
+    var dtable = $('#tabelPublish').DataTable({
         processing: true,
 		serverSide: true,
 		ajax: {
@@ -47,12 +49,21 @@ $(document).ready(function () {
         },
         "sDom": '<"H"CTrf>t<"F"lip>',
         "aLengthMenu": [[100,-1], [100,"All"]],
-        "sScrollY": "290px",
+        "sScrollY": "50vh",
         "scrollX":true,
         // "sScrollX": "300px",
         //"sScrollXInner": "110%",
         "fnInitComplete": function() {
             this.css("visibility", "visible");
+        },
+        "preDrawCallback": function( settings ) {
+            scrollPosition = $(".dataTables_scrollBody").scrollTop();
+        },
+        "drawCallback": function( settings ) {
+            $(".dataTables_scrollBody").scrollTop(scrollPosition);
+            if(typeof rowIndex != 'undefined') {
+                dtable.row(rowIndex).nodes().to$().addClass('row_selected');                       
+            }
         },
     });
 
@@ -129,7 +140,7 @@ $(document).ready(function () {
                                     alert(data.errors);
                                 }
                                 if(data.success){
-                                    $('#tabelPublish').DataTable().ajax.reload(function(){}, false);
+                                    $('#tabelPublish').DataTable().ajax.reload(null, false);
                                 }
                             }
                         });
@@ -157,7 +168,7 @@ $(document).ready(function () {
                 }
                 if(data.success){
                     alert(data.success);
-                    $('#tabelPublish').DataTable().ajax.reload(function(){}, false);
+                    $('#tabelPublish').DataTable().ajax.reload(null, false);
                 }
 
                 $('#myChecking').modal('hide');

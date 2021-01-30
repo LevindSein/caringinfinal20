@@ -18,6 +18,8 @@ class Pedagang extends Model
         'nama', 
         'anggota', 
         'ktp', 
+        'npwp', 
+        'alamat',
         'email', 
         'hp', 
         'password', 

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Session;
 
 use App\Models\Dashboard;
 use App\Models\TempatUsaha;
+use Carbon\Carbon;
+use App\Models\Carbonet;
 
 class DashboardController extends Controller
 {
@@ -16,7 +18,9 @@ class DashboardController extends Controller
     }
 
     public function index(){
-        $tahun = date("Y", time());
+        $today = Carbon::now();
+        $today = strtotime($today);
+        $tahun = date("Y", $today);
 
         $rincian = Dashboard::rincian($tahun);
         $pendapatan = Dashboard::pendapatan($tahun);

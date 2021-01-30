@@ -1,5 +1,6 @@
 @extends('layout.kasir')
 @section('content')
+<title>Kasir Harian | BP3C</title>
 <div class="form-group">
     <h3 style="color:#16aaff;font-weight:700;text-align:center;">{{$tanggal}}</h3>
 </div>

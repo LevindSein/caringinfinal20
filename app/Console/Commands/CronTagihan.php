@@ -17,7 +17,8 @@ use App\Models\TarifLain;
 use App\Models\HariLibur;
 use App\Models\Sinkronisasi;
 use App\Models\User;
-
+use App\Models\Carbonet;
+use Carbon\Carbon;
 
 class CronTagihan extends Command
 {
@@ -52,9 +53,10 @@ class CronTagihan extends Command
      */
     public function handle()
     {
-        $date = date('Y-m-d',time());
-        $time = strtotime($date);
-        $tanggal = date('Y-m-01', strtotime("+1 month", $time));
+        $carbon = Carbon::now();
+        $carbon = strtotime($carbon);
+        $date = date('Y-m-01',$carbon);
+        $tanggal = new Carbonet($date, 1);
         $sync = Sinkronisasi::where('sinkron',$tanggal)->first();
         if($sync == NULL){
             $hasil = $tanggal;
@@ -64,7 +66,7 @@ class CronTagihan extends Command
             $tgl_tagihan = $hasil;
             $time = strtotime($tgl_tagihan);
             $bln_tagihan = date("Y-m", strtotime($tgl_tagihan));
-            $bln_pakai = date("Y-m", time());
+            $bln_pakai = date("Y-m", $carbon);
             $thn_tagihan = date("Y", strtotime($tgl_tagihan));
             $expired = date("Y-m-15", strtotime($tgl_tagihan));
             do{
