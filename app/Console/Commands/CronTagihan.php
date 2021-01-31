@@ -128,6 +128,8 @@ class CronTagihan extends Command
                     }
 
                     $tagihan->jml_alamat  = $record->jml_alamat;
+                    $tagihan->no_alamat   = $record->no_alamat;
+                    $tagihan->lok_tempat  = $record->lok_tempat;
 
                     //KeamananIPK
                     if($record->trf_keamananipk !== NULL){

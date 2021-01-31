@@ -41,7 +41,6 @@
                         @if(Session::get('role') == 'master' || Session::get('role') == 'manajer')
                         <div class="dropdown-header">Manajemen:</div>
                         <a class="dropdown-item {{ (request()->is('tempatusaha/rekap')) ? 'active' : '' }}" href="{{url('tempatusaha/rekap')}}" target="_blank">Data Rekap</a>
-                        <a class="dropdown-item {{ (request()->is('tempatusaha/potensi')) ? 'active' : '' }}" href="{{url('tempatusaha/potensi')}}" target="_blank">Data Potensi</a>
                         <div class="dropdown-divider"></div>
                         @endif
                         <div class="dropdown-header">Pengguna Fasilitas:</div>

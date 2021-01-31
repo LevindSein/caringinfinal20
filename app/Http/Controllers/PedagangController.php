@@ -26,7 +26,7 @@ class PedagangController extends Controller
     {
         if($request->ajax())
         {
-            $data = Pedagang::where('role','nasabah')->orderBy('nama','asc')->get();
+            $data = Pedagang::where('role','nasabah')->get();
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($data){
@@ -76,6 +76,7 @@ class PedagangController extends Controller
             'username' => 'required',
             'anggota'  => 'required',
             'hp'       => 'required',
+            'alamat'   => 'required',
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -92,6 +93,7 @@ class PedagangController extends Controller
             'password' => md5(hash('gost','123456')),
             'anggota'  => strtoupper($request->anggota),
             'email'    => strtolower($request->email.'@gmail.com'),
+            'alamat'   => $request->alamat,
             'role'     => 'nasabah',
         ];
        
@@ -204,7 +206,8 @@ class PedagangController extends Controller
         $rules = array(
             'ktp'      => 'required',
             'nama'     => 'required',
-            'hp'       => 'required'
+            'hp'       => 'required',
+            'alamat'   => 'required',
         );
 
         $error = Validator::make($request->all(), $rules);
@@ -217,7 +220,8 @@ class PedagangController extends Controller
         $data = [
             'ktp'      => $request->ktp,
             'nama'     => ucwords($request->nama),
-            'email'    => strtolower($request->email.'@gmail.com')
+            'email'    => strtolower($request->email.'@gmail.com'),
+            'alamat'   => $request->alamat,
         ];
 
         if($request->email == NULL) {

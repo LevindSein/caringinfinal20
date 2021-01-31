@@ -64,6 +64,7 @@ class Tagihan extends Model
         'sel_listrik',
         'den_listrik',
         'jml_alamat',
+        'no_alamat',
         'sub_keamananipk',
         'dis_keamananipk',
         'ttl_keamananipk',
@@ -96,10 +97,12 @@ class Tagihan extends Model
         'ket',
         'via_tambah',
         'stt_publish',
+        'via_publish',
         'warna_airbersih',
         'warna_listrik',
         'review',
         'reviewer',
+        'lok_tempat',
         'updated_at',
         'created_at'
     ];

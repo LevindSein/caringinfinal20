@@ -106,7 +106,8 @@ class Pemakaian extends Model
                 'tagihan.bpju_listrik as bpju',
                 'tagihan.ttl_listrik as tagihan',
                 'tagihan.rea_listrik as realisasi',
-                'tagihan.sel_listrik as selisih'
+                'tagihan.sel_listrik as selisih',
+                'tagihan.lok_tempat as lokasi'
                 )
             ->orderBy('tagihan.kd_kontrol','asc')
             ->get();
@@ -220,7 +221,8 @@ class Pemakaian extends Model
                 'tagihan.arkot_airbersih as arkot',
                 'tagihan.ttl_airbersih as tagihan',
                 'tagihan.rea_airbersih as realisasi',
-                'tagihan.sel_airbersih as selisih'
+                'tagihan.sel_airbersih as selisih',
+                'tagihan.lok_tempat as lokasi'
                 )
             ->orderBy('tagihan.kd_kontrol','asc')
             ->get();
@@ -315,6 +317,8 @@ class Pemakaian extends Model
             ->select(
                 'tagihan.kd_kontrol as kontrol',
                 'tagihan.nama as pengguna',
+                'tagihan.no_alamat as nomor',
+                'tagihan.lok_tempat as lokasi',
                 'tagihan.jml_alamat as jumlah',
                 'tagihan.sub_keamananipk as subtotal',
                 'tagihan.dis_keamananipk as diskon',
@@ -412,6 +416,8 @@ class Pemakaian extends Model
             ->select(
                 'tagihan.kd_kontrol as kontrol',
                 'tagihan.nama as pengguna',
+                'tagihan.no_alamat as nomor',
+                'tagihan.lok_tempat as lokasi',
                 'tagihan.jml_alamat as jumlah',
                 'tagihan.sub_kebersihan as subtotal',
                 'tagihan.dis_kebersihan as diskon',
@@ -509,6 +515,8 @@ class Pemakaian extends Model
             ->select(
                 'tagihan.kd_kontrol as kontrol',
                 'tagihan.nama as pengguna',
+                'tagihan.no_alamat as nomor',
+                'tagihan.lok_tempat as lokasi',
                 'tagihan.jml_alamat as alamat',
                 'tagihan.ttl_listrik as listrik',
                 'tagihan.ttl_airbersih as airbersih',

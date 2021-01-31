@@ -88,7 +88,7 @@
                     Sumber Daya
                 </div>
 
-                @if(Session::get('role') == 'master' || Session::get('otoritas')->pedagang)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->pedagang))
                 <!-- Nav Item - Pedagang -->
                 <li class="nav-item {{ (request()->is('pedagang*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{route('pedagang.index')}}">
@@ -106,7 +106,7 @@
                 </li>
                 @endif
 
-                @if(Session::get('role') == 'master' || Session::get('otoritas')->tagihan || Session::get('otoritas')->publish)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->tagihan || Session::get('otoritas')->publish))
                 <!-- Nav Item - Tagihan -->
                 <li class="nav-item {{ (request()->is('tagihan*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{url('tagihan')}}">
@@ -118,7 +118,7 @@
                 <hr class="sidebar-divider">
                 @endif
 
-                @if(Session::get('role') == 'master' || Session::get('otoritas')->pemakaian || Session::get('otoritas')->pendapatan || Session::get('otoritas')->datausaha)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->pemakaian || Session::get('otoritas')->pendapatan || Session::get('otoritas')->datausaha))
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Report
@@ -166,12 +166,12 @@
                 <hr class="sidebar-divider">
                 @endif
 
-                @if(Session::get('role') == 'master' || Session::get('otoritas')->blok || Session::get('otoritas')->alatmeter || Session::get('otoritas')->tarif || Session::get('otoritas')->harilibur)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->blok || Session::get('otoritas')->alatmeter || Session::get('otoritas')->tarif || Session::get('otoritas')->harilibur))
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Others
                 </div>
-                @if(Session::get('role') == 'master' || Session::get('otoritas')->blok || Session::get('otoritas')->alatmeter || Session::get('otoritas')->tarif || Session::get('otoritas')->harilibur)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->blok || Session::get('otoritas')->alatmeter || Session::get('otoritas')->tarif || Session::get('otoritas')->harilibur))
                 <!-- Nav Item - Utilities -->
                 <li class="nav-item {{ (request()->is('utilities/*')) ? 'active' : '' }}">
                     <a 
@@ -190,16 +190,16 @@
                         aria-labelledby="headingTwo" 
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            @if(Session::get('role') == 'master' || Session::get('otoritas')->tarif)
+                            @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->tarif))
                             <a class="collapse-item {{ (request()->is('utilities/tarif*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/tarif')}}">Tarif</a>
                             @endif
-                            @if(Session::get('role') == 'master' || Session::get('otoritas')->alatmeter)
+                            @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->alatmeter))
                             <a class="collapse-item {{ (request()->is('utilities/alatmeter*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/alatmeter')}}">Alat Meter</a>
                             @endif
-                            @if(Session::get('role') == 'master' || Session::get('otoritas')->harilibur)
+                            @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->harilibur))
                             <a class="collapse-item {{ (request()->is('utilities/harilibur*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/harilibur')}}">Hari Libur</a>
                             @endif
-                            @if(Session::get('role') == 'master' || Session::get('otoritas')->blok)
+                            @if(Session::get('role') == 'master' || Session::get('role') == 'admin' && (Session::get('otoritas')->blok))
                             <a class="collapse-item {{ (request()->is('utilities/blok*')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('utilities/blok')}}">Blok</a>
                             @endif
                         </div>

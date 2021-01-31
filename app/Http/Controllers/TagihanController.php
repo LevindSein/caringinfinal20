@@ -90,7 +90,7 @@ class TagihanController extends Controller
                         else
                             $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#000000;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
-                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="unpublish" id="'.$data->id.'" class="unpublish"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
                         $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
@@ -380,7 +380,7 @@ class TagihanController extends Controller
                         else
                             $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#000000;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
-                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="unpublish" id="'.$data->id.'" class="unpublish"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
                         $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
@@ -762,7 +762,6 @@ class TagihanController extends Controller
                 $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
                 if($tempat != NULL){
                     $tempat->dis_keamananipk = $diskon;
-                    $tagihan->jml_alamat = $tempat->jml_alamat;
                     $tempat->save();
                 }
 
@@ -792,7 +791,6 @@ class TagihanController extends Controller
                 $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
                 if($tempat != NULL){
                     $tempat->dis_kebersihan = $diskon;
-                    $tagihan->jml_alamat = $tempat->jml_alamat;
                     $tempat->save();
                 }
 
@@ -861,6 +859,16 @@ class TagihanController extends Controller
             $data = array();
             $data['success'] = 'Data Berhasil Diedit';
             $data['notif']   = $notif; 
+
+            $tagihan = Tagihan::find($id);
+            $tempat = TempatUsaha::where('kd_kontrol',$tagihan->kd_kontrol)->first();
+            if($tempat != NULL){
+                $tagihan->jml_alamat = $tempat->jml_alamat;
+                $tagihan->no_alamat  = $tempat->no_alamat;
+                $tagihan->lok_tempat = $tempat->lok_tempat;
+                $tagihan->save();
+            }
+
             return response()->json(['result' => $data]);
         }
         catch(\Exception $e){
@@ -880,65 +888,65 @@ class TagihanController extends Controller
             try{
                 $data = Tagihan::findOrFail($id);
                 
-                $awal_airbersih         = $data->awal_airbersih;
-                $akhir_airbersih        = $data->akhir_airbersih;
-                $pakai_airbersih        = $data->pakai_airbersih;
-                $byr_airbersih          = $data->byr_airbersih;
-                $pemeliharaan_airbersih = $data->pemeliharaan_airbersih;
-                $beban_airbersih        = $data->beban_airbersih;
-                $arkot_airbersih        = $data->arkot_airbersih;
-                $sub_airbersih          = $data->sub_airbersih;
-                $dis_airbersih          = $data->dis_airbersih;
-                $ttl_airbersih          = $data->ttl_airbersih;
-                $rea_airbersih          = $data->rea_airbersih;
-                $sel_airbersih          = $data->sel_airbersih;
-                $den_airbersih          = $data->den_airbersih;
-                $daya_listrik           = $data->daya_listrik;
-                $awal_listrik           = $data->awal_listrik;
-                $akhir_listrik          = $data->akhir_listrik;
-                $pakai_listrik          = $data->pakai_listrik;
-                $byr_listrik            = $data->byr_listrik;
-                $rekmin_listrik         = $data->rekmin_listrik;
-                $blok1_listrik          = $data->blok1_listrik;
-                $blok2_listrik          = $data->blok2_listrik;
-                $beban_listrik          = $data->beban_listrik;
-                $bpju_listrik           = $data->bpju_listrik;
-                $sub_listrik            = $data->sub_listrik;
-                $dis_listrik            = $data->dis_listrik;
-                $ttl_listrik            = $data->ttl_listrik;
-                $rea_listrik            = $data->rea_listrik;
-                $sel_listrik            = $data->sel_listrik;
-                $den_listrik            = $data->den_listrik;
-                $jml_alamat             = $data->jml_alamat;
-                $sub_keamananipk        = $data->sub_keamananipk;
-                $dis_keamananipk        = $data->dis_keamananipk;
-                $ttl_keamananipk        = $data->ttl_keamananipk;
-                $rea_keamananipk        = $data->rea_keamananipk;
-                $sel_keamananipk        = $data->sel_keamananipk;
-                $sub_kebersihan         = $data->sub_kebersihan;
-                $dis_kebersihan         = $data->dis_kebersihan;
-                $ttl_kebersihan         = $data->ttl_kebersihan;
-                $rea_kebersihan         = $data->rea_kebersihan;
-                $sel_kebersihan         = $data->sel_kebersihan;
-                $ttl_airkotor           = $data->ttl_airkotor;
-                $rea_airkotor           = $data->rea_airkotor;
-                $sel_airkotor           = $data->sel_airkotor;
-                $ttl_lain               = $data->ttl_lain;
-                $rea_lain               = $data->rea_lain;
-                $sel_lain               = $data->sel_lain;
-                $sub_tagihan            = $data->sub_tagihan;
-                $dis_tagihan            = $data->dis_tagihan;
-                $ttl_tagihan            = $data->ttl_tagihan;
-                $rea_tagihan            = $data->rea_tagihan;
-                $sel_tagihan            = $data->sel_tagihan;
-                $den_tagihan            = $data->den_tagihan;
-                $stt_denda              = $data->stt_denda;
-                $stt_kebersihan         = $data->stt_kebersihan;
-                $stt_keamananipk        = $data->stt_keamananipk;
-                $stt_listrik            = $data->stt_listrik;
-                $stt_airbersih          = $data->stt_airbersih;
-                $stt_airkotor           = $data->stt_airkotor;
-                $stt_lain               = $data->stt_lain;
+                // $awal_airbersih         = $data->awal_airbersih;
+                // $akhir_airbersih        = $data->akhir_airbersih;
+                // $pakai_airbersih        = $data->pakai_airbersih;
+                // $byr_airbersih          = $data->byr_airbersih;
+                // $pemeliharaan_airbersih = $data->pemeliharaan_airbersih;
+                // $beban_airbersih        = $data->beban_airbersih;
+                // $arkot_airbersih        = $data->arkot_airbersih;
+                // $sub_airbersih          = $data->sub_airbersih;
+                // $dis_airbersih          = $data->dis_airbersih;
+                // $ttl_airbersih          = $data->ttl_airbersih;
+                // $rea_airbersih          = $data->rea_airbersih;
+                // $sel_airbersih          = $data->sel_airbersih;
+                // $den_airbersih          = $data->den_airbersih;
+                // $daya_listrik           = $data->daya_listrik;
+                // $awal_listrik           = $data->awal_listrik;
+                // $akhir_listrik          = $data->akhir_listrik;
+                // $pakai_listrik          = $data->pakai_listrik;
+                // $byr_listrik            = $data->byr_listrik;
+                // $rekmin_listrik         = $data->rekmin_listrik;
+                // $blok1_listrik          = $data->blok1_listrik;
+                // $blok2_listrik          = $data->blok2_listrik;
+                // $beban_listrik          = $data->beban_listrik;
+                // $bpju_listrik           = $data->bpju_listrik;
+                // $sub_listrik            = $data->sub_listrik;
+                // $dis_listrik            = $data->dis_listrik;
+                // $ttl_listrik            = $data->ttl_listrik;
+                // $rea_listrik            = $data->rea_listrik;
+                // $sel_listrik            = $data->sel_listrik;
+                // $den_listrik            = $data->den_listrik;
+                // $jml_alamat             = $data->jml_alamat;
+                // $sub_keamananipk        = $data->sub_keamananipk;
+                // $dis_keamananipk        = $data->dis_keamananipk;
+                // $ttl_keamananipk        = $data->ttl_keamananipk;
+                // $rea_keamananipk        = $data->rea_keamananipk;
+                // $sel_keamananipk        = $data->sel_keamananipk;
+                // $sub_kebersihan         = $data->sub_kebersihan;
+                // $dis_kebersihan         = $data->dis_kebersihan;
+                // $ttl_kebersihan         = $data->ttl_kebersihan;
+                // $rea_kebersihan         = $data->rea_kebersihan;
+                // $sel_kebersihan         = $data->sel_kebersihan;
+                // $ttl_airkotor           = $data->ttl_airkotor;
+                // $rea_airkotor           = $data->rea_airkotor;
+                // $sel_airkotor           = $data->sel_airkotor;
+                // $ttl_lain               = $data->ttl_lain;
+                // $rea_lain               = $data->rea_lain;
+                // $sel_lain               = $data->sel_lain;
+                // $sub_tagihan            = $data->sub_tagihan;
+                // $dis_tagihan            = $data->dis_tagihan;
+                // $ttl_tagihan            = $data->ttl_tagihan;
+                // $rea_tagihan            = $data->rea_tagihan;
+                // $sel_tagihan            = $data->sel_tagihan;
+                // $den_tagihan            = $data->den_tagihan;
+                // $stt_denda              = $data->stt_denda;
+                // $stt_kebersihan         = $data->stt_kebersihan;
+                // $stt_keamananipk        = $data->stt_keamananipk;
+                // $stt_listrik            = $data->stt_listrik;
+                // $stt_airbersih          = $data->stt_airbersih;
+                // $stt_airkotor           = $data->stt_airkotor;
+                // $stt_lain               = $data->stt_lain;
 
                 if(empty($request->checkListrik) == FALSE){
                     $data->daya_listrik   = NULL;
@@ -958,132 +966,155 @@ class TagihanController extends Controller
                     $data->sel_listrik    = 0;
                     $data->den_listrik    = 0;
                     $data->stt_listrik    = NULL;
-                    $data->save();
                 }
-                else{
-                    $daya_listrik      = NULL;
-                    $awal_listrik      = NULL;
-                    $akhir_listrik     = NULL;
-                    $pakai_listrik     = NULL;
-                    $byr_listrik       = NULL;
-                    $rekmin_listrik    = NULL;
-                    $blok1_listrik     = NULL;
-                    $blok2_listrik     = NULL;
-                    $beban_listrik     = NULL;
-                    $bpju_listrik      = NULL;
-                    $sub_listrik       = 0;
-                    $dis_listrik       = 0;
-                    $ttl_listrik       = 0;
-                    $rea_listrik       = 0;
-                    $sel_listrik       = 0;
-                    $den_listrik       = 0;
-                    $stt_listrik       = NULL;
-                }
+                // else{
+                //     $daya_listrik      = NULL;
+                //     $awal_listrik      = NULL;
+                //     $akhir_listrik     = NULL;
+                //     $pakai_listrik     = NULL;
+                //     $byr_listrik       = NULL;
+                //     $rekmin_listrik    = NULL;
+                //     $blok1_listrik     = NULL;
+                //     $blok2_listrik     = NULL;
+                //     $beban_listrik     = NULL;
+                //     $bpju_listrik      = NULL;
+                //     $sub_listrik       = 0;
+                //     $dis_listrik       = 0;
+                //     $ttl_listrik       = 0;
+                //     $rea_listrik       = 0;
+                //     $sel_listrik       = 0;
+                //     $den_listrik       = 0;
+                //     $stt_listrik       = NULL;
+                // }
 
                 if(empty($request->checkAirBersih) == FALSE){
+                    $data->awal_airbersih = NULL;
+                    $data->akhir_airbersih = NULL;
+                    $data->pakai_airbersih = NULL;
+                    $data->byr_airbersih = NULL;
+                    $data->pemeliharaan_airbersih = NULL;
+                    $data->beban_airbersih = NULL;
+                    $data->arkot_airbersih = NULL;
+                    $data->sub_airbersih = 0;
+                    $data->dis_airbersih = 0;
                     $data->ttl_airbersih = 0;
-                    $data->save();
+                    $data->sel_airbersih = 0;
+                    $data->den_airbersih = 0;
+                    $data->stt_airbersih = NULL;
                 }
                 if(empty($request->checkKeamananIpk) == FALSE){
+                    $data->sub_keamananipk = 0;
+                    $data->dis_keamananipk = 0;
                     $data->ttl_keamananipk = 0;
-                    $data->save();
+                    $data->rea_keamananipk = 0;
+                    $data->sel_keamananipk = 0;
+                    $data->stt_keamananipk = NULL;
                 }
                 if(empty($request->checkKebersihan) == FALSE){
+                    $data->sub_kebersihan = 0;
+                    $data->dis_kebersihan = 0;
                     $data->ttl_kebersihan = 0;
-                    $data->save();
+                    $data->rea_kebersihan = 0;
+                    $data->sel_kebersihan = 0;
+                    $data->stt_kebersihan = NULL;
                 }
                 if(empty($request->checkAirKotor) == FALSE){
                     $data->ttl_airkotor = 0;
-                    $data->save();
+                    $data->rea_airkotor = 0;
+                    $data->sel_airkotor = 0;
+                    $data->stt_airkotor = NULL;
                 }
                 if(empty($request->checkLain) == FALSE){
                     $data->ttl_lain = 0;
-                    $data->save();
+                    $data->rea_lain = 0;
+                    $data->sel_lain = 0;
+                    $data->stt_lain = NULL;
                 }
+                $data->save();
                 Tagihan::totalTagihan($id);
 
                 $data = Tagihan::findOrFail($id);
 
-                $hapus = [
-                    'id'                     => $data->id,
-                    'nama'                   => $data->nama,
-                    'blok'                   => $data->blok,
-                    'kd_kontrol'             => $data->kd_kontrol,
-                    'bln_pakai'              => $data->bln_pakai,
-                    'tgl_tagihan'            => $data->tgl_tagihan,
-                    'bln_tagihan'            => $data->bln_tagihan,
-                    'thn_tagihan'            => $data->thn_tagihan,
-                    'tgl_expired'            => $data->tgl_expired,
-                    'stt_lunas'              => $data->stt_lunas,
-                    'stt_bayar'              => $data->stt_bayar,
-                    'awal_airbersih'         => $data->awal_airbersih,
-                    'akhir_airbersih'        => $data->akhir_airbersih,
-                    'pakai_airbersih'        => $data->pakai_airbersih,
-                    'byr_airbersih'          => $data->byr_airbersih,
-                    'pemeliharaan_airbersih' => $data->pemeliharaan_airbersih,
-                    'beban_airbersih'        => $data->beban_airbersih,
-                    'arkot_airbersih'        => $data->arkot_airbersih,
-                    'sub_airbersih'          => $data->sub_airbersih,
-                    'dis_airbersih'          => $data->dis_airbersih,
-                    'ttl_airbersih'          => $data->ttl_airbersih,
-                    'rea_airbersih'          => $data->rea_airbersih,
-                    'sel_airbersih'          => $data->sel_airbersih,
-                    'den_airbersih'          => $data->den_airbersih,
-                    'daya_listrik'           => $daya_listrik,
-                    'awal_listrik'           => $awal_listrik,
-                    'akhir_listrik'          => $akhir_listrik,
-                    'pakai_listrik'          => $pakai_listrik,
-                    'byr_listrik'            => $byr_listrik,
-                    'rekmin_listrik'         => $rekmin_listrik,
-                    'blok1_listrik'          => $blok1_listrik,
-                    'blok2_listrik'          => $blok2_listrik,
-                    'beban_listrik'          => $beban_listrik,
-                    'bpju_listrik'           => $bpju_listrik,
-                    'sub_listrik'            => $sub_listrik,
-                    'dis_listrik'            => $dis_listrik,
-                    'ttl_listrik'            => $ttl_listrik,
-                    'rea_listrik'            => $rea_listrik,
-                    'sel_listrik'            => $sel_listrik,
-                    'den_listrik'            => $den_listrik,
-                    'jml_alamat'             => $data->jml_alamat,
-                    'sub_keamananipk'        => $data->sub_keamananipk,
-                    'dis_keamananipk'        => $data->dis_keamananipk,
-                    'ttl_keamananipk'        => $data->ttl_keamananipk,
-                    'rea_keamananipk'        => $data->rea_keamananipk,
-                    'sel_keamananipk'        => $data->sel_keamananipk,
-                    'sub_kebersihan'         => $data->sub_kebersihan,
-                    'dis_kebersihan'         => $data->dis_kebersihan,
-                    'ttl_kebersihan'         => $data->ttl_kebersihan,
-                    'rea_kebersihan'         => $data->rea_kebersihan,
-                    'sel_kebersihan'         => $data->sel_kebersihan,
-                    'ttl_airkotor'           => $data->ttl_airkotor,
-                    'rea_airkotor'           => $data->rea_airkotor,
-                    'sel_airkotor'           => $data->sel_airkotor,
-                    'ttl_lain'               => $data->ttl_lain,
-                    'rea_lain'               => $data->rea_lain,
-                    'sel_lain'               => $data->sel_lain,
-                    'sub_tagihan'            => $data->sub_tagihan,
-                    'dis_tagihan'            => $data->dis_tagihan,
-                    'ttl_tagihan'            => $data->ttl_tagihan,
-                    'rea_tagihan'            => $data->rea_tagihan,
-                    'sel_tagihan'            => $data->sel_tagihan,
-                    'den_tagihan'            => $data->den_tagihan,
-                    'stt_denda'              => $data->stt_denda,
-                    'stt_kebersihan'         => $data->stt_kebersihan,
-                    'stt_keamananipk'        => $data->stt_keamananipk,
-                    'stt_listrik'            => $stt_listrik,
-                    'stt_airbersih'          => $data->stt_airbersih,
-                    'stt_airkotor'           => $data->stt_airkotor,
-                    'stt_lain'               => $data->stt_lain,
-                    'ket'                    => $data->ket,
-                    'via_tambah'             => $data->via_tambah,
-                    'via_hapus'              => Session::get('username'),
-                    'stt_publish'            => $data->stt_publish,
-                    'warna_airbersih'        => $data->warna_airbersih,
-                    'warna_listrik'          => $data->warna_listrik
-                ];
+                // $hapus = [
+                //     'id'                     => $data->id,
+                //     'nama'                   => $data->nama,
+                //     'blok'                   => $data->blok,
+                //     'kd_kontrol'             => $data->kd_kontrol,
+                //     'bln_pakai'              => $data->bln_pakai,
+                //     'tgl_tagihan'            => $data->tgl_tagihan,
+                //     'bln_tagihan'            => $data->bln_tagihan,
+                //     'thn_tagihan'            => $data->thn_tagihan,
+                //     'tgl_expired'            => $data->tgl_expired,
+                //     'stt_lunas'              => $data->stt_lunas,
+                //     'stt_bayar'              => $data->stt_bayar,
+                //     'awal_airbersih'         => $data->awal_airbersih,
+                //     'akhir_airbersih'        => $data->akhir_airbersih,
+                //     'pakai_airbersih'        => $data->pakai_airbersih,
+                //     'byr_airbersih'          => $data->byr_airbersih,
+                //     'pemeliharaan_airbersih' => $data->pemeliharaan_airbersih,
+                //     'beban_airbersih'        => $data->beban_airbersih,
+                //     'arkot_airbersih'        => $data->arkot_airbersih,
+                //     'sub_airbersih'          => $data->sub_airbersih,
+                //     'dis_airbersih'          => $data->dis_airbersih,
+                //     'ttl_airbersih'          => $data->ttl_airbersih,
+                //     'rea_airbersih'          => $data->rea_airbersih,
+                //     'sel_airbersih'          => $data->sel_airbersih,
+                //     'den_airbersih'          => $data->den_airbersih,
+                //     'daya_listrik'           => $daya_listrik,
+                //     'awal_listrik'           => $awal_listrik,
+                //     'akhir_listrik'          => $akhir_listrik,
+                //     'pakai_listrik'          => $pakai_listrik,
+                //     'byr_listrik'            => $byr_listrik,
+                //     'rekmin_listrik'         => $rekmin_listrik,
+                //     'blok1_listrik'          => $blok1_listrik,
+                //     'blok2_listrik'          => $blok2_listrik,
+                //     'beban_listrik'          => $beban_listrik,
+                //     'bpju_listrik'           => $bpju_listrik,
+                //     'sub_listrik'            => $sub_listrik,
+                //     'dis_listrik'            => $dis_listrik,
+                //     'ttl_listrik'            => $ttl_listrik,
+                //     'rea_listrik'            => $rea_listrik,
+                //     'sel_listrik'            => $sel_listrik,
+                //     'den_listrik'            => $den_listrik,
+                //     'jml_alamat'             => $data->jml_alamat,
+                //     'sub_keamananipk'        => $data->sub_keamananipk,
+                //     'dis_keamananipk'        => $data->dis_keamananipk,
+                //     'ttl_keamananipk'        => $data->ttl_keamananipk,
+                //     'rea_keamananipk'        => $data->rea_keamananipk,
+                //     'sel_keamananipk'        => $data->sel_keamananipk,
+                //     'sub_kebersihan'         => $data->sub_kebersihan,
+                //     'dis_kebersihan'         => $data->dis_kebersihan,
+                //     'ttl_kebersihan'         => $data->ttl_kebersihan,
+                //     'rea_kebersihan'         => $data->rea_kebersihan,
+                //     'sel_kebersihan'         => $data->sel_kebersihan,
+                //     'ttl_airkotor'           => $data->ttl_airkotor,
+                //     'rea_airkotor'           => $data->rea_airkotor,
+                //     'sel_airkotor'           => $data->sel_airkotor,
+                //     'ttl_lain'               => $data->ttl_lain,
+                //     'rea_lain'               => $data->rea_lain,
+                //     'sel_lain'               => $data->sel_lain,
+                //     'sub_tagihan'            => $data->sub_tagihan,
+                //     'dis_tagihan'            => $data->dis_tagihan,
+                //     'ttl_tagihan'            => $data->ttl_tagihan,
+                //     'rea_tagihan'            => $data->rea_tagihan,
+                //     'sel_tagihan'            => $data->sel_tagihan,
+                //     'den_tagihan'            => $data->den_tagihan,
+                //     'stt_denda'              => $data->stt_denda,
+                //     'stt_kebersihan'         => $data->stt_kebersihan,
+                //     'stt_keamananipk'        => $data->stt_keamananipk,
+                //     'stt_listrik'            => $stt_listrik,
+                //     'stt_airbersih'          => $data->stt_airbersih,
+                //     'stt_airkotor'           => $data->stt_airkotor,
+                //     'stt_lain'               => $data->stt_lain,
+                //     'ket'                    => $data->ket,
+                //     'via_tambah'             => $data->via_tambah,
+                //     'via_hapus'              => Session::get('username'),
+                //     'stt_publish'            => $data->stt_publish,
+                //     'warna_airbersih'        => $data->warna_airbersih,
+                //     'warna_listrik'          => $data->warna_listrik
+                // ];
 
-                Penghapusan::create($hapus);
+                // Penghapusan::create($hapus);
 
                 if($data->ttl_tagihan == 0)
                     $data->delete();
@@ -1570,6 +1601,7 @@ class TagihanController extends Controller
                 $dataset = Tagihan::where('stt_publish',0)->get();
                 foreach($dataset as $d){
                     $d->stt_publish = 1;
+                    $d->via_publish = Session::get('username');
                     $d->save();
                 }
                 return response()->json(['success' => 'Publish Sukses']);
@@ -1657,7 +1689,7 @@ class TagihanController extends Controller
                         else
                             $button = '<a type="button" title="Edit" name="edit" id="'.$data->id.'" class="edit"><i class="fas fa-edit" style="color:#000000;"></i></a>';
                         $button .= '&nbsp;&nbsp;<a type="button" title="Hapus" name="delete" id="'.$data->id.'" class="delete"><i class="fas fa-trash-alt" style="color:#e74a3b;"></i></a>';
-                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="publishing" id="'.$data->id.'" class="publishing"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
+                        $button .= '&nbsp;&nbsp;<a type="button" title="Publish" name="unpublish" id="'.$data->id.'" class="unpublish"><i class="fas fa-check-circle" style="color:#1cc88a;"></i></a>';
                     }
                     else{
                         $button = '<button type="button" title="Cancel Publish" name="unpublish" id="'.$data->id.'" class="unpublish btn btn-sm btn-danger">Unpublish</button>';
@@ -2197,6 +2229,8 @@ class TagihanController extends Controller
                 }
 
                 $tagihan->jml_alamat  = $record->jml_alamat;
+                $tagihan->no_alamat   = $record->no_alamat;
+                $tagihan->lok_tempat  = $record->lok_tempat;
 
                 //KeamananIPK
                 if($request->stt_keamananipk_manual == 'ok'){
@@ -2368,16 +2402,10 @@ class TagihanController extends Controller
         $i = 0;
         $pemberitahuan = array();
         foreach($dataset as $d){
-            $tempat = TempatUsaha::where('kd_kontrol',$d->kd_kontrol)->first();
-            if($tempat != NULL){
-                $pemberitahuan[$i]['alamat'] = $tempat->no_alamat;
-                $pemberitahuan[$i]['lokasi'] = $tempat->lok_tempat;
-                if($tempat->lok_tempat === NULL){
-                    $pemberitahuan[$i]['lokasi'] = '-';
-                }
-            }
-            else{
-                $pemberitahuan[$i]['alamat'] = '-';
+            $pemberitahuan[$i]['alamat'] = $d->no_alamat;
+            $pemberitahuan[$i]['lokasi'] = $d->lok_tempat;
+            if($d->lok_tempat == NULL){
+
                 $pemberitahuan[$i]['lokasi'] = '-';
             }
 
@@ -2500,16 +2528,9 @@ class TagihanController extends Controller
             $d->no_faktur = $no_faktur;
             $d->save();
 
-            $tempat = TempatUsaha::where('kd_kontrol',$d->kd_kontrol)->first();
-            if($tempat != NULL){
-                $pemberitahuan[$i]['alamat'] = $tempat->no_alamat;
-                $pemberitahuan[$i]['lokasi'] = $tempat->lok_tempat;
-                if($tempat->lok_tempat === NULL){
-                    $pemberitahuan[$i]['lokasi'] = '-';
-                }
-            }
-            else{
-                $pemberitahuan[$i]['alamat'] = '-';
+            $pemberitahuan[$i]['alamat'] = $d->no_alamat;
+            $pemberitahuan[$i]['lokasi'] = $d->lok_tempat;
+            if($d->lok_tempat == NULL){
                 $pemberitahuan[$i]['lokasi'] = '-';
             }
 
@@ -2592,22 +2613,24 @@ class TagihanController extends Controller
             try{
                 $tagihan = Tagihan::find($id);
                 if($tagihan->bln_tagihan >= date('Y-m',strtotime(Carbon::now()))){
-                    $pembayaran = Pembayaran::where('id_tagihan',$tagihan->id)->first();
-                    if($pembayaran == NULL){
-                        $publish = $tagihan->stt_publish;
-                        if($publish === 1){
+                    $publish = $tagihan->stt_publish;
+                    if($publish === 1){
+                        $pembayaran = Pembayaran::where('id_tagihan',$tagihan->id)->first();
+                        if($pembayaran == NULL)
                             $hasil = 0;
-                        }
-                        else if($publish === 0){
-                            $hasil = 1;
-                        }
-                        $tagihan->stt_publish = $hasil;
-                        $tagihan->save();
+                        else
+                            return response()->json(['unsuccess' => 'Unpublish Gagal, Pembayaran telah dilakukan']);
+                    }
+                    else if($publish === 0){
+                        $hasil = 1;
+                    }
+                    $tagihan->stt_publish = $hasil;
+                    $tagihan->via_publish = Session::get('username');
+                    $tagihan->save();
+                    if($hasil == 0)
                         return response()->json(['success' => 'Unpublish Sukses']);
-                    }
-                    else{
-                        return response()->json(['unsuccess' => 'Unpublish Gagal, Pembayaran telah dilakukan']);
-                    }
+                    else
+                        return response()->json(['success' => 'Publish Sukses']);
                 }
                 else{
                     return response()->json(['unsuccess' => 'Data Tagihan Kedaluwarsa']);
@@ -2618,28 +2641,7 @@ class TagihanController extends Controller
             }
         }
     }
-
-    public function publishing(Request $request,$id){
-        if($request->ajax()){
-            try{
-                $tagihan = Tagihan::find($id);
-                $publish = $tagihan->stt_publish;
-                if($publish === 1){
-                    $hasil = 0;
-                }
-                else if($publish === 0){
-                    $hasil = 1;
-                }
-                $tagihan->stt_publish = $hasil;
-                $tagihan->save();
-                return response()->json(['success' => 'Unpublish Sukses']);
-            }
-            catch(\Exception $e){
-                return response()->json(['errors' => 'Oops! Gagal Unpublish']);
-            }
-        }
-    }
-
+    
     public function manual(Request $request, $id){
         if($request->ajax()){
             try{

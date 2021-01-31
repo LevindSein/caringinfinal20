@@ -26,7 +26,8 @@ $(document).ready(function(){
         aoColumnDefs: [
             { "bSortable": false, "aTargets": [2,3,4,5,6] }, 
             { "bSearchable": false, "aTargets": [6] }
-        ]
+        ],
+        order:[[1, 'asc']]
     });
 
     var id;
@@ -157,6 +158,7 @@ $(document).ready(function(){
                 $('#anggota').val(data.result.anggota);
                 $('#email').val(data.result.email);
                 $('#hp').val(data.result.hp);
+                $('#alamat').val(data.result.alamat);
 
                 if(data.result.checkPemilik == 'checked'){
                     $("#pemilik").prop("checked", true);

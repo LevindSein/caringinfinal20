@@ -83,6 +83,7 @@
                             <th class="tg-r8fv">B.Beban</th>
                             <th class="tg-r8fv">BPJU</th>
                             <th class="tg-r8fv">Tagihan</th>
+                            <th class="tg-r8fv" style="width:10%">Ket</th>
                             <!-- <th class="tg-r8fv">Realisasi</th>
                             <th class="tg-r8fv">Selisih</th> -->
                         </tr>
@@ -93,7 +94,7 @@
                         <tr>
                             <td class="tg-cegc">{{$no}}</td>
                             <td class="tg-cegc">{{$d->kontrol}}</td>
-                            <td class="tg-g25h" style="text-align:left;">{{$d->pengguna}}</td>
+                            <td class="tg-cegc" style="text-align:left;">{{$d->pengguna}}</td>
                             <td class="tg-g25h">{{number_format($d->daya)}}</td>
                             <td class="tg-g25h">{{number_format($d->lalu)}}</td>
                             <td class="tg-g25h">{{number_format($d->baru)}}</td>
@@ -104,6 +105,7 @@
                             <td class="tg-g25h">{{number_format($d->beban)}}</td>
                             <td class="tg-g25h">{{number_format($d->bpju)}}</td>
                             <td class="tg-g25h">{{number_format($d->tagihan)}}</td>
+                            <td class="tg-cegc" style="white-space:normal; word-break:break-word;">{{$d->lokasi}}</td>
                             <!-- <td class="tg-g25h">{{number_format($d->realisasi)}}</td>
                             <td class="tg-g25h">{{number_format($d->selisih)}}</td> -->
                         </tr>
@@ -119,6 +121,7 @@
                             <td class="tg-8m6k">{{number_format($d->beban)}}</td>
                             <td class="tg-8m6k">{{number_format($d->bpju)}}</td>
                             <td class="tg-8m6k">{{number_format($d->tagihan)}}</td>
+                            <td class="tg-8m6k"></td>
                             <!-- <td class="tg-8m6k">{{number_format($d->realisasi)}}</td>
                             <td class="tg-8m6k">{{number_format($d->selisih)}}</td> -->
                         </tr>

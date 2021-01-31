@@ -23,6 +23,7 @@ $(document).ready(function(){
             { data: 'ttl_kebersihan' , name: 'ttl_kebersihan' , class : 'text-center' },
             { data: 'ttl_airkotor'   , name: 'ttl_airkotor'   , class : 'text-center' },
             { data: 'ttl_lain'       , name: 'ttl_lain'       , class : 'text-center' },
+            { data: 'via_publish'    , name: 'via_publish'    , class : 'text-center' },
             { data: 'ttl_tagihan'    , name: 'ttl_tagihan'    , class : 'text-center' },
             { data: 'action'         , name: 'action'         , class : 'text-center' },
         ],
@@ -36,8 +37,8 @@ $(document).ready(function(){
             "rightColumns": 2,
         },
         aoColumnDefs: [
-            { "bSortable": false, "aTargets": [16] }, 
-            { "bSearchable": false, "aTargets": [16] }
+            { "bSortable": false, "aTargets": [17] }, 
+            { "bSearchable": false, "aTargets": [17] }
         ]
     });
 
@@ -398,30 +399,6 @@ $(document).ready(function(){
                     alert(data.unsuccess);
                 }
 
-                if(data.success){
-                    $('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
-                }
-            }
-        });
-    });
-
-    $(document).on('click', '.publishing', function(){
-        id = $(this).attr('id');
-        $.ajaxSetup({
-            headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-		$.ajax({
-			url :"/tagihan/publishing/"+id,
-            cache:false,
-			method:"POST",
-			dataType:"json",
-			success:function(data)
-			{
-                if(data.errors){
-                    alert(data.errors);
-                }
                 if(data.success){
                     $('#tabelTagihan').DataTable().ajax.reload(function(){}, false);
                 }

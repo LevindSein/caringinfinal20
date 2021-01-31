@@ -20,7 +20,7 @@
                     <tr>
                         <th class="tg-r8fv">No.</th>
                         <th class="tg-r8fv">Blok</th>
-                        <th class="tg-r8fv">Jumlah Los</th>
+                        <th class="tg-r8fv">Jml.Unit</th>
                         <th class="tg-r8fv">Tagihan</th>
                         <th class="tg-r8fv">Diskon</th>
                         <th class="tg-r8fv">Jml Hrs Bayar</th>
@@ -61,7 +61,8 @@
                             <th class="tg-r8fv">No.</th>
                             <th class="tg-r8fv">Kontrol</th>
                             <th class="tg-r8fv">Pengguna</th>
-                            <th class="tg-r8fv">Jml Los</th>
+                            <th class="tg-r8fv" style="width:18%">Alamat</th>
+                            <th class="tg-r8fv">Jml.Unit</th>
                             <th class="tg-r8fv">Tagihan</th>
                             <th class="tg-r8fv">Diskon</th>
                             <th class="tg-r8fv">Jml Hrs Bayar</th>
@@ -74,6 +75,7 @@
                             <td class="tg-cegc">{{$no}}</td>
                             <td class="tg-cegc">{{$d->kontrol}}</td>
                             <td class="tg-cegc" style="text-align:left;white-space: normal;">{{$d->pengguna}}</td>
+                            <td class="tg-cegc" style="white-space:normal; word-break:break-word;">{{$d->nomor}}</td>
                             <td class="tg-cegc">{{number_format($d->jumlah)}}</td>
                             <td class="tg-cegc">{{number_format($d->subtotal)}}</td>
                             <td class="tg-cegc">{{number_format($d->diskon)}}</td>
@@ -83,7 +85,7 @@
                         @endforeach
                         @foreach($data[2] as $d)
                         <tr>
-                            <td class="tg-vbo4" style="text-align:center;" colspan="3">Total</td>
+                            <td class="tg-vbo4" style="text-align:center;" colspan="4">Total</td>
                             <td class="tg-8m6k">{{number_format($d->jumlah)}}</td>
                             <td class="tg-8m6k">{{number_format($d->subtotal)}}</td>
                             <td class="tg-8m6k">{{number_format($d->diskon)}}</td>
@@ -93,6 +95,7 @@
                     </tbody>
                 </table>
             </main>
+            <div style="page-break-after:always"></div>
         </div>
         @endforeach
         @endif

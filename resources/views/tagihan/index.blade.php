@@ -117,14 +117,14 @@
                             type="submit">
                             <i class="fas fa-fw fa-exclamation fa-sm text-gray-500"></i> Pemberitahuan
                         </a>
-                        <a 
+                        <!-- <a 
                             class="dropdown-item" 
                             href="#" 
                             data-toggle="modal" 
                             data-target="#myPembayaran"
                             type="submit">
                             <i class="fas fa-fw fa-dollar-sign fa-sm text-gray-500"></i> Pembayaran
-                        </a>
+                        </a> -->
                         @endif
                     </div>
                 </div>
@@ -135,7 +135,7 @@
                 @if(Session::get('otoritas') != NULL && (Session::get('otoritas')->publish && Session::get('otoritas')->tagihan == false))
                 <table
                     class="table"
-                    id="tabelTagihan"
+                    id="tabelTagihan1"
                     width="100%"
                     cellspacing="0"
                     style="font-size:0.75rem;">
@@ -149,6 +149,7 @@
                             <th rowspan="2" class="kebersihan">Kebersihan (Rp.)</th>
                             <th rowspan="2" style="background-color:rgba(50, 255, 255, 0.2);">Air Kotor (Rp.)</th>
                             <th rowspan="2" style="background-color:rgba(255, 50, 255, 0.2);">Lain - Lain (Rp.)</th>
+                            <th rowspan="2">Via Publish</th>
                             <th rowspan="2" style="background-color:rgba(255, 212, 71, 0.2);">Jumlah (Rp.)</th>
                         </tr>
                         <tr>
@@ -181,6 +182,7 @@
                             <th rowspan="2" class="kebersihan">Kebersihan (Rp.)</th>
                             <th rowspan="2" style="background-color:rgba(50, 255, 255, 0.2);">Air Kotor (Rp.)</th>
                             <th rowspan="2" style="background-color:rgba(255, 50, 255, 0.2);">Lain - Lain (Rp.)</th>
+                            <th rowspan="2">Via Publish</th>
                             <th rowspan="2" style="background-color:rgba(255, 212, 71, 0.2);">Jumlah (Rp.)</th>
                             <th rowspan="2">Action</th>
                         </tr>
@@ -906,9 +908,5 @@
 
 @section('js')
 <!-- Tambah Content pada Body JS -->
-@if(Session::get('otoritas') != NULL && (Session::get('otoritas')->publish && Session::get('otoritas')->tagihan == false))
-<script src="{{asset('js/tagihan-1.js')}}"></script>
-@else
 <script src="{{asset('js/tagihan.js')}}"></script>
-@endif
 @endsection

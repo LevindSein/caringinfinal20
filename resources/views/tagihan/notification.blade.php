@@ -41,6 +41,7 @@
                             <th rowspan="2" class="kebersihan">Kebersihan (Rp.)</th>
                             <th rowspan="2" style="background-color:rgba(50, 255, 255, 0.2);">Air Kotor (Rp.)</th>
                             <th rowspan="2" style="background-color:rgba(255, 50, 255, 0.2);">Lain - Lain (Rp.)</th>
+                            <th rowspan="2">Via Publish</th>
                             <th rowspan="2" style="background-color:rgba(255, 212, 71, 0.2);">Jumlah (Rp.)</th>
                             <th rowspan="2">Action</th>
                         </tr>

@@ -39,7 +39,8 @@ $(document).ready(function(){
         aoColumnDefs: [
             { "bSortable": false, "aTargets": [19] }, 
             { "bSearchable": false, "aTargets": [19] }
-        ]
+        ],
+        order:[[0, 'asc']]
     });
 
     $('#tabelTempat1').DataTable({

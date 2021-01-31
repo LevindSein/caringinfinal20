@@ -191,6 +191,10 @@
                             <input required type="tel" autocomplete="off" class="form-control" maxlength="12" name="hp" id="hp" placeholder="8783847xxx" aria-describedby="inputGroupPrepend">
                         </div>
                     </div>
+                    <div class="form-group col-lg-12">
+                        <label for="alamat">Alamat KTP <span style="color:red;">*</span></label>
+                        <textarea autocomplete="off" name="alamat" class="form-control" id="alamat" required></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="action" id="action" value="Add" />

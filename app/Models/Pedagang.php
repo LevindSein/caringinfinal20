@@ -30,6 +30,12 @@ class Pedagang extends Model
         'created_at'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'otoritas',
+    ];
+
     public static function nasabah($id, $status){
         if($status == 'pemilik')
             $data = TempatUsaha::where('id_pemilik',$id)->select('kd_kontrol')->get();

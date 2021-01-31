@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 use Validator;
 use Exception;
@@ -46,7 +47,7 @@ class TempatController extends Controller
     {
         if($request->ajax())
         {
-            $data = TempatUsaha::orderBy('kd_kontrol', 'asc');
+            $data = DB::table('tempat_usaha');
             return DataTables::of($data)
                 ->addColumn('action', function($data){
                     $button = '<a type="button" title="Print QR" name="qr" id="'.$data->id.'" class="qr"><i class="fas fa-qrcode" style="color:#fd7e14;"></i></a>';
@@ -78,44 +79,44 @@ class TempatController extends Controller
                     else return '<span class="text-center"><i class="fas fa-check fa-sm"></i></span>';
                 })
                 ->addColumn('pengguna', function($data){
-                    $pengguna = Pedagang::where('id',$data->id_pengguna)->select('nama')->first();
+                    $pengguna = Pedagang::find($data->id_pengguna);
                     if($pengguna == null) return '<span style="color:#1cc88a;">idle</span>';
-                    else return $pengguna['nama'];
+                    else return $pengguna->nama;
                 })
                 ->addColumn('pemilik', function($data){
-                    $pemilik = Pedagang::where('id',$data->id_pemilik)->select('nama')->first();
+                    $pemilik = Pedagang::find($data->id_pemilik);
                     if($pemilik == null) return '<span style="color:#1cc88a;">idle</span>';
-                    else return $pemilik['nama'];
+                    else return $pemilik->nama;
                 })
                 ->addColumn('kodeAir', function($data){
-                    $kode = AlatAir::where('id',$data->id_meteran_air)->select('kode')->first();
+                    $kode = AlatAir::find($data->id_meteran_air);
                     if($kode == null) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return $kode['kode'];
+                    else return $kode->kode;
                 })
                 ->addColumn('kodeListrik', function($data){
-                    $kode = AlatListrik::where('id',$data->id_meteran_listrik)->select('kode')->first();
+                    $kode = AlatListrik::find($data->id_meteran_listrik);
                     if($kode == null) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return $kode['kode'];
+                    else return $kode->kode;
                 })
                 ->addColumn('trfKeamananIpk', function($data){
-                    $tarif = TarifKeamananIpk::where('id',$data->trf_keamananipk)->select('tarif')->first();
+                    $tarif = TarifKeamananIpk::find($data->trf_keamananipk);
                     if($tarif == null) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($tarif['tarif']);
+                    else return number_format($tarif->tarif);
                 })
                 ->addColumn('trfKebersihan', function($data){
-                    $tarif = TarifKebersihan::where('id',$data->trf_kebersihan)->select('tarif')->first();
+                    $tarif = TarifKebersihan::find($data->trf_kebersihan);
                     if($tarif == null) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($tarif['tarif']);
+                    else return number_format($tarif->tarif);
                 })
                 ->addColumn('trfLain', function($data){
-                    $tarif = TarifLain::where('id',$data->trf_lain)->select('tarif')->first();
+                    $tarif = TarifLain::find($data->trf_lain);
                     if($tarif == null) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($tarif['tarif']);
+                    else return number_format($tarif->tarif);
                 })
                 ->addColumn('trfArkot', function($data){
-                    $tarif = TarifAirKotor::where('id',$data->trf_airkotor)->select('tarif')->first();
+                    $tarif = TarifAirKotor::find($data->trf_airkotor);
                     if($tarif == null) return '<span class="text-center"><i class="fas fa-times fa-sm"></i></span>';
-                    else return number_format($tarif['tarif']);
+                    else return number_format($tarif->tarif);
                 })
                 ->rawColumns([
                     'action',
