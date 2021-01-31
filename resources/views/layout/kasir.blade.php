@@ -64,24 +64,33 @@
 											Mode Harian
 										</a>
                                         <hr>
+                                        <div class="dropdown-header">Personal Kasir :</div>
                                         <a class="dropdown-item"
                                             data-toggle="modal"
                                             data-target="#mySisa">
 											<i class="mdi mdi-book-minus text-primary"></i>
 											Rekap Sisa
 										</a>
-                                        <!-- <a class="dropdown-item"
-                                            target="_blank"
-                                            href="{{url('kasir/selesai')}}">
+                                        <a class="dropdown-item"
+                                            data-toggle="modal"
+                                            data-target="#mySelesai">
 											<i class="mdi mdi-book-plus text-primary"></i>
-											Rekap Selesai
-                                        </a> -->
+											Rekap Akhir Bulan
+                                        </a>
+                                        <hr>
                                         @endif
+                                        <div class="dropdown-header">Kepala Kasir :</div>
                                         <a class="dropdown-item"
                                             data-toggle="modal"
                                             data-target="#myUtama">
 											<i class="mdi mdi-database text-primary"></i>
-											Rekap Pendapatan
+											Pendapatan Harian
+										</a>
+                                        <a class="dropdown-item"
+                                            data-toggle="modal"
+                                            data-target="#myUtamaBulan">
+											<i class="mdi mdi-database text-primary"></i>
+											Pendapatan Bulanan
 										</a>
                                         <hr>
                                         <a class="dropdown-item"
@@ -138,7 +147,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Pencarian Rekap</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Cari Pendapatan Harian</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -154,6 +163,57 @@
                                     type="date"
                                     name="tgl_utama"
                                     id="tgl_utama">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="modal fade"
+            id="myUtamaBulan"
+            tabIndex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cari Pendapatan Bulanan</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form class="user" action="{{url('kasir/utama/bulan')}}" target="_blank" method="GET">
+                        <div class="modal-body-short">
+                            <div class="form-group col-lg-12">
+                                <label for="bulanpendapatan">Bulan</label>
+                                <select class="form-control" name="bulanpendapatan" id="bulanpendapatan" required>
+                                    <option value="01">Januari</option>
+                                    <option value="02">Februari</option>
+                                    <option value="03">Maret</option>
+                                    <option value="04">April</option>
+                                    <option value="05">Mei</option>
+                                    <option value="06">Juni</option>
+                                    <option value="07">Juli</option>
+                                    <option value="08">Agustus</option>
+                                    <option value="09">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="tahunpendapatan">Tahun</label>
+                                <select class="form-control" name="tahunpendapatan" id="tahunpendapatan" required>
+                                    @foreach($dataTahun as $d)
+                                    <option value="{{$d->thn_tagihan}}">{{$d->thn_tagihan}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -193,6 +253,56 @@
                                         <select class="sebagian" name="sebagian[]" id="sebagian" required multiple></select>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="modal fade"
+            id="mySelesai"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Rekap Akhir Bulan</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form class="user" action="{{url('kasir/selesai')}}" target="_blank" method="GET">
+                        <div class="modal-body-short">
+                            <div class="form-group col-lg-12">
+                                <label for="bulanselesai">Bulan</label>
+                                <select class="form-control" name="bulanselesai" id="bulanselesai" required>
+                                    <option value="01">Januari</option>
+                                    <option value="02">Februari</option>
+                                    <option value="03">Maret</option>
+                                    <option value="04">April</option>
+                                    <option value="05">Mei</option>
+                                    <option value="06">Juni</option>
+                                    <option value="07">Juli</option>
+                                    <option value="08">Agustus</option>
+                                    <option value="09">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Desember</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label for="tahunselesai">Tahun</label>
+                                <select class="form-control" name="tahunselesai" id="tahunselesai" required>
+                                    @foreach($dataTahun as $d)
+                                    <option value="{{$d->thn_tagihan}}">{{$d->thn_tagihan}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">

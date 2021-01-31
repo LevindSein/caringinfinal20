@@ -83,10 +83,63 @@ class Penghapusan extends Model
         'ket',
         'via_tambah',
         'via_hapus',
-        'stt_publish',
-        'warna_airbersih',
-        'warna_listrik',
         'updated_at',
         'created_at'
     ];
+
+    public static function totalTagihan($id){
+        $tagihan = self::find($id);
+        //Subtotal
+        $subtotal = 
+                    $tagihan->sub_listrik     + 
+                    $tagihan->sub_airbersih   + 
+                    $tagihan->sub_keamananipk + 
+                    $tagihan->sub_kebersihan  + 
+                    $tagihan->ttl_airkotor    + 
+                    $tagihan->ttl_lain;
+        $tagihan->sub_tagihan = $subtotal;
+        
+        //Diskon
+        $diskon = 
+                $tagihan->dis_listrik     + 
+                $tagihan->dis_airbersih   + 
+                $tagihan->dis_keamananipk + 
+                $tagihan->dis_kebersihan;
+        $tagihan->dis_tagihan = $diskon;
+
+        //Denda
+        $tagihan->den_tagihan = $tagihan->den_listrik + $tagihan->den_airbersih;
+        
+        //TOTAL
+        $total = 
+                $tagihan->ttl_listrik     + 
+                $tagihan->ttl_airbersih   + 
+                $tagihan->ttl_keamananipk + 
+                $tagihan->ttl_kebersihan  + 
+                $tagihan->ttl_airkotor    + 
+                $tagihan->ttl_lain;
+        $tagihan->ttl_tagihan = $total;
+
+        //Realisasi
+        $realisasi = 
+                    $tagihan->rea_listrik     + 
+                    $tagihan->rea_airbersih   + 
+                    $tagihan->rea_keamananipk + 
+                    $tagihan->rea_kebersihan  + 
+                    $tagihan->rea_airkotor    + 
+                    $tagihan->rea_lain;
+        $tagihan->rea_tagihan = $realisasi;
+
+        //Selisih
+        $selisih =
+                    $tagihan->sel_listrik     + 
+                    $tagihan->sel_airbersih   + 
+                    $tagihan->sel_keamananipk + 
+                    $tagihan->sel_kebersihan  + 
+                    $tagihan->sel_airkotor    + 
+                    $tagihan->sel_lain;
+        $tagihan->sel_tagihan = $selisih;
+
+        $tagihan->save();
+    }
 }

@@ -3,7 +3,6 @@
     height: 21cm;   /* auto is the initial value */
     width: 27.97cm; 
     padding-top: 10px;
-    size:landscape;
     margin: 1.3cm 1.9cm 1cm 1cm;  /* this affects the margin in the printer settings */
     border: 1px solid black;  /* set a border for all printed pages */
   }

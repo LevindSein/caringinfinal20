@@ -86,6 +86,7 @@ Route::middleware('ceklogin:kasir')->group(function(){
     Route::get('kasir/mode/{mode}',[KasirController::class, 'mode']);
 
     Route::get('kasir/utama',[KasirController::class, 'getutama']);
+    Route::get('kasir/utama/bulan',[KasirController::class, 'getutamaBulan']);
     Route::get('kasir/sisa',[KasirController::class, 'getsisa']);
     Route::get('kasir/selesai',[KasirController::class, 'getselesai']);
     
@@ -153,6 +154,7 @@ Route::middleware('ceklogin:tagihan')->group(function (){
     Route::post('tagihan/airbersih', [TagihanController::class, 'airbersihUpdate']);
     Route::get('tagihan/print', [TagihanController::class, 'print']);
     Route::post('tagihan/update', [TagihanController::class, 'update']);
+    Route::get('tagihan/destroy/edit/{id}', [TagihanController::class, 'destroyEdit']);
     Route::post('tagihan/destroy/{id}', [TagihanController::class, 'destroy']);
     Route::resource('tagihan', TagihanController::class);
 });

@@ -129,7 +129,7 @@
                             <th class="tg-ccvv">Air Brs</th>
                         </tr>
                         <tr>
-                            <th class="tg-g255" colspan="13" style="height:1px"></th>
+                            <th class="tg-g255" colspan="14" style="height:1px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -179,7 +179,7 @@
                     @endforeach
                     </tbody>
                     <tr>
-                        <td class="tg-g255" colspan="13" style="height:1px"></td>
+                        <td class="tg-g255" colspan="14" style="height:1px"></td>
                     </tr>
                     <tr>
                         <td class="tg-r8fz" colspan="4"><b>Total<b></td>

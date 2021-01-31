@@ -342,6 +342,44 @@ $(document).ready(function(){
     var id_tagihan;
     $(document).on('click', '.delete', function(){
         id_tagihan = $(this).attr('id');
+        $('#checkListrik').prop("disabled",false);
+        $('#checkAirBersih').prop("disabled",false);
+        $('#checkKeamananIpk').prop("disabled",false);
+        $('#checkKebersihan').prop("disabled",false);
+        $('#checkAirKotor').prop("disabled",false);
+        $('#checkLain').prop("disabled",false);
+        $('#checkListrik').prop("checked",false);
+        $('#checkAirBersih').prop("checked",false);
+        $('#checkKeamananIpk').prop("checked",false);
+        $('#checkKebersihan').prop("checked",false);
+        $('#checkAirKotor').prop("checked",false);
+        $('#checkLain').prop("checked",false);
+        $.ajax({
+			url:"/tagihan/destroy/edit/"+id_tagihan,
+            cache:false,
+            method:"get",
+			dataType:"json",
+			success:function(data)
+			{
+                if(data.result.stt_listrik === null)
+                    $('#checkListrik').prop("disabled",true);
+
+                if(data.result.stt_airbersih === null)
+                    $('#checkAirBersih').prop("disabled",true);
+                
+                if(data.result.stt_keamananipk === null)
+                    $('#checkKeamananIpk').prop("disabled",true);
+                    
+                if(data.result.stt_kebersihan === null)
+                    $('#checkKebersihan').prop("disabled",true);
+                    
+                if(data.result.stt_airkotor === null)
+                    $('#checkAirKotor').prop("disabled",true);
+                
+                if(data.result.stt_lain === null)
+                    $('#checkLain').prop("disabled",true);
+            }
+        })
 		$('#confirmModal').modal('show');
 	});
 

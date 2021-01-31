@@ -1505,6 +1505,10 @@ class KasirController extends Controller
     }
 
     public function harian(Request $request){
+        $dataTahun = Tagihan::select('thn_tagihan')
+        ->groupBy('thn_tagihan')
+        ->get();
+
         $tanggal = date('Y-m-d',strtotime(Carbon::now()));
         $tanggal = IndoDate::tanggal($tanggal,' ');
         $agent = new Agent();
@@ -1546,8 +1550,9 @@ class KasirController extends Controller
         }
 
         return view('kasir.harian',[
-            'platform' => $platform,
-            'tanggal'  => $tanggal
+            'platform'  => $platform,
+            'tanggal'   => $tanggal,
+            'dataTahun' => $dataTahun
         ]);
     }
 
@@ -1802,10 +1807,92 @@ class KasirController extends Controller
             $i++;
         }
 
+        $rincianbulan = Pembayaran::where('tgl_bayar',$tgl)->orderBy('kd_kontrol','asc')->get();
+
         return view('kasir.utama',[
             'dataset' => $dataset,
+            'rincianbulan' => $rincianbulan,
             'cetak'   => $cetak,
             'tanggal' => $tanggal,
+        ]);
+    }
+
+    public function getUtamaBulan(Request $request){
+        $periode = $request->tahunpendapatan."-".$request->bulanpendapatan;
+        $bln = IndoDate::bulan($periode, ' ');
+        $cetak = IndoDate::tanggal(date('Y-m-d',strtotime(Carbon::now())),' ');
+
+        $data  = User::where('role','kasir')->get();
+        $i = 0;
+        $dataset = array();
+        $rincianbulan = array();
+        foreach($data as $d){
+            $dataset[$i]['nama'] = $d->nama;
+
+            $harian = Harian::where([['bln_bayar',$periode],['id_kasir',$d->id]])->get();
+            $har_total  = 0;
+            foreach($harian as $t){
+                $har_total = $har_total + $t->total;
+            }
+            $hari = $har_total;
+
+            $bulanan = Pembayaran::where([['bln_bayar',$periode],['id_kasir',$d->id]])->get();
+            $bul_total  = 0;
+            foreach($bulanan as $b){
+                $bul_total = $bul_total + $b->realisasi;
+            }
+            $bulan = $bul_total;
+
+            $dataset[$i]['bulanan'] = $bulan;
+            $dataset[$i]['harian'] = $hari;
+            $dataset[$i]['jumlah'] = $bulan + $hari;
+
+            $rinbul = Pembayaran::where([['bln_bayar',$periode],['id_kasir',$d->id]])->select('tgl_bayar')->groupBy('tgl_bayar')->get();
+            $j = 0;
+            foreach($rinbul as $r){
+                $setor = Pembayaran::where([['tgl_bayar',$r->tgl_bayar],['id_kasir',$d->id]])->get();
+                $listrik = 0;
+                $denlistrik = 0;
+                $airbersih = 0;
+                $denairbersih = 0;
+                $keamananipk = 0;
+                $kebersihan = 0;
+                $airkotor = 0;
+                $lain = 0;
+                $jumlah = 0;
+                foreach($setor as $s){
+                    $listrik = $listrik + $s->byr_listrik - $s->byr_denlistrik;
+                    $denlistrik = $denlistrik + $s->byr_denlistrik;
+                    $airbersih = $airbersih + $s->byr_airbersih - $s->byr_denairbersih;
+                    $denairbersih = $denairbersih + $s->byr_denairbersih;
+                    $keamananipk = $keamananipk + $s->byr_keamananipk;
+                    $kebersihan = $kebersihan + $s->byr_kebersihan;
+                    $airkotor = $airkotor + $s->byr_airkotor;
+                    $lain = $lain + $s->byr_lain;
+                    $jumlah = $listrik + $denlistrik + $airbersih + $denairbersih + $keamananipk + $kebersihan + $airkotor + $lain;
+                }
+                $rincianbulan[$i][$j]['nama']  = $d->nama;
+                $rincianbulan[$i][$j]['setor'] = $r->tgl_bayar;
+                $rincianbulan[$i][$j]['listrik'] = $listrik;
+                $rincianbulan[$i][$j]['denlistrik'] = $denlistrik;
+                $rincianbulan[$i][$j]['airbersih'] = $airbersih;
+                $rincianbulan[$i][$j]['denairbersih'] = $denairbersih;
+                $rincianbulan[$i][$j]['keamananipk'] = $keamananipk;
+                $rincianbulan[$i][$j]['kebersihan'] = $kebersihan;
+                $rincianbulan[$i][$j]['airkotor'] = $airkotor;
+                $rincianbulan[$i][$j]['lain'] = $lain;
+                $rincianbulan[$i][$j]['jumlah'] = $jumlah;
+                $j++;
+            }
+
+            $i++;
+        }
+
+        return view('kasir.utama-bulan',[
+            'dataset' => $dataset,
+            'rincianbulan' => $rincianbulan,
+            'cetak'   => $cetak,
+            'bulan'   => $bln,
         ]);
     }
 
@@ -1926,75 +2013,56 @@ class KasirController extends Controller
         ]);
     }
 
-    public function getselesai(){
-        $bulan = IndoDate::bulan(date('Y-m',strtotime(Carbon::now())),' ');
-        $data = Pembayaran::where('bln_bayar',date('Y-m',strtotime(Carbon::now())))->select('kd_kontrol')->groupBy('kd_kontrol')->orderBy('kd_kontrol','asc')->get();
-        $dataset = array();
-        $i = 0;
+    public function getselesai(Request $request){
+        $cetak   = IndoDate::tanggal(date('Y-m-d',strtotime(Carbon::now())),' ');
+        $periode = $request->tahunselesai."-".$request->bulanselesai;
+        $data = Pembayaran::where([['bln_bayar',$periode],['id_kasir',Session::get('userId')]])->get();
+        $listrik = 0;
+        $denlistrik = 0;
+        $airbersih = 0;
+        $denairbersih = 0;
+        $keamananipk = 0;
+        $kebersihan = 0;
+        $airkotor = 0;
+        $lain = 0;
         foreach($data as $d){
-            $dataset[$i]['kd_kontrol'] = $d->kd_kontrol;
-            $tagihan = Pembayaran::where([['kd_kontrol',$d->kd_kontrol],['bln_bayar',date('Y-m',strtotime(Carbon::now()))]])
-            ->select(
-                DB::raw('SUM(realisasi) as tagihan'),
-                DB::raw('SUM(byr_listrik) as listrik'),
-                DB::raw('SUM(byr_airbersih) as airbersih'),
-                DB::raw('SUM(byr_keamananipk) as keamananipk'),
-                DB::raw('SUM(byr_kebersihan) as kebersihan'),
-                DB::raw('SUM(byr_airkotor) as airkotor'),
-                DB::raw('SUM(byr_lain) as lain'),
-                )
-            ->get();
-            if($tagihan != NULL){
-                $listrik = $tagihan[0]->listrik;
-                $airbersih = $tagihan[0]->airbersih;
-                $keamananipk = $tagihan[0]->keamananipk;
-                $kebersihan = $tagihan[0]->kebersihan;
-                $airkotor = $tagihan[0]->airkotor;
-                $lain = $tagihan[0]->lain;
-                $total = $tagihan[0]->tagihan;
-            }
-            else{
-                $listrik = 0;
-                $airbersih = 0;
-                $keamananipk = 0;
-                $kebersihan = 0;
-                $airkotor = 0;
-                $lain = 0;
-                $total = 0;
-            }
-            $dataset[$i]['listrik'] = $listrik;
-            $dataset[$i]['airbersih'] = $airbersih;
-            $dataset[$i]['keamananipk'] = $keamananipk;
-            $dataset[$i]['kebersihan'] = $kebersihan;
-            $dataset[$i]['airkotor'] = $airkotor;
-            $dataset[$i]['lain'] = $lain;
-            $dataset[$i]['total'] = $total;
-
-            $tempat = TempatUsaha::where('kd_kontrol', $d->kd_kontrol)->first();
-            if($tempat != NULL){
-                $lokasi = $tempat->lok_tempat;
-                $los = $tempat->no_alamat;
-            }
-            else{
-                $lokasi = '';
-                $los = '';
-            }
-            $dataset[$i]['lokasi'] = $lokasi;
-            $dataset[$i]['los'] = $los;
-
-            $pengguna = TempatUsaha::where('kd_kontrol',$d->kd_kontrol)->select('id_pengguna')->first();
-            if($pengguna != NULL){
-                $pengguna = User::find($pengguna->id_pengguna)->nama;
-            }
-            else{
-                $pengguna = '';
-            }
-            $dataset[$i]['pengguna'] = $pengguna;
-            $i++;
+            $listrik = $listrik + $d->byr_listrik;
+            $denlistrik = $denlistrik + $d->byr_denlistrik;
+            $airbersih = $airbersih + $d->byr_airbersih;
+            $denairbersih = $denairbersih + $d->byr_denairbersih;
+            $keamananipk = $keamananipk + $d->byr_keamananipk;
+            $kebersihan = $kebersihan + $d->byr_kebersihan;
+            $airkotor = $airkotor + $d->byr_airkotor;
+            $lain = $lain + $d->byr_lain;
         }
+        $dataset = array();
+        $dataset[0]['items'] = 'Listrik';
+        $dataset[0]['total'] = $listrik - $denlistrik;
+        $dataset[0]['denda'] = $denlistrik;
+        $dataset[1]['items'] = 'Air Bersih';
+        $dataset[1]['total'] = $airbersih - $denairbersih;
+        $dataset[1]['denda'] = $denairbersih;
+        $dataset[2]['items'] = 'Keamanan IPK';
+        $dataset[2]['total'] = $keamananipk;
+        $dataset[2]['denda'] = NULL;
+        $dataset[3]['items'] = 'Kebersihan';
+        $dataset[3]['total'] = $kebersihan;
+        $dataset[3]['denda'] = NULL;
+        $dataset[4]['items'] = 'Air Kotor';
+        $dataset[4]['total'] = $airkotor;
+        $dataset[4]['denda'] = NULL;
+        $dataset[5]['items'] = 'Lain - Lain';
+        $dataset[5]['total'] = $lain;
+        $dataset[5]['denda'] = NULL;
+        $bulan = IndoDate::bulan($periode," ");
+
+        $rincian = Pembayaran::where([['bln_bayar',$periode],['id_kasir',Session::get('userId')]])->orderBy('tgl_bayar','asc')->orderBy('kd_kontrol','asc')->get();
+
         return view('kasir.selesai',[
             'dataset' => $dataset,
-            'bulan' => $bulan,
+            'rincian' => $rincian,
+            'bulan'   => $bulan,
+            'cetak'   => $cetak
         ]);
     }
 

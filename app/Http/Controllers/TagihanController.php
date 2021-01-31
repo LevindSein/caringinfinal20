@@ -882,240 +882,203 @@ class TagihanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function destroyEdit(Request $request, $id){
+        if($request->ajax()){
+            $data = Tagihan::findOrFail($id);
+            return response()->json(['result' => $data]);
+        }
+    }
+
     public function destroy(Request $request,$id)
     {
         if($request->ajax()){
             try{
                 $data = Tagihan::findOrFail($id);
                 
-                // $awal_airbersih         = $data->awal_airbersih;
-                // $akhir_airbersih        = $data->akhir_airbersih;
-                // $pakai_airbersih        = $data->pakai_airbersih;
-                // $byr_airbersih          = $data->byr_airbersih;
-                // $pemeliharaan_airbersih = $data->pemeliharaan_airbersih;
-                // $beban_airbersih        = $data->beban_airbersih;
-                // $arkot_airbersih        = $data->arkot_airbersih;
-                // $sub_airbersih          = $data->sub_airbersih;
-                // $dis_airbersih          = $data->dis_airbersih;
-                // $ttl_airbersih          = $data->ttl_airbersih;
-                // $rea_airbersih          = $data->rea_airbersih;
-                // $sel_airbersih          = $data->sel_airbersih;
-                // $den_airbersih          = $data->den_airbersih;
-                // $daya_listrik           = $data->daya_listrik;
-                // $awal_listrik           = $data->awal_listrik;
-                // $akhir_listrik          = $data->akhir_listrik;
-                // $pakai_listrik          = $data->pakai_listrik;
-                // $byr_listrik            = $data->byr_listrik;
-                // $rekmin_listrik         = $data->rekmin_listrik;
-                // $blok1_listrik          = $data->blok1_listrik;
-                // $blok2_listrik          = $data->blok2_listrik;
-                // $beban_listrik          = $data->beban_listrik;
-                // $bpju_listrik           = $data->bpju_listrik;
-                // $sub_listrik            = $data->sub_listrik;
-                // $dis_listrik            = $data->dis_listrik;
-                // $ttl_listrik            = $data->ttl_listrik;
-                // $rea_listrik            = $data->rea_listrik;
-                // $sel_listrik            = $data->sel_listrik;
-                // $den_listrik            = $data->den_listrik;
-                // $jml_alamat             = $data->jml_alamat;
-                // $sub_keamananipk        = $data->sub_keamananipk;
-                // $dis_keamananipk        = $data->dis_keamananipk;
-                // $ttl_keamananipk        = $data->ttl_keamananipk;
-                // $rea_keamananipk        = $data->rea_keamananipk;
-                // $sel_keamananipk        = $data->sel_keamananipk;
-                // $sub_kebersihan         = $data->sub_kebersihan;
-                // $dis_kebersihan         = $data->dis_kebersihan;
-                // $ttl_kebersihan         = $data->ttl_kebersihan;
-                // $rea_kebersihan         = $data->rea_kebersihan;
-                // $sel_kebersihan         = $data->sel_kebersihan;
-                // $ttl_airkotor           = $data->ttl_airkotor;
-                // $rea_airkotor           = $data->rea_airkotor;
-                // $sel_airkotor           = $data->sel_airkotor;
-                // $ttl_lain               = $data->ttl_lain;
-                // $rea_lain               = $data->rea_lain;
-                // $sel_lain               = $data->sel_lain;
-                // $sub_tagihan            = $data->sub_tagihan;
-                // $dis_tagihan            = $data->dis_tagihan;
-                // $ttl_tagihan            = $data->ttl_tagihan;
-                // $rea_tagihan            = $data->rea_tagihan;
-                // $sel_tagihan            = $data->sel_tagihan;
-                // $den_tagihan            = $data->den_tagihan;
-                // $stt_denda              = $data->stt_denda;
-                // $stt_kebersihan         = $data->stt_kebersihan;
-                // $stt_keamananipk        = $data->stt_keamananipk;
-                // $stt_listrik            = $data->stt_listrik;
-                // $stt_airbersih          = $data->stt_airbersih;
-                // $stt_airkotor           = $data->stt_airkotor;
-                // $stt_lain               = $data->stt_lain;
+                $hapus = Penghapusan::find($data->id);
+                if($hapus == NULL){
+                    $hapus       = new Penghapusan;
+                }
+                $hapus->id   = $data->id;
+                $hapus->nama = $data->nama;
+                $hapus->blok = $data->blok;
+                $hapus->kd_kontrol = $data->kd_kontrol;
+                $hapus->bln_pakai = $data->bln_pakai;
+                $hapus->tgl_tagihan = $data->tgl_tagihan;
+                $hapus->bln_tagihan = $data->bln_tagihan;
+                $hapus->thn_tagihan = $data->thn_tagihan;
+                $hapus->tgl_expired = $data->tgl_expired;
+                $hapus->stt_lunas = $data->stt_lunas;
+                $hapus->stt_bayar = $data->stt_bayar;
+                $hapus->ket = $data->ket;
+                $hapus->via_tambah = $data->via_tambah;
+                $hapus->via_hapus = Session::get('username');
+                $hapus->stt_denda = $data->stt_denda;
 
                 if(empty($request->checkListrik) == FALSE){
+                    $hapus->daya_listrik  = $data->daya_listrik;
                     $data->daya_listrik   = NULL;
+                    
+                    $hapus->awal_listrik  = $data->awal_listrik;
                     $data->awal_listrik   = NULL;
+
+                    $hapus->akhir_listrik = $data->akhir_listrik;
                     $data->akhir_listrik  = NULL;
+
+                    $hapus->pakai_listrik = $data->pakai_listrik;
                     $data->pakai_listrik  = NULL;
+
+                    $hapus->byr_listrik   = $data->byr_listrik;
                     $data->byr_listrik    = NULL;
-                    $data->rekmin_listrik = NULL;
-                    $data->blok1_listrik  = NULL;
-                    $data->blok2_listrik  = NULL;
+
+                    $hapus->rekmin_listrik = $data->rekmin_listrik;
+                    $data->rekmin_listrik  = NULL;
+
+                    $hapus->blok1_listrik  = $data->blok1_listrik;
+                    $data->blok1_listrik   = NULL;
+
+                    $hapus->blok2_listrik  = $data->blok2_listrik;
+                    $data->blok2_listrik   = NULL;
+
+                    $hapus->beban_listrik = $data->beban_listrik;
                     $data->beban_listrik  = NULL;
+
+                    $hapus->bpju_listrik  = $data->bpju_listrik;
                     $data->bpju_listrik   = NULL;
+
+                    $hapus->sub_listrik   = $data->sub_listrik;
                     $data->sub_listrik    = 0;
+
+                    $hapus->dis_listrik   = $data->dis_listrik;
                     $data->dis_listrik    = 0;
+
+                    $hapus->ttl_listrik   = $data->ttl_listrik;
                     $data->ttl_listrik    = 0;
+
+                    $hapus->rea_listrik   = $data->rea_listrik;
                     $data->rea_listrik    = 0;
+
+                    $hapus->sel_listrik   = $data->sel_listrik;
                     $data->sel_listrik    = 0;
+
+                    $hapus->den_listrik   = $data->den_listrik;
                     $data->den_listrik    = 0;
+
+                    $hapus->stt_listrik   = $data->stt_listrik;
                     $data->stt_listrik    = NULL;
                 }
-                // else{
-                //     $daya_listrik      = NULL;
-                //     $awal_listrik      = NULL;
-                //     $akhir_listrik     = NULL;
-                //     $pakai_listrik     = NULL;
-                //     $byr_listrik       = NULL;
-                //     $rekmin_listrik    = NULL;
-                //     $blok1_listrik     = NULL;
-                //     $blok2_listrik     = NULL;
-                //     $beban_listrik     = NULL;
-                //     $bpju_listrik      = NULL;
-                //     $sub_listrik       = 0;
-                //     $dis_listrik       = 0;
-                //     $ttl_listrik       = 0;
-                //     $rea_listrik       = 0;
-                //     $sel_listrik       = 0;
-                //     $den_listrik       = 0;
-                //     $stt_listrik       = NULL;
-                // }
 
                 if(empty($request->checkAirBersih) == FALSE){
+                    $hapus->awal_airbersih = $data->awal_airbersih;
                     $data->awal_airbersih = NULL;
+
+                    $hapus->akhir_airbersih = $data->akhir_airbersih;
                     $data->akhir_airbersih = NULL;
+
+                    $hapus->pakai_airbersih = $data->pakai_airbersih;
                     $data->pakai_airbersih = NULL;
+
+                    $hapus->byr_airbersih = $data->byr_airbersih;
                     $data->byr_airbersih = NULL;
+
+                    $hapus->pemeliharaan_airbersih = $data->pemeliharaan_airbersih;
                     $data->pemeliharaan_airbersih = NULL;
+
+                    $hapus->beban_airbersih = $data->beban_airbersih;
                     $data->beban_airbersih = NULL;
+
+                    $hapus->arkot_airbersih = $data->arkot_airbersih;
                     $data->arkot_airbersih = NULL;
+
+                    $hapus->sub_airbersih = $data->sub_airbersih;
                     $data->sub_airbersih = 0;
+
+                    $hapus->dis_airbersih = $data->dis_airbersih;
                     $data->dis_airbersih = 0;
-                    $data->ttl_airbersih = 0;
-                    $data->sel_airbersih = 0;
-                    $data->den_airbersih = 0;
-                    $data->stt_airbersih = NULL;
+
+                    $hapus->ttl_airbersih = $data->ttl_airbersih;
+                    $data->ttl_airbersih  = 0;
+
+                    $hapus->rea_airbersih = $data->rea_airbersih;
+                    $data->rea_airbersih  = 0;
+
+                    $hapus->sel_airbersih = $data->sel_airbersih;
+                    $data->sel_airbersih  = 0;
+
+                    $hapus->stt_airbersih = $data->stt_airbersih;
+                    $data->stt_airbersih  = NULL;
                 }
                 if(empty($request->checkKeamananIpk) == FALSE){
+                    $hapus->sub_keamananipk = $data->sub_keamananipk;
                     $data->sub_keamananipk = 0;
+
+                    $hapus->dis_keamananipk = $data->dis_keamananipk;
                     $data->dis_keamananipk = 0;
-                    $data->ttl_keamananipk = 0;
-                    $data->rea_keamananipk = 0;
-                    $data->sel_keamananipk = 0;
-                    $data->stt_keamananipk = NULL;
+
+                    $hapus->ttl_keamananipk = $data->ttl_keamananipk;
+                    $data->ttl_keamananipk  = 0;
+
+                    $hapus->rea_keamananipk = $data->rea_keamananipk;
+                    $data->rea_keamananipk  = 0;
+
+                    $hapus->sel_keamananipk = $data->sel_keamananipk;
+                    $data->sel_keamananipk  = 0;
+
+                    $hapus->stt_keamananipk = $data->stt_keamananipk;
+                    $data->stt_keamananipk  = NULL;
                 }
                 if(empty($request->checkKebersihan) == FALSE){
+                    $hapus->sub_kebersihan = $data->sub_kebersihan;
                     $data->sub_kebersihan = 0;
+
+                    $hapus->dis_kebersihan = $data->dis_kebersihan;
                     $data->dis_kebersihan = 0;
-                    $data->ttl_kebersihan = 0;
-                    $data->rea_kebersihan = 0;
-                    $data->sel_kebersihan = 0;
-                    $data->stt_kebersihan = NULL;
+
+                    $hapus->ttl_kebersihan = $data->ttl_kebersihan;
+                    $data->ttl_kebersihan  = 0;
+
+                    $hapus->rea_kebersihan = $data->rea_kebersihan;
+                    $data->rea_kebersihan  = 0;
+
+                    $hapus->sel_kebersihan = $data->sel_kebersihan;
+                    $data->sel_kebersihan  = 0;
+
+                    $hapus->stt_kebersihan = $data->stt_kebersihan;
+                    $data->stt_kebersihan  = NULL;
                 }
                 if(empty($request->checkAirKotor) == FALSE){
-                    $data->ttl_airkotor = 0;
-                    $data->rea_airkotor = 0;
-                    $data->sel_airkotor = 0;
-                    $data->stt_airkotor = NULL;
+                    $hapus->ttl_airkotor = $data->ttl_airkotor;
+                    $data->ttl_airkotor  = 0;
+
+                    $hapus->rea_airkotor = $data->rea_airkotor;
+                    $data->rea_airkotor  = 0;
+
+                    $hapus->sel_airkotor = $data->sel_airkotor;
+                    $data->sel_airkotor  = 0;
+
+                    $hapus->stt_airkotor = $data->stt_airkotor;
+                    $data->stt_airkotor  = NULL;
                 }
                 if(empty($request->checkLain) == FALSE){
-                    $data->ttl_lain = 0;
-                    $data->rea_lain = 0;
-                    $data->sel_lain = 0;
-                    $data->stt_lain = NULL;
+                    $hapus->ttl_lain = $data->ttl_lain;
+                    $data->ttl_lain  = 0;
+
+                    $hapus->rea_lain = $data->rea_lain;
+                    $data->rea_lain  = 0;
+
+                    $hapus->sel_lain = $data->sel_lain;
+                    $data->sel_lain  = 0;
+
+                    $hapus->stt_lain = $data->stt_lain;
+                    $data->stt_lain  = NULL;
                 }
+                $hapus->save();
                 $data->save();
+
                 Tagihan::totalTagihan($id);
+                Penghapusan::totalTagihan($id);
 
                 $data = Tagihan::findOrFail($id);
-
-                // $hapus = [
-                //     'id'                     => $data->id,
-                //     'nama'                   => $data->nama,
-                //     'blok'                   => $data->blok,
-                //     'kd_kontrol'             => $data->kd_kontrol,
-                //     'bln_pakai'              => $data->bln_pakai,
-                //     'tgl_tagihan'            => $data->tgl_tagihan,
-                //     'bln_tagihan'            => $data->bln_tagihan,
-                //     'thn_tagihan'            => $data->thn_tagihan,
-                //     'tgl_expired'            => $data->tgl_expired,
-                //     'stt_lunas'              => $data->stt_lunas,
-                //     'stt_bayar'              => $data->stt_bayar,
-                //     'awal_airbersih'         => $data->awal_airbersih,
-                //     'akhir_airbersih'        => $data->akhir_airbersih,
-                //     'pakai_airbersih'        => $data->pakai_airbersih,
-                //     'byr_airbersih'          => $data->byr_airbersih,
-                //     'pemeliharaan_airbersih' => $data->pemeliharaan_airbersih,
-                //     'beban_airbersih'        => $data->beban_airbersih,
-                //     'arkot_airbersih'        => $data->arkot_airbersih,
-                //     'sub_airbersih'          => $data->sub_airbersih,
-                //     'dis_airbersih'          => $data->dis_airbersih,
-                //     'ttl_airbersih'          => $data->ttl_airbersih,
-                //     'rea_airbersih'          => $data->rea_airbersih,
-                //     'sel_airbersih'          => $data->sel_airbersih,
-                //     'den_airbersih'          => $data->den_airbersih,
-                //     'daya_listrik'           => $daya_listrik,
-                //     'awal_listrik'           => $awal_listrik,
-                //     'akhir_listrik'          => $akhir_listrik,
-                //     'pakai_listrik'          => $pakai_listrik,
-                //     'byr_listrik'            => $byr_listrik,
-                //     'rekmin_listrik'         => $rekmin_listrik,
-                //     'blok1_listrik'          => $blok1_listrik,
-                //     'blok2_listrik'          => $blok2_listrik,
-                //     'beban_listrik'          => $beban_listrik,
-                //     'bpju_listrik'           => $bpju_listrik,
-                //     'sub_listrik'            => $sub_listrik,
-                //     'dis_listrik'            => $dis_listrik,
-                //     'ttl_listrik'            => $ttl_listrik,
-                //     'rea_listrik'            => $rea_listrik,
-                //     'sel_listrik'            => $sel_listrik,
-                //     'den_listrik'            => $den_listrik,
-                //     'jml_alamat'             => $data->jml_alamat,
-                //     'sub_keamananipk'        => $data->sub_keamananipk,
-                //     'dis_keamananipk'        => $data->dis_keamananipk,
-                //     'ttl_keamananipk'        => $data->ttl_keamananipk,
-                //     'rea_keamananipk'        => $data->rea_keamananipk,
-                //     'sel_keamananipk'        => $data->sel_keamananipk,
-                //     'sub_kebersihan'         => $data->sub_kebersihan,
-                //     'dis_kebersihan'         => $data->dis_kebersihan,
-                //     'ttl_kebersihan'         => $data->ttl_kebersihan,
-                //     'rea_kebersihan'         => $data->rea_kebersihan,
-                //     'sel_kebersihan'         => $data->sel_kebersihan,
-                //     'ttl_airkotor'           => $data->ttl_airkotor,
-                //     'rea_airkotor'           => $data->rea_airkotor,
-                //     'sel_airkotor'           => $data->sel_airkotor,
-                //     'ttl_lain'               => $data->ttl_lain,
-                //     'rea_lain'               => $data->rea_lain,
-                //     'sel_lain'               => $data->sel_lain,
-                //     'sub_tagihan'            => $data->sub_tagihan,
-                //     'dis_tagihan'            => $data->dis_tagihan,
-                //     'ttl_tagihan'            => $data->ttl_tagihan,
-                //     'rea_tagihan'            => $data->rea_tagihan,
-                //     'sel_tagihan'            => $data->sel_tagihan,
-                //     'den_tagihan'            => $data->den_tagihan,
-                //     'stt_denda'              => $data->stt_denda,
-                //     'stt_kebersihan'         => $data->stt_kebersihan,
-                //     'stt_keamananipk'        => $data->stt_keamananipk,
-                //     'stt_listrik'            => $stt_listrik,
-                //     'stt_airbersih'          => $data->stt_airbersih,
-                //     'stt_airkotor'           => $data->stt_airkotor,
-                //     'stt_lain'               => $data->stt_lain,
-                //     'ket'                    => $data->ket,
-                //     'via_tambah'             => $data->via_tambah,
-                //     'via_hapus'              => Session::get('username'),
-                //     'stt_publish'            => $data->stt_publish,
-                //     'warna_airbersih'        => $data->warna_airbersih,
-                //     'warna_listrik'          => $data->warna_listrik
-                // ];
-
-                // Penghapusan::create($hapus);
-
                 if($data->ttl_tagihan == 0)
                     $data->delete();
             }
