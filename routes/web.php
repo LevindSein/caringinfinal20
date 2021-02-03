@@ -92,6 +92,9 @@ Route::middleware('ceklogin:kasir')->group(function(){
     
     Route::get('kasir/restore',[KasirController::class, 'restore']);
     Route::post('kasir/restore/{id}',[KasirController::class, 'restoreStore']);
+
+    Route::get('kasir/struk/{struk}',[KasirController::class, 'struk']);
+    Route::get('kasir/struk/{struk}/{id}',[KasirController::class, 'cetakStruk']);
     
     Route::get('kasir/penerimaan',[KasirController::class, 'penerimaan']);
     
@@ -129,7 +132,7 @@ Route::middleware('ceklogin:tagihan')->group(function (){
     Route::post('tagihan/sinkronisasi', function(Request $request){
         if($request->ajax()){
             try{
-                \Artisan::call('cron:tagihan');
+                Artisan::call('cron:tagihan');
                 return response()->json(['success' => 'Sinkronisasi Sukses']);
             }
             catch(\Exception $e){

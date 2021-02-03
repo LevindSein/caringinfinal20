@@ -82,7 +82,7 @@
                 <hr class="sidebar-divider">
                 @endif
 
-                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer'|| Session::get('otoritas')->pedagang || Session::get('otoritas')->tempatusaha || Session::get('otoritas')->tagihan || Session::get('otoritas')->publish)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer'||  Session::get('role') == 'admin' && (Session::get('otoritas')->pedagang || Session::get('otoritas')->tempatusaha || Session::get('otoritas')->tagihan || Session::get('otoritas')->publish))
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Sumber Daya
@@ -97,7 +97,7 @@
                 </li>
                 @endif
 
-                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('otoritas')->tempatusaha)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' ||  Session::get('role') == 'admin' && (Session::get('otoritas')->tempatusaha))
                 <!-- Nav Item - Tempat Usaha -->
                 <li class="nav-item {{ (request()->is('tempatusaha*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{url('tempatusaha')}}">
@@ -124,7 +124,7 @@
                     Report
                 </div>
 
-                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('otoritas')->pemakaian || Session::get('otoritas')->pendapatan)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' ||  Session::get('role') == 'admin' && (Session::get('otoritas')->pemakaian || Session::get('otoritas')->pendapatan))
                 <!-- Nav Item - Laporan -->
                 <li class="nav-item {{ (request()->is('rekap/*')) ? 'active' : '' }}">
                     <a
@@ -143,10 +143,10 @@
                         aria-labelledby="headingPages"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('otoritas')->pemakaian)
+                            @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('role') == 'admin' && (Session::get('otoritas')->pemakaian))
                             <a class="collapse-item {{ (request()->is('rekap/pemakaian')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('rekap/pemakaian')}}">Pemakaian</a>
                             @endif
-                            @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('otoritas')->pendapatan)
+                            @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('role') == 'admin' && (Session::get('otoritas')->pendapatan))
                             <a class="collapse-item {{ (request()->is('rekap/pendapatan')) ? 'active' : '' }}" style="font-size:0.8rem;" href="{{url('rekap/pendapatan')}}">Pendapatan</a>
                             @endif
                         </div>
@@ -154,7 +154,7 @@
                 </li>
                 @endif
 
-                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('otoritas')->datausaha)
+                @if(Session::get('role') == 'master' || Session::get('role') == 'manajer' || Session::get('role') == 'admin' && (Session::get('otoritas')->datausaha))
                 <!-- Nav Item - Data -->
                 <li class="nav-item {{ (request()->is('datausaha*')) ? 'active' : '' }}">
                     <a class="nav-link" href="{{url('datausaha')}}">
@@ -221,6 +221,7 @@
                         <i class="fas fa-history"></i>
                         <span>Riwayat Login</span></a>
                 </li>
+
                 @endif
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">

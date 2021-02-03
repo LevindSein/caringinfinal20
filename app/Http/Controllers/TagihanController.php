@@ -1563,6 +1563,8 @@ class TagihanController extends Controller
             try{
                 $dataset = Tagihan::where('stt_publish',0)->get();
                 foreach($dataset as $d){
+                    $d->review      = 1;
+                    $d->reviewer    = Session::get('username');
                     $d->stt_publish = 1;
                     $d->via_publish = Session::get('username');
                     $d->save();
@@ -2575,29 +2577,26 @@ class TagihanController extends Controller
         if($request->ajax()){
             try{
                 $tagihan = Tagihan::find($id);
-                if($tagihan->bln_tagihan >= date('Y-m',strtotime(Carbon::now()))){
-                    $publish = $tagihan->stt_publish;
-                    if($publish === 1){
-                        $pembayaran = Pembayaran::where('id_tagihan',$tagihan->id)->first();
-                        if($pembayaran == NULL)
-                            $hasil = 0;
-                        else
-                            return response()->json(['unsuccess' => 'Unpublish Gagal, Pembayaran telah dilakukan']);
-                    }
-                    else if($publish === 0){
-                        $hasil = 1;
-                    }
-                    $tagihan->stt_publish = $hasil;
-                    $tagihan->via_publish = Session::get('username');
-                    $tagihan->save();
-                    if($hasil == 0)
-                        return response()->json(['success' => 'Unpublish Sukses']);
+                $publish = $tagihan->stt_publish;
+                if($publish === 1){
+                    $pembayaran = Pembayaran::where('id_tagihan',$tagihan->id)->first();
+                    if($pembayaran == NULL)
+                        $hasil = 0;
                     else
-                        return response()->json(['success' => 'Publish Sukses']);
+                        return response()->json(['unsuccess' => 'Unpublish Gagal, Pembayaran telah dilakukan']);
                 }
-                else{
-                    return response()->json(['unsuccess' => 'Data Tagihan Kedaluwarsa']);
+                else if($publish === 0){
+                    $hasil = 1;
                 }
+                $tagihan->review      = 1;
+                $tagihan->reviewer    = Session::get('username');
+                $tagihan->stt_publish = $hasil;
+                $tagihan->via_publish = Session::get('username');
+                $tagihan->save();
+                if($hasil == 0)
+                    return response()->json(['success' => 'Unpublish Sukses']);
+                else
+                    return response()->json(['success' => 'Publish Sukses']);
             }
             catch(\Exception $e){
                 return response()->json(['errors' => 'Oops! Gagal Unpublish']);

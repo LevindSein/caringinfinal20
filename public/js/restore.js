@@ -25,6 +25,7 @@ $(document).ready(function () {
     }).columns.adjust().draw();
 
     localStorage.setItem("update", "0");
+    localStorage.setItem("struk", "0");
     $(document).on('click', '.restore', function(){
         var id = $(this).attr('id');
         $.ajaxSetup({
@@ -51,6 +52,7 @@ $(document).ready(function () {
                 }
 
                 localStorage.setItem("update", "1");
+                localStorage.setItem("struk", "1");
             },
             error: function(data){
                 alert('Oops! Kesalahan Sistem');

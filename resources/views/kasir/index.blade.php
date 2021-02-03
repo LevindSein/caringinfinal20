@@ -1,3 +1,8 @@
+<?php 
+use Jenssegers\Agent\Agent;
+$agent = new Agent();
+?>
+
 @extends('layout.kasir')
 @section('content')
 <title>Kasir | BP3C</title>
@@ -11,7 +16,10 @@
             type="button"
             class="btn btn-outline-inverse-info"
             title="Home">
-            <i class="mdi mdi-home btn-icon-append"></i>  
+            <i class="mdi mdi-home btn-icon-append"></i>
+            @if($agent->isDesktop())
+            <br><b>Home</b>
+            @endif
         </a>
     </div>
     @if($platform == 'mobile')
@@ -46,7 +54,10 @@
             data-toggle="modal"
             data-target="#myPenerimaan"
             title="Penerimaan Harian">
-            <i class="mdi mdi-printer btn-icon-append"></i>  
+            <i class="mdi mdi-library-books btn-icon-append"></i>
+            @if($agent->isDesktop())
+            <br><b>Penerimaan</b>
+            @endif
         </button>
     </div>
     &nbsp;
@@ -57,7 +68,24 @@
             type="button"
             class="btn btn-outline-inverse-info"
             title="Restore Tagihan">
-            <i class="mdi mdi-restore btn-icon-append"></i>  
+            <i class="mdi mdi-restore btn-icon-append"></i>
+            @if($agent->isDesktop())
+            <br><b>Restore</b>
+            @endif
+        </a>
+    </div>
+    &nbsp;
+    <div>
+        <a 
+            href="{{url('kasir/struk/tagihan')}}"
+            target="_blank"
+            type="button"
+            class="btn btn-outline-inverse-info"
+            title="Struk Pembayaran">
+            <i class="mdi mdi-file-check btn-icon-append"></i>  
+            @if($agent->isDesktop())
+            <br><b>Struk</b>
+            @endif
         </a>
     </div>
 </div>

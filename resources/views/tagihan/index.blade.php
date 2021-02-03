@@ -3,6 +3,13 @@
 <!-- Tambah Content Pada Head -->
 @endsection
 
+<?php 
+    use Carbon\Carbon;
+    $time = Carbon::now();
+    $now = date('Y-m-d',strtotime($time));
+    $check = date('Y-m-20',strtotime($time));
+?>
+
 @section('content')
 <!-- Tambah Content Pada Body Utama -->
 <title>Tagihan Pedagang | BP3C</title>
@@ -73,12 +80,14 @@
                         </button>
                         @endif
                         @if(Session::get('role') == 'master' || Session::get('otoritas')->tagihan)
+                        @if($now >= $check)
                         <button
                             class="dropdown-item" 
                             id="sinkronisasi"
                             type="submit">
                             <i class="fas fa-fw fa-sync fa-sm text-gray-500"></i> Sinkronisasi
                         </button>
+                        @endif
                         <button 
                             id="tambah_manual"
                             class="dropdown-item" 

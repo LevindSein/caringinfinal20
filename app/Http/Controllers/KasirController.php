@@ -17,6 +17,7 @@ use App\Models\IndoDate;
 use App\Models\User;
 use App\Models\Harian;
 use App\Models\Item;
+use App\Models\StrukPembayaran;
 
 use App\Models\TempatUsaha;
 use App\Models\Sinkronisasi;
@@ -626,6 +627,48 @@ class KasirController extends Controller
         $lokasi = $json->lokasi;
         $faktur = Crypt::decryptString($json->faktur);
 
+        $struk = new StrukPembayaran();
+        $struk->bln_bayar = date('Y-m',strtotime(Carbon::now()));
+        $struk->nomor = $faktur;
+        $struk->kd_kontrol = $json->kd_kontrol;
+        $struk->pedagang = $json->pedagang;
+        $struk->los = $json->los;
+        $struk->lokasi = $json->lokasi;
+
+        $struk->taglistrik = $json->taglistrik;
+        $struk->tagtunglistrik = $json->tagtunglistrik;
+        $struk->tagdenlistrik = $json->tagdenlistrik;
+        $struk->tagawlistrik = $json->tagawlistrik;
+        $struk->tagaklistrik = $json->tagaklistrik;
+        $struk->tagdylistrik = $json->tagdylistrik;
+        $struk->tagpklistrik = $json->tagpklistrik;
+        
+        $struk->tagairbersih = $json->tagairbersih;
+        $struk->tagtungairbersih = $json->tagtungairbersih;
+        $struk->tagdenairbersih = $json->tagdenairbersih;
+        $struk->tagawairbersih = $json->tagawairbersih;
+        $struk->tagakairbersih = $json->tagakairbersih;
+        $struk->tagpkairbersih = $json->tagpkairbersih;
+        
+        $struk->tagkeamananipk = $json->tagkeamananipk;
+        $struk->tagtungkeamananipk = $json->tagtungkeamananipk;
+        
+        $struk->tagkebersihan = $json->tagkebersihan;
+        $struk->tagtungkebersihan = $json->tagtungkebersihan;
+        
+        $struk->tagairkotor = $json->tagairkotor;
+        $struk->tagtungairkotor = $json->tagtungairkotor;
+        
+        $struk->taglain = $json->taglain;
+        $struk->tagtunglain = $json->tagtunglain;
+        
+        $struk->totalTagihan = $json->totalTagihan;
+        
+        $struk->bayar = date('d/m/Y H:i:s',strtotime(Carbon::now()));
+        
+        $struk->kasir = Session::get('username');
+        $struk->save();
+
         $listrik         = number_format($json->taglistrik);
         $tunglistrik     = number_format($json->tagtunglistrik);
         $denlistrik      = number_format($json->tagdenlistrik);
@@ -659,7 +702,7 @@ class KasirController extends Controller
 
         $bulan           = IndoDate::bulanS(date('Y-m',strtotime(Carbon::now())), ' ');
 
-        $dirfile = storage_path('app\public\logo_struk.png');
+        $dirfile = storage_path('app/public/logo_struk.png');
         $logo = EscposImage::load($dirfile,false);
 
         $profile   = CapabilityProfile::load("POS-5890");
@@ -669,7 +712,7 @@ class KasirController extends Controller
         try{
             if(Session::get('printer') == 'panda'){
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> bitImageColumnFormat($logo);
+                $printer -> bitImageColumnFormat($logo, Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT);
                 $printer -> setJustification(Printer::JUSTIFY_LEFT);
                 $printer -> setEmphasis(true);
                 $printer -> text("Nama    : $pedagang\n");
@@ -802,7 +845,7 @@ class KasirController extends Controller
             }
             else{
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
-                $printer -> bitImageColumnFormat($logo);
+                $printer -> bitImageColumnFormat($logo, Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT);
                 $printer -> setJustification(Printer::JUSTIFY_LEFT);
                 $printer -> setEmphasis(true);
                 $printer -> text("Nama    : $pedagang\n");
@@ -1335,6 +1378,9 @@ class KasirController extends Controller
     }
 
     public function restore(Request $request){
+        $dataTahun = Tagihan::select('thn_tagihan')
+        ->groupBy('thn_tagihan')
+        ->get();
         if($request->ajax()){
             $data = Pembayaran::select('kd_kontrol')
             ->groupBy('kd_kontrol')
@@ -1376,7 +1422,9 @@ class KasirController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-        return view('kasir.restore');
+        return view('kasir.restore',[
+            'dataTahun' => $dataTahun
+        ]);
     }
 
     public function restoreStore(Request $request, $kontrol){
@@ -1483,6 +1531,11 @@ class KasirController extends Controller
                     }
                     else{
                         return response()->json(['errors' => 'Restore Gagal']);
+                    }
+
+                    $struk = StrukPembayaran::where('nomor',$p->no_faktur)->first();
+                    if($struk != NULL){
+                        $struk->delete();
                     }
                 }
                 return response()->json(['success' => 'Restore Sukses']);
@@ -2089,6 +2142,335 @@ class KasirController extends Controller
             }
             catch(\Exception $e){
                 return response()->json(['errors' => $e]);
+            }
+        }
+    }
+
+    public function struk(Request $request, $struk){
+        $dataTahun = Tagihan::select('thn_tagihan')
+        ->groupBy('thn_tagihan')
+        ->get();
+        if($struk == 'tagihan'){
+            if($request->ajax()){
+                $data = StrukPembayaran::orderBy('id','desc');
+                return DataTables::of($data)
+                    ->addColumn('action', function($data){
+                        $button = '<a type="button" title="Cetak" name="cetak" id="'.$data->id.'" class="cetak btn btn-sm btn-success">Cetak</a>';
+                        return $button;
+                    })
+                    ->editColumn('bln_bayar',function($data){
+                        return IndoDate::bulan($data->bln_bayar, " ");
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+            }
+            return view('kasir.struk-pembayaran',[
+                'dataTahun' => $dataTahun
+            ]);
+        }
+    }
+
+    public function cetakStruk(Request $request, $struk, $id){
+        if($struk == 'tagihan'){
+            $struk = StrukPembayaran::find($id);
+
+            $listrik         = number_format($struk->taglistrik);
+            $tunglistrik     = number_format($struk->tagtunglistrik);
+            $denlistrik      = number_format($struk->tagdenlistrik);
+            $dayalistrik     = number_format($struk->tagdylistrik);
+            $awallistrik     = number_format($struk->tagawlistrik);
+            $akhirlistrik    = number_format($struk->tagaklistrik);
+            $pakailistrik    = number_format($struk->tagpklistrik);
+            
+            $airbersih       = number_format($struk->tagairbersih);
+            $tungairbersih   = number_format($struk->tagtungairbersih);
+            $denairbersih    = number_format($struk->tagdenairbersih);
+            $awalairbersih   = number_format($struk->tagawairbersih);
+            $akhirairbersih  = number_format($struk->tagakairbersih);
+            $pakaiairbersih  = number_format($struk->tagpkairbersih);
+
+            $keamananipk     = number_format($struk->tagkeamananipk);
+            $tungkeamananipk = number_format($struk->tagtungkeamananipk);
+            
+            $kebersihan      = number_format($struk->tagkebersihan);
+            $tungkebersihan  = number_format($struk->tagtungkebersihan);
+            
+            $airkotor        = number_format($struk->tagairkotor);
+            $tungairkotor    = number_format($struk->tagtungairkotor);
+            
+            $lain            = number_format($struk->taglain);
+            $tunglain        = number_format($struk->tagtunglain);
+
+            $total           = number_format($struk->totalTagihan);
+
+            $dirfile = storage_path('app/public/logo_struk.png');
+            $logo = EscposImage::load($dirfile,false);
+
+            $bulan = IndoDate::bulanS($struk->bln_bayar, " ");
+
+            $profile   = CapabilityProfile::load("POS-5890");
+            $connector = new RawbtPrintConnector();
+            $printer   = new Printer($connector,$profile);
+            $i = 1;
+            try{
+                if(Session::get('printer') == 'panda'){
+                    $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                    $printer -> bitImageColumnFormat($logo, Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT);
+                    $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                    $printer -> setEmphasis(true);
+                    $printer -> text("Nama    : $struk->pedagang\n");
+                    $printer -> text("Kontrol : $struk->kd_kontrol\n");
+                    $printer -> text("Los     : $struk->los\n");
+                    if($struk->lokasi != ''){
+                        $printer -> text("Lokasi  : $struk->lokasi\n");
+                    }
+                    $printer -> setEmphasis(false);
+                    $printer -> feed();
+                    $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                    $printer -> text("$bulan\n");
+                    $printer -> feed();
+                    $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+                    $printer -> text(new Struk80mm("Items","Rp.",true, true));
+                    $printer -> selectPrintMode();
+                    $printer -> setFont(Printer::FONT_B);
+                    $printer -> text("----------------------------------------");
+                    $printer -> feed();
+                    $printer -> feed();
+                    if($struk->taglistrik != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Listrik",$listrik,true));
+                        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                        $printer -> text(new Struk80mm("Daya" ,$dayalistrik,false));
+                        $printer -> text(new Struk80mm("Awal" ,$awallistrik,false));
+                        $printer -> text(new Struk80mm("Akhir",$akhirlistrik,false));
+                        $printer -> text(new Struk80mm("Pakai",$pakailistrik,false));
+                        $i++;
+                    }
+                    if($struk->tagtunglistrik != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Tgk.Listrik",$tunglistrik,true));
+                        $i++;
+                    }
+                    if($struk->tagdenlistrik != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Den.Listrik",$denlistrik,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagairbersih != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Air Bersih",$airbersih,true));
+                        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                        $printer -> text(new Struk80mm("Awal" ,$awalairbersih,false));
+                        $printer -> text(new Struk80mm("Akhir",$akhirairbersih,false));
+                        $printer -> text(new Struk80mm("Pakai",$pakaiairbersih,false));
+                        $i++;
+                    }
+                    if($struk->tagtungairbersih != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Tgk.Air Bersih",$tungairbersih,true));
+                        $i++;
+                    }
+                    if($struk->tagdenairbersih != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Den.Air Bersih",$denairbersih,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagkeamananipk != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Keamanan IPK",$keamananipk,true));
+                        $i++;
+                    }
+                    if($struk->tagtungkeamananipk != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Tgk.Keamanan IPK",$tungkeamananipk,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagkebersihan != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Kebersihan",$kebersihan,true));
+                        $i++;
+                    }
+                    if($struk->tagtungkebersihan != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Tgk.Kebersihan",$tungkebersihan,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagairkotor != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Air Kotor",$airkotor,true));
+                        $i++;
+                    }
+                    if($struk->tagtungairkotor != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Tgk.Air Kotor",$tungairkotor,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->taglain != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Lain Lain",$lain,true));
+                        $i++;
+                    }
+                    if($struk->tagtunglain != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk80mm("$i. Tgk.Lain Lain",$tunglain,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+                    $printer -> text(new Struk80mm("Total",$total,true,true));
+                    $printer -> selectPrintMode();
+                    $printer -> setFont(Printer::FONT_B);
+                    $printer -> text("----------------------------------------\n");
+                    $printer -> text("Nomor : $struk->nomor\n");
+                    $printer -> text("Dibayar pada $struk->bayar\n");
+                    $printer -> text("Kuitansi ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
+                    $printer -> text("Ksr : $struk->kasir\n");
+                    $printer -> feed();
+                }
+                else if(Session::get('printer') == 'androidpos'){
+
+                }
+                else{
+                    $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                    $printer -> bitImageColumnFormat($logo, Printer::IMG_DOUBLE_WIDTH | Printer::IMG_DOUBLE_HEIGHT);
+                    $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                    $printer -> setEmphasis(true);
+                    $printer -> text("Nama    : $struk->pedagang\n");
+                    $printer -> text("Kontrol : $struk->kd_kontrol\n");
+                    $printer -> text("Los     : $struk->los\n");
+                    if($struk->lokasi != ''){
+                        $printer -> text("Lokasi  : $struk->lokasi\n");
+                    }
+                    $printer -> setEmphasis(false);
+                    $printer -> feed();
+                    $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                    $printer -> text("$bulan\n");
+                    $printer -> feed();
+                    $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+                    $printer -> text(new Struk70mm("Items","Rp.",true, true));
+                    $printer -> selectPrintMode();
+                    $printer -> setFont(Printer::FONT_B);
+                    $printer -> text("----------------------------------------");
+                    $printer -> feed();
+                    $printer -> feed();
+                    if($struk->taglistrik != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Listrik",$listrik,true));
+                        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                        $printer -> text(new Struk70mm("Daya" ,$dayalistrik,false));
+                        $printer -> text(new Struk70mm("Awal" ,$awallistrik,false));
+                        $printer -> text(new Struk70mm("Akhir",$akhirlistrik,false));
+                        $printer -> text(new Struk70mm("Pakai",$pakailistrik,false));
+                        $i++;
+                    }
+                    if($struk->tagtunglistrik != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Tgk.Listrik",$tunglistrik,true));
+                        $i++;
+                    }
+                    if($struk->tagdenlistrik != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Den.Listrik",$denlistrik,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagairbersih != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Air Bersih",$airbersih,true));
+                        $printer -> setJustification(Printer::JUSTIFY_LEFT);
+                        $printer -> text(new Struk70mm("Awal" ,$awalairbersih,false));
+                        $printer -> text(new Struk70mm("Akhir",$akhirairbersih,false));
+                        $printer -> text(new Struk70mm("Pakai",$pakaiairbersih,false));
+                        $i++;
+                    }
+                    if($struk->tagtungairbersih != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Tgk.Air Bersih",$tungairbersih,true));
+                        $i++;
+                    }
+                    if($struk->tagdenairbersih != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Den.Air Bersih",$denairbersih,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagkeamananipk != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Keamanan IPK",$keamananipk,true));
+                        $i++;
+                    }
+                    if($struk->tagtungkeamananipk != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Tgk.Keamanan IPK",$tungkeamananipk,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagkebersihan != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Kebersihan",$kebersihan,true));
+                        $i++;
+                    }
+                    if($struk->tagtungkebersihan != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Tgk.Kebersihan",$tungkebersihan,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->tagairkotor != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Air Kotor",$airkotor,true));
+                        $i++;
+                    }
+                    if($struk->tagtungairkotor != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Tgk.Air Kotor",$tungairkotor,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    if($struk->taglain != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Lain Lain",$lain,true));
+                        $i++;
+                    }
+                    if($struk->tagtunglain != 0){
+                        $printer -> setJustification(Printer::JUSTIFY_CENTER);
+                        $printer -> text(new Struk70mm("$i. Tgk.Lain Lain",$tunglain,true));
+                        $i++;
+                    }
+                    
+                    $printer -> feed();
+                    $printer -> selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+                    $printer -> text(new Struk70mm("Total",$total,true,true));
+                    $printer -> selectPrintMode();
+                    $printer -> setFont(Printer::FONT_B);
+                    $printer -> text("----------------------------------------\n");
+                    $printer -> text("Nomor : $struk->nomor\n");
+                    $printer -> text("Dibayar pada $struk->bayar\n");
+                    $printer -> text("Kuitansi ini adalah bukti pembayaran\nyang sah. Harap Disimpan.\n");
+                    $printer -> text("Ksr : $struk->kasir\n");
+                    $printer -> feed();
+                    $printer -> cut();
+                }
+            }catch(\Exception $e){
+                return response()->json(['status' => 'Gagal Print Struk']);
+            }finally{
+                $printer->close();
             }
         }
     }
